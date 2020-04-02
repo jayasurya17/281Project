@@ -10,7 +10,11 @@
     "react-dom": "^16.5.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^1.1.5"
+    "react-scripts": "^1.1.5",
+    "react-bootstrap": "^1.0.0-beta.16",
+    "reactstrap": "^8.1.1",
+    "bootstrap": "^4.3.1",
+    "chart.js": "^2.9.3"
   },
   "scripts": {
     "start": "react-scripts start",

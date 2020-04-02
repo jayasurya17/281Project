@@ -56,7 +56,7 @@ class Home extends Component {
     render() {
         let RedirectVar;
         if (localStorage.getItem('281UserId')) {
-            RedirectVar = <Redirect to="/tester/home" />
+            RedirectVar = <Redirect to="/tester/dashboard" />
         }
 
         return (

@@ -12,6 +12,7 @@ class Home extends Component {
         this.state = {
             name: '',
             email: '',
+            company: '',
             password: null,
             errMsg: '',
             successMsg: '',
@@ -24,7 +25,8 @@ class Home extends Component {
             console.log(response.data)
             this.setState({
                 name: response.data.name,
-                email: response.data.email
+                email: response.data.email,
+                company: response.data.company
             })
         })
     }
@@ -78,6 +80,12 @@ class Home extends Component {
         })
     }
 
+    companyChangeHandler = (e) => {
+        this.setState({
+            company: e.target.value
+        })
+    }
+
     updateAccount = (e) => {
         e.preventDefault();
         if (!this.IsValidName(this.state.name)) {
@@ -97,6 +105,7 @@ class Home extends Component {
             name: this.state.name,
             email: this.state.email,
             password: this.state.password,
+            company: this.state.company
         }
         axios.put(Constants.BACKEND_SERVER.URL + "/users/update", usrData)
             .then((response) => {
@@ -142,6 +151,10 @@ class Home extends Component {
                                 <div className="form-group">
                                     <label htmlFor="userPassword">Password</label>
                                     <input type="password" id="userPassword" onChange={this.passwordChangeHandler} value={this.state.password} className="form-control" required />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="userPassword">Company Name</label>
+                                    <input type="text" id="userPassword" onChange={this.companyChangeHandler} value={this.state.company} className="form-control" required />
                                 </div>
                                 <div className="text-center">
                                     <p className="text-danger">

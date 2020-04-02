@@ -23,6 +23,10 @@ const Users = new mongoose.Schema({
 		type : Boolean,
 		default : true,
 	},
+	companyName: {
+		type: String,
+		default: null
+	},
 	type: {
 		type: String,
 		required: true
