@@ -89,7 +89,8 @@ class Landing extends Component {
             zipcode: null,
             testCases: null,
             createdTime: null,
-            requestedUsers: []
+            requestedUsers: [],
+            announcement: "",
         }
     }
 
@@ -109,7 +110,7 @@ class Landing extends Component {
                 state: projectObj.state,
                 zipcode: projectObj.zip,
                 testCases: projectObj.testCases,
-                createdTime: projectObj.createdTime
+                createdTime: projectObj.createdTime,
             })
         })
 
@@ -127,6 +128,25 @@ class Landing extends Component {
         return <h6>{ name }: <span className="font-weight-light">{ value }</span></h6>
     }
 
+    announcementChangeHandler = (e) => {
+        this.setState({
+            announcement: e.target.value
+        })
+    }
+
+    postAnnouncement = (e) => {
+        var reqObj = {
+            projectId : this.props.projectId,
+            announcement : this.state.announcement
+        }
+        axios.post(`${Constants.BACKEND_SERVER.URL}/project/announcement`, reqObj)
+        .then(() => {
+            this.setState({
+                announcement: ""
+            })
+        })
+    }
+
     render(){
 
         let description,
@@ -135,8 +155,7 @@ class Landing extends Component {
         address,
         city,
         state,
-        zipcode,
-        infoContainer
+        zipcode
         if (this.state.description) {
             description = this.returnDisplay('Description', this.state.description)
         }
@@ -166,27 +185,37 @@ class Landing extends Component {
         }
 
         return(
-            <div className="p-5 shadow row">
-                <div className="col-md-6">
+            <div className="p-5 shadow">
+                <div className="row">
+                    <div className="col-md-6">
 
-                    <h1 className="display-4">{ this.state.name }</h1>
-                    <h4 className="font-weight-light">{ this.state.about }</h4>
+                        <h1 className="display-4">{ this.state.name }</h1>
+                        <h4 className="font-weight-light">{ this.state.about }</h4>
 
-                    { description }
-                    { technologies }
-                    { company }
-                    { address }
-                    { city }
-                    { state }
-                    { zipcode }
-                    { this.returnDisplay('Test Cases', this.state.testCases) }
+                        { description }
+                        { technologies }
+                        { company }
+                        { address }
+                        { city }
+                        { state }
+                        { zipcode }
+                        { this.returnDisplay('Test Cases', this.state.testCases) }
+
+                    </div>
+                    <div className="col-md-6">
+                        <h1 className="display-4">Pending requests</h1>
+                        { listOfRequests }
+                    </div>
 
                 </div>
-                <div className="col-md-6">
-                    <h1 className="display-4">Pending requests</h1>
-                    { listOfRequests }
+                <div className="row">
+                    <textarea className="w-100 form-control" style={{ resize: 'none' }} onChange = { this.announcementChangeHandler } value = { this.state.announcement }></textarea>
+                    <div className="col-md-12 mt-2 row">
+                        <div className="col-md-4 offset-md-8">
+                            <button className="btn btn-success w-100" onClick = { this.postAnnouncement }>Send announcement to testers</button>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         )
     }

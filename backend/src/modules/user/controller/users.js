@@ -295,3 +295,35 @@ exports.joinProject = async (req, res) => {
 			.send(error.message)
 	}
 }
+
+
+/**
+ * Returns list of all projects.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.allAnnouncements = async (req, res) => {
+
+	try {
+
+		let userObj = await Users.findById(req.params.userId),
+			index,
+			projectId,
+			projectObj,
+			allProjects = []
+
+		for (index in userObj.acceptedProjects) {
+			projectId = userObj.acceptedProjects[index]
+			projectObj = await Projects.findById(projectId)
+			allProjects.push(projectObj)
+		}
+		
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(allProjects)
+	} catch (error) {
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}

@@ -15,4 +15,7 @@ router.get('/project/accepted/:userId', userController.acceptedProjects)
 router.get('/project/details/:userId/:projectId', userController.projectsDetails)
 router.post('/project/join', userController.joinProject)
 
+
+router.get('/announcements/all/:userId', userController.allAnnouncements)
+
 module.exports = router

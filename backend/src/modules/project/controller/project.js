@@ -155,3 +155,36 @@ exports.rejectUser = async (req, res) => {
 			.send(error.message)
 	}
 }
+
+
+/**
+ * Post new announcement to the project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.announcement = async (req, res) => {
+
+	try {
+		console.log(req.body)
+		const newAnnouncement = {
+			text : req.body.announcement
+		}
+		await Projects.findByIdAndUpdate(
+			req.body.projectId,
+			{ 
+				$push : {
+					announcements :  newAnnouncement
+				}
+			}
+		)
+
+
+		return res
+			.status(constants.STATUS_CODE.NO_CONTENT_STATUS)
+			.json()
+	} catch (error) {
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}

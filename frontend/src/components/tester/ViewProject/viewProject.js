@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import Constants from '../../../utils/constants';
+import InfoContainer from './infoContainer';
 
 class Landing extends Component {
 
@@ -111,10 +112,8 @@ class Landing extends Component {
                 <button className="btn btn-primary w-100" onClick={ this.joinProject }><h1 className="display-4">Join Project</h1></button>
             </div>
         } else if (this.state.isMember === "Accepted") {
-            infoContainer = 
-            <div className="col-md-6">
-                <h1 className="display-4">Info</h1>
-            </div>
+            infoContainer = <InfoContainer />
+
         } else if (this.state.isMember === "Requested") {
             infoContainer = 
             <div className="col-md-6">
