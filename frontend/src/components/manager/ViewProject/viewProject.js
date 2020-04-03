@@ -13,7 +13,7 @@ class ListOfUsers extends Component {
 
     acceptUser = () => {
         var reqData = {
-            projectId : this.state.projectId,
+            projectId : this.props.projectId,
             userId : this.props.userId
         }
         axios.post(`${Constants.BACKEND_SERVER.URL}/project/acceptUser`, reqData)
@@ -26,7 +26,7 @@ class ListOfUsers extends Component {
 
     rejectUser = () => {
         var reqData = {
-            projectId : this.state.projectId,
+            projectId : this.props.projectId,
             userId : this.props.userId
         }
         axios.post(`${Constants.BACKEND_SERVER.URL}/project/rejectUser`, reqData)

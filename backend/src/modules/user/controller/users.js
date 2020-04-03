@@ -196,23 +196,25 @@ exports.projectsDetails = async (req, res) => {
 			.send({
 				status: "Requested"
 			})
-		} else if (userObj.projectsInvolved.includes(req.params.projectId)) {
+		} else if (userObj.acceptedProjects.includes(req.params.projectId)) {
 			return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.sendd({
+			.send({
 				status: "Accepted"
 			})
 		} else if (userObj.rejectedProjects.includes(req.params.projectId)) {
 			return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.sendd({
+			.send({
 				status: "Rejected"
 			})
 		}
 
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send("Some other data")
+			.send({
+				status: "No"
+			})
 	} catch (error) {
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)

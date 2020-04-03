@@ -1,9 +1,8 @@
 'use strict'
 
+import Users from '../../../models/mongoDB/users'
 import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
-import mongoose from 'mongoose'
-import users from '../../../models/mongoDB/users'
 
 /**
  * Returns list of all projects created by the manager.
@@ -40,7 +39,7 @@ exports.getRequestedUsers = async (req, res) => {
 		let requestedUsers = [],
 			userObj
 		for ( var index in requestedUserIds ) {
-			userObj = await users.findById(requestedUserIds[index]);
+			userObj = await Users.findById(requestedUserIds[index]);
 			delete userObj.password;
 			requestedUsers.push(userObj);
 		}
@@ -65,11 +64,41 @@ exports.getRequestedUsers = async (req, res) => {
 exports.acceptUser = async (req, res) => {
 
 	try {
-		
+		let projectObj = await Projects.findById(req.body.projectId)
+		if (projectObj.acceptedTesters.includes(req.body.userId)) {
+			return res
+				.status(constants.STATUS_CODE.NO_CONTENT_STATUS)
+				.send("Already accepted")
+		}
+
+		await Projects.findByIdAndUpdate(
+			req.body.projectId,
+			{ 
+				$pull : {
+					requestedTesters : req.body.userId
+				},
+				$push : {
+					acceptedTesters : req.body.userId
+				}
+			}
+		)
+
+		await Users.findByIdAndUpdate(
+			req.body.userId,
+			{ 
+				$pull : {
+					requestedProjects : req.body.projectId
+				},
+				$push : {
+					acceptedProjects : req.body.projectId
+				}
+			}
+		)
+
 
 		return res
-			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send("returnObj")
+			.status(constants.STATUS_CODE.NO_CONTENT_STATUS)
+			.json()
 	} catch (error) {
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
@@ -85,10 +114,41 @@ exports.acceptUser = async (req, res) => {
 exports.rejectUser = async (req, res) => {
 
 	try {
+		let projectObj = await Projects.findById(req.body.projectId)
+		if (projectObj.rejectedTesters.includes(req.body.userId)) {
+			return res
+				.status(constants.STATUS_CODE.NO_CONTENT_STATUS)
+				.send("Already rejected")
+		}
+
+		await Projects.findByIdAndUpdate(
+			req.body.projectId,
+			{ 
+				$pull : {
+					requestedTesters : req.body.userId
+				},
+				$push : {
+					rejectedTesters : req.body.userId
+				}
+			}
+		)
+
+		await Users.findByIdAndUpdate(
+			req.body.userId,
+			{ 
+				$pull : {
+					requestedProjects : req.body.projectId
+				},
+				$push : {
+					rejectedProjects : req.body.projectId
+				}
+			}
+		)
+
 
 		return res
-			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send("returnObj")
+			.status(constants.STATUS_CODE.NO_CONTENT_STATUS)
+			.json()
 	} catch (error) {
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)

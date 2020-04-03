@@ -47,6 +47,7 @@ class Landing extends Component {
         
         axios.get(`${Constants.BACKEND_SERVER.URL}/users/project/details/${localStorage.getItem('281UserId')}/${this.props.projectId}`)
         .then((response) => {
+            console.log(response.data)
             this.setState({
                 isMember: response.data.status
             })
