@@ -40,7 +40,7 @@ class Main extends Component {
                 <Route path="/manager/update-account" component={ ManagerUpdateAccount } />
 
                 <Route path="/manager/project/all" component={ ManagerViewMyProjects } />
-                <Route path="/manager/projects/create" component={ MangerCreateProject } />
+                <Route path="/manager/project/new" component={ MangerCreateProject } />
             </div>
         )
     }

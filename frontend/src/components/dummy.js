@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Header from '../common/header';
 import Footer from '../common/footer';
 import Navigation from '../common/navigation';
-import AddProject from './AddProject/AddProject';
 
 class Landing extends Component {
 
@@ -16,7 +15,7 @@ class Landing extends Component {
                     <Header />
                     <Navigation />
                     
-                    <AddProject />
+                    {/* Component design goes here */}
                     
                     <Footer />
                 </div>
