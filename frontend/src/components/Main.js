@@ -9,6 +9,7 @@ import TesterHome from './tester/dashboard';
 import TesterCheck from './tester/testerCheck';
 import TesterUpdateAccount from './tester/updateAccount';
 import TesterViewAllProjects from './tester/viewAllProjects';
+import TesterViewAcceptedProjects from './tester/viewMyProjects';
 import TesterViewProjectDetails from './tester/projectDetails';
 
 import ManagerHome from './manager/dashboard';
@@ -35,6 +36,7 @@ class Main extends Component {
                 <Route path="/tester/update-account" component={ TesterUpdateAccount } />
 
                 <Route path="/tester/project/all" component={ TesterViewAllProjects } />
+                <Route path="/tester/project/accepted" component={ TesterViewAcceptedProjects } />
                 <Route path="/tester/project/view/:projectId" component={ TesterViewProjectDetails } />
                 
 

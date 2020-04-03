@@ -21,7 +21,7 @@ class Home extends Component {
                 <div class="row bg-dark text-center font-weight-bold">
                     <div class="col-md-2 p-2"><a href="/tester/dashboard" class="text-white">Home</a></div>
                     <div class="col-md-2 p-2"><a href="/tester/project/all" class="text-white">All projects</a></div>
-                    <div class="col-md-2 p-2"><a href="/tester/project/active" class="text-white">My projects</a></div>
+                    <div class="col-md-2 p-2"><a href="/tester/project/accepted" class="text-white">My projects</a></div>
                     <div class="col-md-2 p-2"><a href="/tester/announcements" class="text-white">Announcements</a></div>
                 </div>
             ]
