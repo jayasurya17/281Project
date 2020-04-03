@@ -9,12 +9,14 @@ import TesterHome from './tester/dashboard';
 import TesterCheck from './tester/testerCheck';
 import TesterUpdateAccount from './tester/updateAccount';
 import TesterViewAllProjects from './tester/viewAllProjects';
+import TesterViewProjectDetails from './tester/projectDetails';
 
 import ManagerHome from './manager/dashboard';
 import ManagerCheck from './manager/managerCheck';
 import ManagerUpdateAccount from './manager/updateAccount';
 import ManagerViewMyProjects from './manager/myProjects';
 import MangerCreateProject from './manager/createProject';
+import ManagerViewProjectDetails from './manager/projectDetails';
 
 //Create a Main Component
 class Main extends Component {
@@ -33,6 +35,7 @@ class Main extends Component {
                 <Route path="/tester/update-account" component={ TesterUpdateAccount } />
 
                 <Route path="/tester/project/all" component={ TesterViewAllProjects } />
+                <Route path="/tester/project/view/:projectId" component={ TesterViewProjectDetails } />
                 
 
                 <Route path="/manager/" component={ ManagerCheck } />
@@ -40,7 +43,8 @@ class Main extends Component {
                 <Route path="/manager/update-account" component={ ManagerUpdateAccount } />
 
                 <Route path="/manager/project/all" component={ ManagerViewMyProjects } />
-                <Route path="/manager/project/new" component={ MangerCreateProject } />
+                <Route path="/manager/project/new" component={ MangerCreateProject } />                
+                <Route path="/manager/project/view/:projectId" component={ ManagerViewProjectDetails } />
             </div>
         )
     }

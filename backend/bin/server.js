@@ -10,6 +10,7 @@ import cors from 'cors'
 // router for modules
 let usersRouter = require('../src/modules/user/router/users')
 let managerRouter = require('../src/modules/manager/router/manager')
+let projectRouter = require('../src/modules/project/router/project')
 
 // database connections
 require('../src/models/mongoDB/index')
@@ -42,6 +43,7 @@ app.use(function (req, res, next) {
 // base routes for modules
 app.use('/users', usersRouter)
 app.use('/manager', managerRouter)
+app.use('/project', projectRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

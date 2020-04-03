@@ -1,11 +1,8 @@
 import React from 'react';
-import { Col, Row, Button, Form, FormGroup, Label, Input, FormText, Card, CardBody, Fade, CardFooter, CardHeader, CardText, CardTitle, Jumbotron, Container } from 'reactstrap';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, CardText, CardTitle, Container } from 'reactstrap';
 import './AllProjects.css';
 import axios from 'axios';
 import Constants from '../../../utils/constants';
-let name, shortDes, detDesc, compName, address, city, state, zip, testCases, tech, modal = false, fadeIn = false, Collapse
-let allProjCards = null
 
 
 class AllProjects extends React.Component {
@@ -28,22 +25,24 @@ class AllProjects extends React.Component {
 						item = response.data[index]
 						// console.log(item)
 						projectCards.push(
-							<Card className="card">
-								<CardHeader>{item['name']}</CardHeader>
-								<CardBody>
-									<CardTitle><b>About</b> {item['shortDescription']}</CardTitle>
-									<CardText><b>Technologies</b> {item['technologies']}</CardText>
-									<CardText><b>Detailed Description</b> {item['detailedDescription']}</CardText>
-									<CardText><b>Company Name</b> {item['companyName']}</CardText>
-									<CardText><b>Address</b> {item['address']}</CardText>
-									<CardText><b>City</b> {item['city']}</CardText>
-									<CardText><b>State</b> {item['state']}</CardText>
-									<CardText><b>Zipcode</b> {item['zip']}</CardText>
-									<CardText><b>TestCases</b> {item['testCases']}</CardText>
-									{/* <CardText><b>Working Testers</b> {item['testers_involved'].join()}</CardText> */}
-									<Button className="btn" color="danger" onClick={ this.remove.bind(this, item['name']) }>Remove</Button>
-								</CardBody>
-							</Card>
+							<a href={`/manager/project/view/${item['_id']}`} className="text-decoration-none text-dark">
+								<Card className="card">
+									<CardHeader>{item['name']}</CardHeader>
+									<CardBody>
+										<CardTitle><b>About</b> {item['shortDescription']}</CardTitle>
+										<CardText><b>Technologies</b> {item['technologies']}</CardText>
+										<CardText><b>Detailed Description</b> {item['detailedDescription']}</CardText>
+										<CardText><b>Company Name</b> {item['companyName']}</CardText>
+										<CardText><b>Address</b> {item['address']}</CardText>
+										<CardText><b>City</b> {item['city']}</CardText>
+										<CardText><b>State</b> {item['state']}</CardText>
+										<CardText><b>Zipcode</b> {item['zip']}</CardText>
+										<CardText><b>TestCases</b> {item['testCases']}</CardText>
+										{/* <CardText><b>Working Testers</b> {item['testers_involved'].join()}</CardText> */}
+										<Button className="btn" color="danger" onClick={ this.remove.bind(this, item['name']) }>Remove</Button>
+									</CardBody>
+								</Card>
+							</a>
 						)
 					}
 

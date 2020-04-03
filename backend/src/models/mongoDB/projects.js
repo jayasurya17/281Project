@@ -50,7 +50,10 @@ const Project = new mongoose.Schema({
 	createdTime: {
 		type: Date,
 		default: Date.now,
-	}
+	},
+	requestedTesters: [ mongoose.Types.ObjectId ],
+	acceptedTesters: [ mongoose.Types.ObjectId ],
+	rejectedTesters: [ mongoose.Types.ObjectId ],
 }, { versionKey: false })
 
 export default mongoose.model('projects', Project)

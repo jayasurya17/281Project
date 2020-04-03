@@ -158,9 +158,6 @@ exports.updateUserProfile = async (req, res) => {
 	}
 }
 
-
-
-
 /**
  * Returns list of all projects.
  * @param  {Object} req request object
@@ -175,6 +172,90 @@ exports.allProjects = async (req, res) => {
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(allProjects)
+	} catch (error) {
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+
+/**
+ * Returns list of all projects.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.projectsDetails = async (req, res) => {
+
+	try {
+
+		let userObj = await Users.findById(req.params.userId)
+		if (userObj.requestedProjects.includes(req.params.projectId)) {
+			return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send({
+				status: "Requested"
+			})
+		} else if (userObj.projectsInvolved.includes(req.params.projectId)) {
+			return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.sendd({
+				status: "Accepted"
+			})
+		} else if (userObj.rejectedProjects.includes(req.params.projectId)) {
+			return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.sendd({
+				status: "Rejected"
+			})
+		}
+
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send("Some other data")
+	} catch (error) {
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+
+/**
+ * Returns list of all projects.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.joinProject = async (req, res) => {
+
+	try {
+		let projectObj = await Projects.findById(req.body.projectId)
+		if (projectObj.requestedTesters.includes(req.body.userId)) {
+			return res
+				.status(constants.STATUS_CODE.NO_CONTENT_STATUS)
+				.send("Already a member")
+		}
+		await Projects.findByIdAndUpdate(
+			req.body.projectId,
+			{ 
+				$push : {
+					requestedTesters : req.body.userId
+				}
+			}
+		)
+
+		await Users.findByIdAndUpdate(
+			req.body.userId,
+			{ 
+				$push : {
+					requestedProjects : req.body.projectId
+				}
+			}
+		)
+
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send("Success")
 	} catch (error) {
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)

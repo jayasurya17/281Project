@@ -11,5 +11,7 @@ router.put('/update', userController.updateUserProfile)
 
 
 router.get('/project/all', userController.allProjects)
+router.get('/project/details/:userId/:projectId', userController.projectsDetails)
+router.post('/project/join', userController.joinProject)
 
 module.exports = router

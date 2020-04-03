@@ -31,9 +31,9 @@ const Users = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	project_involved: [String],
-	applied_project:{type:Array},
-	rejected_projects:{type:Array},
+	acceptedProjects: [ mongoose.Types.ObjectId ],
+	requestedProjects:[ mongoose.Types.ObjectId ],
+	rejectedProjects:[ mongoose.Types.ObjectId ],
 }, { versionKey: false })
 
 Users.pre('save', function preSave(next) {
