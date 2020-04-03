@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Header from '../common/header';
 import Footer from '../common/footer';
 import Navigation from '../common/navigation';
+import AllProjects from './AllProjects/AllProjects';
 
 class Landing extends Component {
 
@@ -15,17 +16,7 @@ class Landing extends Component {
                     <Header />
                     <Navigation />
                     
-                    <p class="display-4">VIEW ALL PROJECTS</p>
-                    <p class="display-4">VIEW ALL PROJECTS</p>
-                    <p class="display-4">VIEW ALL PROJECTS</p>
-                    <p class="display-4">VIEW ALL PROJECTS</p>
-                    <p class="display-4">VIEW ALL PROJECTS</p>
-                    <p class="display-4">VIEW ALL PROJECTS</p>
-                    <p class="display-4">VIEW ALL PROJECTS</p>
-                    <p class="display-4">VIEW ALL PROJECTS</p>
-                    <p class="display-4">VIEW ALL PROJECTS</p>
-                    <p class="display-4">VIEW ALL PROJECTS</p>
-                    <p class="display-4">VIEW ALL PROJECTS</p>
+                    <AllProjects />
                     
                     <Footer />
                 </div>

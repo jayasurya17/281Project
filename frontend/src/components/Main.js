@@ -32,7 +32,7 @@ class Main extends Component {
                 <Route path="/tester/dashboard" component={ TesterHome } />
                 <Route path="/tester/update-account" component={ TesterUpdateAccount } />
 
-                <Route path="/tester/projects/all" component={ TesterViewAllProjects } />
+                <Route path="/tester/project/all" component={ TesterViewAllProjects } />
                 
 
                 <Route path="/manager/" component={ ManagerCheck } />

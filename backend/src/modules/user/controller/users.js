@@ -1,10 +1,9 @@
 'use strict'
 
 import Users from '../../../models/mongoDB/users'
+import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
 import mongoose from 'mongoose'
-import model from '../../../models/sqlDB/index'
-import SQLHelper from '../../../models/sqlDB/helper'
 
 /**
  * Create user and save data in database.
@@ -153,6 +152,30 @@ exports.updateUserProfile = async (req, res) => {
 
 	} catch (error) {
 		console.log(`Error while getting user profile details ${error}`)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+
+
+
+/**
+ * Returns list of all projects.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.allProjects = async (req, res) => {
+
+	try {
+
+		let allProjects = await Projects.find({})
+		// console.log(allProjects)
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(allProjects)
+	} catch (error) {
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
 			.send(error.message)

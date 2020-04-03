@@ -100,7 +100,7 @@ class ProjectForm extends Component {
             fd.append('zip', this.state.zip)
             fd.append('testCases', this.state.testCases)
             fd.append('technologies', this.state.tech)
-            fd.append('file', this.state.selectedFile)
+            // fd.append('file', this.state.selectedFile)
 
             const projectData = {
                 managerId: localStorage.getItem('281UserId'),
@@ -122,9 +122,9 @@ class ProjectForm extends Component {
                         'Content-Type': 'multipart/form-data'
                 }
             };
-            axios.post(`${Constants.BACKEND_SERVER.URL}/manager/addProject`, fd, config)
-            // axios.post(`${Constants.BACKEND_SERVER.URL}/manager/addProject`, projectData)
-                .then((response) => {
+            // axios.post(`${Constants.BACKEND_SERVER.URL}/manager/addProject`, fd, config)
+            axios.post(`${Constants.BACKEND_SERVER.URL}/manager/addProject`, projectData)
+                .then(() => {
                     this.setState({
                         name: "",
                         shortDes: "",
@@ -141,7 +141,8 @@ class ProjectForm extends Component {
                         successMsg: "Project added!"
                     })
                 })
-                .catch(() => { 
+                .catch((error) => { 
+                    console.log(error)
                     this.setState({
                         errMsg: "Error occured",
                         successMsg: ""
@@ -161,60 +162,60 @@ class ProjectForm extends Component {
                     <Col md={4}>
                         <FormGroup>
                             <Label for="projectname">Project Name</Label>
-                            <Input type="text" name="projectname" onChange={this.nameChangeHandler} id="projectname" placeholder="Enter Project Name" />
+                            <Input type="text" name="projectname" onChange={this.nameChangeHandler} id="projectname" placeholder="Enter Project Name" value={ this.state.name }/>
                         </FormGroup>
                     </Col>
                     <Col md={8}>
                         <FormGroup>
                             <Label for="projectshort">Short Description</Label>
-                            <Input type="text" name="projectshort" onChange={this.shortDesChangeHandler} id="projectshort" placeholder="Enter a brief description about this project" />
+                            <Input type="text" name="projectshort" onChange={this.shortDesChangeHandler} id="projectshort" placeholder="Enter a brief description about this project"  value={ this.state.shortDes } />
                         </FormGroup>
                     </Col>
                 </Row>
                 <FormGroup>
                     <Label for="detaildesc"> Detailed Description</Label>
-                    <Input type="textarea" name="detaildesc" onChange={this.detailedDesChangeHandler} id="detaildesc" placeholder="Enter a detailed description here" />
+                    <Input type="textarea" name="detaildesc" onChange={this.detailedDesChangeHandler} id="detaildesc" placeholder="Enter a detailed description here"  value={ this.state.detDesc } />
                 </FormGroup>
                 <FormGroup>
                     <Label for="company">Company Name</Label>
-                    <Input type="text" name="company" onChange={this.compNameChangeHandler} id="company" placeholder="Your Company Name" />
+                    <Input type="text" name="company" onChange={this.compNameChangeHandler} id="company" placeholder="Your Company Name"  value={ this.state.compName } />
                 </FormGroup>
                 <FormGroup>
                     <Label for="exampleAddress2">Address</Label>
-                    <Input type="textarea" name="text" onChange={this.addressChangeHandler} id="exampleText" placeholder="Where is the project based?" />
+                    <Input type="textarea" name="text" onChange={this.addressChangeHandler} id="exampleText" placeholder="Where is the project based?"  value={ this.state.address } />
                 </FormGroup>
                 <Row form>
                     <Col md={6}>
                         <FormGroup>
                             <Label for="exampleCity">City</Label>
-                            <Input type="text" name="city" onChange={this.cityChangeHandler} id="exampleCity" placeholder='City' />
+                            <Input type="text" name="city" onChange={this.cityChangeHandler} id="exampleCity" placeholder='City'  value={ this.state.city } />
                         </FormGroup>
                     </Col>
                     <Col md={4}>
                         <FormGroup>
                             <Label for="exampleState">State</Label>
-                            <Input type="text" name="state" onChange={this.stateChangeHandler} id="exampleState" placeholder='State' />
+                            <Input type="text" name="state" onChange={this.stateChangeHandler} id="exampleState" placeholder='State'  value={ this.state.state } />
                         </FormGroup>
                     </Col>
                     <Col md={2}>
                         <FormGroup>
                             <Label for="exampleZip">Zip</Label>
-                            <Input type="text" name="zip" onChange={this.zipChangeHandler} id="exampleZip" placeholder='Zip' />
+                            <Input type="text" name="zip" onChange={this.zipChangeHandler} id="exampleZip" placeholder='Zip'  value={ this.state.zip } />
                         </FormGroup>
                     </Col>
                 </Row>
                 <FormGroup>
                     <Label for="tests">Test Cases</Label>
-                    <Input type="textarea" name="tests" onChange={this.testCaseChangeHandler} id="tests" placeholder='Enter a few test cases' />
+                    <Input type="textarea" name="tests" onChange={this.testCaseChangeHandler} id="tests" placeholder='Enter a few test cases'  value={ this.state.testCases } />
                 </FormGroup>
                 <FormGroup>
                     <Label for="tests">Technologies</Label>
-                    <Input type="textarea" name="tech" onChange={this.techChangeHandler} id="tech" placeholder="Java, React, Node, MongoDB, AWS EC2 etc..." />
+                    <Input type="textarea" name="tech" onChange={this.techChangeHandler} id="tech" placeholder="Java, React, Node, MongoDB, AWS EC2 etc..."  value={ this.state.tech } />
                 </FormGroup>
                 <FormGroup row>
                     <Label for="image" sm={2}>File</Label>
                     <Col sm={10}>
-                        <Input type="file" name="image" id="image" multiple="" onChange={this.onChangeFileUpload} />
+                        <Input type="file" name="image" id="image" multiple="" onChange={this.onChangeFileUpload}  value={ this.state.selectedFile } />
                         <FormText color="muted">
                             Upload File for your Project
                 </FormText>

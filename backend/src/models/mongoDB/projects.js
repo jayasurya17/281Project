@@ -4,7 +4,8 @@ import mongoose from 'mongoose'
 
 const Project = new mongoose.Schema({
     managerId: {
-        type: mongoose.Types.ObjectId
+		type: mongoose.Types.ObjectId,
+		required: true,
     },
 	name: {
 		type: String,
@@ -45,7 +46,11 @@ const Project = new mongoose.Schema({
     },
     file: {
         file: String,
-    }
+	},
+	createdTime: {
+		type: Date,
+		default: Date.now,
+	}
 }, { versionKey: false })
 
 export default mongoose.model('projects', Project)

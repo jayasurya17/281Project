@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Header from '../common/header';
 import Footer from '../common/footer';
 import Navigation from '../common/navigation';
+import AllProjects from './AllProjects/AllProjects';
 
 class Landing extends Component {
 
@@ -15,13 +16,15 @@ class Landing extends Component {
                     <Header />
                     <Navigation />
                     
-                    <p class="display-4">LIST OF MY PROJECTS</p>
+                    {/* <p class="display-4">LIST OF MY PROJECTS</p>
                     <h3>Project 1</h3>
                     <h3>Project 2</h3>
                     <h3>Project 3</h3>
                     <h3>Project 4</h3>
                     <h3>Project 5</h3>
-                    <h3>Project 6</h3>
+                    <h3>Project 6</h3> */}
+
+                    <AllProjects />
                     
                     <Footer />
                 </div>

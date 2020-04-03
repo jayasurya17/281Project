@@ -9,4 +9,7 @@ router.post('/login', userController.loginUser)
 router.get('/profile/:userId', userController.getUserProfile)
 router.put('/update', userController.updateUserProfile)
 
+
+router.get('/project/all', userController.allProjects)
+
 module.exports = router
