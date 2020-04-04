@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use('/public/', express.static('./public/'));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 // use cors to allow cross origin resource sharing
 app.use(cors({ origin: '*', credentials: false }));

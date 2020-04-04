@@ -119,11 +119,12 @@ class ProjectForm extends Component {
             // axios.defaults.withCredentials = true;//very imp, sets credentials so that backend can load cookies
             const config = {
                 headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        'Accept': 'multipart/form-data'
                 }
             };
-            // axios.post(`${Constants.BACKEND_SERVER.URL}/manager/addProject`, fd, config)
-            axios.post(`${Constants.BACKEND_SERVER.URL}/manager/addProject`, projectData)
+            axios.post(`${Constants.BACKEND_SERVER.URL}/manager/addProject`, fd, config)
+            // axios.post(`${Constants.BACKEND_SERVER.URL}/manager/addProject`, projectData)
                 .then(() => {
                     this.setState({
                         name: "",

@@ -3,6 +3,7 @@
 import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
 import mongoose from 'mongoose'
+const multiparty = require('multiparty');
 
 /**
  * Create user and save data in database.
@@ -12,22 +13,29 @@ import mongoose from 'mongoose'
 exports.addProject = async (req, res) => {
 
 	try {
-		console.log("addProject")
-		let projectObj,
+		var form = new multiparty.Form();
+		var newObj = {}
+		form.parse(req, async function(err, fields, files) {
+			let temp = newObj
+			Object.keys(fields).forEach(function(name) {
+				let that = temp
+				let key = String(name), value = String(fields[name])
+				that[key] = value
+			});
+			
+			let projectObj,
 			newProject,
 			createdProject
 			
-		projectObj= req.body;
-		console.log(req.body);
-		newProject = new Projects(projectObj);
-		console.log("1");
-		createdProject = await newProject.save();
-		console.log("2");
-		createdProject = createdProject.toJSON();
-		console.log("3");
-		return res
-			.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS)
-			.send(createdProject)
+			projectObj= temp;
+			newProject = new Projects(projectObj);
+			createdProject = await newProject.save();
+			createdProject = createdProject.toJSON();
+			return res
+				.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS)
+				.send(createdProject)
+		});
+
 	} catch (error) {
 		console.log(error.message)
 		return res
