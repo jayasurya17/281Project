@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import Constants from '../../../utils/constants';
 import InfoContainer from './infoContainer';
+import FileBrowser from './fileBrowser';
 
 class Landing extends Component {
 
@@ -127,25 +128,28 @@ class Landing extends Component {
         }
 
         return(
-            <div className="p-5 shadow row">
-                <div className="col-md-6">
+            <div className="p-5 shadow">
+                <div className="row">
+                    <div className="col-md-6">
 
-                    <h1 className="display-4">{ this.state.name }</h1>
-                    <h4 className="font-weight-light">{ this.state.about }</h4>
+                        <h1 className="display-4">{ this.state.name }</h1>
+                        <h4 className="font-weight-light">{ this.state.about }</h4>
 
-                    { description }
-                    { technologies }
-                    { company }
-                    { address }
-                    { city }
-                    { state }
-                    { zipcode }
-                    { this.returnDisplay('Test Cases', this.state.testCases) }
+                        { description }
+                        { technologies }
+                        { company }
+                        { address }
+                        { city }
+                        { state }
+                        { zipcode }
+                        { this.returnDisplay('Test Cases', this.state.testCases) }
+
+                    </div>
+
+                    { infoContainer }
 
                 </div>
-
-                { infoContainer }
-
+                <FileBrowser />
             </div>
         )
     }

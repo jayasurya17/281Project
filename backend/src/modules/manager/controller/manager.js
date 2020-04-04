@@ -28,6 +28,7 @@ exports.addProject = async (req, res) => {
 			createdProject
 			
 			projectObj= temp;
+			console.log(projectObj);
 			newProject = new Projects(projectObj);
 			createdProject = await newProject.save();
 			createdProject = createdProject.toJSON();

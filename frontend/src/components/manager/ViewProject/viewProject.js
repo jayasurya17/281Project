@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import Constants from '../../../utils/constants';
+import FileBrowser from './fileBrowser';
 
 class ListOfUsers extends Component {
 
@@ -216,6 +217,8 @@ class Landing extends Component {
                         </div>
                     </div>
                 </div>
+
+                <FileBrowser />
             </div>
         )
     }
