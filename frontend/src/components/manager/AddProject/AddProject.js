@@ -100,7 +100,7 @@ class ProjectForm extends Component {
             fd.append('zip', this.state.zip)
             fd.append('testCases', this.state.testCases)
             fd.append('technologies', this.state.tech)
-            // fd.append('file', this.state.selectedFile)
+            fd.append('file', this.state.selectedFile)
 
             const projectData = {
                 managerId: localStorage.getItem('281UserId'),
