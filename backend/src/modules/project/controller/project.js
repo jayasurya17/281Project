@@ -3,6 +3,7 @@
 import Users from '../../../models/mongoDB/users'
 import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
+import DeviceFarm from '../../deviceFarm/controller/deviceFarm'
 
 /**
  * Returns list of all projects created by the manager.
@@ -14,7 +15,11 @@ exports.getDetails = async (req, res) => {
 	try {
 
 		let projectDetails = await Projects.findById(req.params.projectId)
-		
+		console.log("projectDetails", projectDetails)
+		// var params = {
+		// 	arn : projectDetails.ARN
+		// }
+		// DeviceFarm.listDevices(params)
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(projectDetails)
