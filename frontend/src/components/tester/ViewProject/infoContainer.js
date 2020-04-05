@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
+<<<<<<< HEAD
+import { Col, FormGroup, Label, Input, FormText } from 'reactstrap';
+=======
 import { Col, FormGroup, Input, FormText } from 'reactstrap';
+>>>>>>> 02ef4d3a0db46ae415ae108f2325e78f95b63d72
 class Landing extends Component {
 
     constructor() {
