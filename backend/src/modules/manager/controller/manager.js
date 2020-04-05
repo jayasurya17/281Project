@@ -2,8 +2,8 @@
 
 import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
-import mongoose from 'mongoose'
 const multiparty = require('multiparty');
+import deviceFarm from '../../deviceFarm/controller/deviceFarm';
 
 /**
  * Create user and save data in database.
@@ -28,7 +28,12 @@ exports.addProject = async (req, res) => {
 			createdProject
 			
 			projectObj= temp;
-			console.log(projectObj);
+			
+			var params = {
+				name : projectObj.name
+			}
+			var ARN = deviceFarm.createProject(params);
+			projectObj.ARN = ARN;
 			newProject = new Projects(projectObj);
 			createdProject = await newProject.save();
 			createdProject = createdProject.toJSON();
@@ -66,6 +71,7 @@ exports.allProjects = async (req, res) => {
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(allProjects)
 	} catch (error) {
+		console.log(error.message)
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
 			.send(error.message)
