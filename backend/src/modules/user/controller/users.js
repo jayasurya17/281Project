@@ -51,7 +51,7 @@ exports.loginUser = async (req, res) => {
 		var user
 
 		var isAuth = false
-		user = await Users.findOne({ email: req.body.email})
+		user = await Users.findOne({ email: req.body.email })
 
 		if (user) {
 			const validate = await user.validatePassword(req.body.password)
@@ -113,7 +113,7 @@ exports.getUserProfile = async (req, res) => {
  * @param  {Object} res response object
  */
 exports.updateUserProfile = async (req, res) => {
-	
+
 	try {
 		if (req.body.email == undefined) {
 			return res
@@ -125,7 +125,7 @@ exports.updateUserProfile = async (req, res) => {
 			_id: {
 				$ne: mongoose.Types.ObjectId(req.body.userId)
 			},
-			email: req.body.email 
+			email: req.body.email
 		})
 		if (user) {
 			return res
@@ -136,7 +136,7 @@ exports.updateUserProfile = async (req, res) => {
 		let userObj = req.body
 
 		// updating password
-		if(req.body.password) {
+		if (req.body.password) {
 			userObj.password = updatePassword(req.body.password)
 		} else {
 			delete userObj.password
@@ -201,7 +201,7 @@ exports.acceptedProjects = async (req, res) => {
 			projectObj = await Projects.findById(projectId)
 			allProjects.push(projectObj)
 		}
-		
+
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(allProjects)
@@ -225,22 +225,22 @@ exports.projectsDetails = async (req, res) => {
 		let userObj = await Users.findById(req.params.userId)
 		if (userObj.requestedProjects.includes(req.params.projectId)) {
 			return res
-			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send({
-				status: "Requested"
-			})
+				.status(constants.STATUS_CODE.SUCCESS_STATUS)
+				.send({
+					status: "Requested"
+				})
 		} else if (userObj.acceptedProjects.includes(req.params.projectId)) {
 			return res
-			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send({
-				status: "Accepted"
-			})
+				.status(constants.STATUS_CODE.SUCCESS_STATUS)
+				.send({
+					status: "Accepted"
+				})
 		} else if (userObj.rejectedProjects.includes(req.params.projectId)) {
 			return res
-			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send({
-				status: "Rejected"
-			})
+				.status(constants.STATUS_CODE.SUCCESS_STATUS)
+				.send({
+					status: "Rejected"
+				})
 		}
 
 		return res
@@ -272,18 +272,18 @@ exports.joinProject = async (req, res) => {
 		}
 		await Projects.findByIdAndUpdate(
 			req.body.projectId,
-			{ 
-				$push : {
-					requestedTesters : req.body.userId
+			{
+				$push: {
+					requestedTesters: req.body.userId
 				}
 			}
 		)
 
 		await Users.findByIdAndUpdate(
 			req.body.userId,
-			{ 
-				$push : {
-					requestedProjects : req.body.projectId
+			{
+				$push: {
+					requestedProjects: req.body.projectId
 				}
 			}
 		)
@@ -305,23 +305,23 @@ exports.joinProject = async (req, res) => {
  * @param  {Object} res response object
  */
 exports.allAnnouncements = async (req, res) => {
-  try {
-    const userObj = await Users.findById(req.params.userId);
-    let index;
-    let projectId;
-    let projectObj;
-    const allProjects = [];
+	try {
+		const userObj = await Users.findById(req.params.userId);
+		let index;
+		let projectId;
+		let projectObj;
+		const allProjects = [];
 
-    for (index in userObj.acceptedProjects) {
-      projectId = userObj.acceptedProjects[index];
-      projectObj = await Projects.findById(projectId);
-      allProjects.push(projectObj);
-    }
+		for (index in userObj.acceptedProjects) {
+			projectId = userObj.acceptedProjects[index];
+			projectObj = await Projects.findById(projectId);
+			allProjects.push(projectObj);
+		}
 
-    return res.status(constants.STATUS_CODE.SUCCESS_STATUS).send(allProjects);
-  } catch (error) {
-    return res.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS).send(error.message);
-  }
+		return res.status(constants.STATUS_CODE.SUCCESS_STATUS).send(allProjects);
+	} catch (error) {
+		return res.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS).send(error.message);
+	}
 };
 
 /**
@@ -330,65 +330,65 @@ exports.allAnnouncements = async (req, res) => {
  * @param  {Object} res response object
  */
 exports.fileUpload = async (req, res) => {
-  try {
-    // 		var fileContent = "My epic novel that I don't want to lose.";
-    // var bb = new Blob([fileContent ], { type: 'text/plain' });
-    // var a = document.createElement('a');
-    // a.download = 'download.txt';
-    // a.href = window.URL.createObjectURL(bb);
-    // a.click();
+	try {
+		// 		var fileContent = "My epic novel that I don't want to lose.";
+		// var bb = new Blob([fileContent ], { type: 'text/plain' });
+		// var a = document.createElement('a');
+		// a.download = 'download.txt';
+		// a.href = window.URL.createObjectURL(bb);
+		// a.click();
 
-    // const form = new multiparty.Form();
-    // const newObj = {};
-    // form.parse(req, async (err, fields, files) => {
-    //   const temp = newObj;
-    //   Object.keys(fields).forEach((name) => {
-    //     const that = temp;
-    //     const key = String(name);
-    //     const value = String(fields[name]);
-    //     that[key] = value;
-    //   });
+		// const form = new multiparty.Form();
+		// const newObj = {};
+		// form.parse(req, async (err, fields, files) => {
+		//   const temp = newObj;
+		//   Object.keys(fields).forEach((name) => {
+		//     const that = temp;
+		//     const key = String(name);
+		//     const value = String(fields[name]);
+		//     that[key] = value;
+		//   });
 
-    //   let projectObj;
+		//   let projectObj;
 
-    //   projectObj = temp;
-    //   console.log(projectObj);
+		//   projectObj = temp;
+		//   console.log(projectObj);
 
-    const storage = multer.diskStorage({
-      destination(req, file, cb) {
-        cb(null, './src/modules/appiumRuns');
-      },
-      filename(req, file, cb) {
-        cb(null, `${file.originalname}`);
-      },
-    });
+		const storage = multer.diskStorage({
+			destination(req, file, cb) {
+				cb(null, './src/modules/appiumRuns');
+			},
+			filename(req, file, cb) {
+				cb(null, `${file.originalname}`);
+			},
+		});
 
-    const upload = multer({ storage }).single('file');
+		const upload = multer({ storage }).single('file');
 
-    upload(req, res, (err) => {
-      // console.log('In the saving part');
-      if (err instanceof multer.MulterError) {
-        return res.status(500);
-      }
-      if (err) {
-        return res.status(500);
-      }
-      return res.status(200);
-    });
+		upload(req, res, (err) => {
+			// console.log('In the saving part');
+			if (err instanceof multer.MulterError) {
+				return res.status(500);
+			}
+			if (err) {
+				return res.status(500);
+			}
+			return res.status(200);
+		});
 
-    return res.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS).send('Create Run');
-  } catch (error) {
-    console.log(error);
-    return res.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS).send(error.message);
-  }
+		return res.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS).send('Create Run');
+	} catch (error) {
+		console.log(error);
+		return res.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS).send(error.message);
+	}
 };
 
 exports.createTest = async (req, res) => {
-  try {
-    Appium.runAppium(req.body);
-    return res.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS).send('Create Run');
-  } catch (error) {
-    console.log(error);
-    return res.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS).send(error.message);
-  }
+	try {
+		Appium.runAppium(req.body);
+		return res.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS).send('Create Run');
+	} catch (error) {
+		console.log(error);
+		return res.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS).send(error.message);
+	}
 };
