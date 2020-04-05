@@ -1,5 +1,6 @@
 import Appium from '../RunTest';
 import multer from 'multer';
+import constants from '../../../utils/constants';
 
 /**
  * Returns list of all projects.
