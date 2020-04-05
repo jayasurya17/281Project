@@ -101,6 +101,7 @@ class ProjectForm extends Component {
             fd.append('testCases', this.state.testCases)
             fd.append('technologies', this.state.tech)
             fd.append('file', this.state.selectedFile)
+<<<<<<< HEAD
 
             const projectData = {
                 managerId: localStorage.getItem('281UserId'),
@@ -115,6 +116,8 @@ class ProjectForm extends Component {
                 testCases: this.state.testCases,
                 technologies: this.state.tech
             }
+=======
+>>>>>>> 02ef4d3a0db46ae415ae108f2325e78f95b63d72
             
             // axios.defaults.withCredentials = true;//very imp, sets credentials so that backend can load cookies
             const config = {
