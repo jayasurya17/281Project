@@ -101,25 +101,7 @@ class ProjectForm extends Component {
             fd.append('testCases', this.state.testCases)
             fd.append('technologies', this.state.tech)
             fd.append('file', this.state.selectedFile)
-<<<<<<< HEAD
-
-            const projectData = {
-                managerId: localStorage.getItem('281UserId'),
-                name: this.state.name,
-                shortDescription: this.state.shortDes,
-                detailedDescription: this.state.detDesc,
-                companyName: this.state.compName,
-                address: this.state.address,
-                city: this.state.city,
-                state: this.state.state,
-                zip: this.state.zip,
-                testCases: this.state.testCases,
-                technologies: this.state.tech
-            }
-=======
->>>>>>> 02ef4d3a0db46ae415ae108f2325e78f95b63d72
             
-            // axios.defaults.withCredentials = true;//very imp, sets credentials so that backend can load cookies
             const config = {
                 headers: {
                         'Content-Type': 'multipart/form-data',
@@ -127,7 +109,6 @@ class ProjectForm extends Component {
                 }
             };
             axios.post(`${Constants.BACKEND_SERVER.URL}/manager/addProject`, fd, config)
-            // axios.post(`${Constants.BACKEND_SERVER.URL}/manager/addProject`, projectData)
                 .then(() => {
                     this.setState({
                         name: "",

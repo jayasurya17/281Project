@@ -40,19 +40,13 @@ class CreateTest extends Component {
     let formData = new FormData();
     formData.append("file", this.state.selectedFile);
 
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "multipart/form-data"
-      }
-    };
     axios
       .post(
         `${Constants.BACKEND_SERVER.URL}/users/emulators/fileUpload`,
         formData
       )
       .then(response => {
-        if (response.status == 201) {
+        if (response.status === 201) {
           window.alert("File Uploaded Successfully");
         } else {
           console.log(response);

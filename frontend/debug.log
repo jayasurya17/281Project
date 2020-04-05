@@ -7,3 +7,4 @@
 [0403/142124.590:ERROR:file_io.cc(89)] ReadExactly: expected 36, observed 0
 [0403/170933.029:ERROR:file_io.cc(89)] ReadExactly: expected 36, observed 0
 [0403/170939.537:ERROR:file_io.cc(89)] ReadExactly: expected 36, observed 0
+[0404/192417.124:ERROR:file_io.cc(89)] ReadExactly: expected 36, observed 0
