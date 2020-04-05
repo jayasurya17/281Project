@@ -42,7 +42,7 @@ class CreateTest extends Component {
 
     axios
       .post(
-        `${Constants.BACKEND_SERVER.URL}/users/emulators/fileUpload`,
+        `${Constants.BACKEND_SERVER.URL}/emulators/fileUpload`,
         formData
       )
       .then(response => {
@@ -67,7 +67,7 @@ class CreateTest extends Component {
     console.log(capabilities);
     axios
       .post(
-        `${Constants.BACKEND_SERVER.URL}/users/emulators/createtest`,
+        `${Constants.BACKEND_SERVER.URL}/emulators/createtest`,
         capabilities
       )
       .then(response => {

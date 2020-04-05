@@ -1,4 +1,5 @@
-import common from '../../../config/env/common';
+import common from '../../../../config/env/common';
+import config from '../../../../config/index';
 
 const wdio = require('webdriverio');
 const assert = require('assert');
@@ -19,18 +20,19 @@ const assert = require('assert');
 
 exports.runAppium = async (req) => {
 	const opts = {
-		port: common.appiumport,
+		port: 4723,
 		path: '/wd/hub/',
 		capabilities: {
 			platformName: req.platformName,
 			platformVersion: req.platformVersion,
 			deviceName: req.deviceName,
-			app: `./${req.app}`,
+			app: `./src/apkStore/${req.app}`,
 			appPackage: req.appPackage,
 			appActivity: req.appActivity,
 			automationName: req.automationName,
 		},
 	};
+	console.log("current path " + process.cwd())
 	const client = await wdio.remote(opts);
 
 	const field = await client.$('android.widget.EditText');
