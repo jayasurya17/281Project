@@ -1,5 +1,5 @@
-const Appium = require('../../appiumRuns/RunTest');
-const multer = require('multer');
+import Appium from '../RunTest';
+import multer from 'multer';
 
 /**
  * Returns list of all projects.
