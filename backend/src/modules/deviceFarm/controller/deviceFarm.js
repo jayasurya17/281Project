@@ -13,9 +13,7 @@ import findProject from '../../../utils/projectUtils'
 exports.createDevicePool = async (req, res) => {
 
 	try {
-		console.log("req.body:", req.body)
 		let result = await findProject.findProject(req.body.projectId)
-		console.log(`result: ${result}`)
 		let params = {
 			name: req.body.name,
 			description: req.body.description,
@@ -24,10 +22,37 @@ exports.createDevicePool = async (req, res) => {
 			rules: []
 		}
 		let createdDevicePool = await devicefarm.createDevicePool(params)
-		console.log(`createdDevicePool: ${createdDevicePool}`)
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(createdDevicePool)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+/**
+ * Get list of device pools available in the project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.listDevicePools = async (req, res) => {
+
+	try {
+		console.log("HERE")
+		let result = await findProject.findProject(req.query.projectId)
+		console.log("result", result)
+		let params = {
+			arn: result.ARN
+		}
+		let availableDevicePools = await devicefarm.listDevicePools(params)
+		console.log(`availableDevicePools: ${availableDevicePools}`)
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(availableDevicePools)
 
 	} catch (error) {
 		console.log(error.message)
