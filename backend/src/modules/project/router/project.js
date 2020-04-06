@@ -9,5 +9,6 @@ router.get('/requested/:projectId', projectController.getRequestedUsers)
 router.post('/acceptUser', projectController.acceptUser)
 router.post('/rejectUser', projectController.rejectUser)
 router.post('/announcement', projectController.announcement)
+router.get('/devices/all', projectController.getAllDevices)
 
 module.exports = router

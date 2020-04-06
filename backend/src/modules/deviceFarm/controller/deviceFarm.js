@@ -1,32 +1,38 @@
 'use strict'
 
-import AWS from 'aws-sdk';
+import Projects from '../../../models/mongoDB/projects'
+import constants from '../../../utils/constants'
+import devicefarm from '../../../utils/deviceFarmUtils'
+import findProject from '../../../utils/projectUtils'
 
-import config from '../../../../config/index';
+/**
+ * Create user and save data in database.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.createDevicePool = async (req, res) => {
 
-AWS.config.update({
-    secretAccessKey: config.awsDeviceFarmKeys.AWS_SECRET_ACCESS,
-    accessKeyId: config.awsDeviceFarmKeys.AWS_ACCESSKEY,
-	region: config.awsDeviceFarmKeys.REGION,
-});
+	try {
+		console.log("req.body:", req.body)
+		let result = await findProject.findProject(req.body.projectId)
+		console.log(`result: ${result}`)
+		let params = {
+			name: req.body.name,
+			description: req.body.description,
+			maxDevices: req.body.maxDevices,
+			projectArn: result.ARN,
+			rules: []
+		}
+		let createdDevicePool = await devicefarm.createDevicePool(params)
+		console.log(`createdDevicePool: ${createdDevicePool}`)
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(createdDevicePool)
 
-var devicefarm = new AWS.DeviceFarm({apiVersion: '2015-06-23'});
-
-// exports.createProject = async (params) => {
-//     var returnObj = await devicefarm.createProject(params, function (err, data) {
-//         if (err) console.log(err, err.stack); // an error occurred
-//         else  return data;           // successful response
-//     });
-//     console.log("HERE");
-//     return returnObj;
-// }
-
-// exports.listDevices = (params) => {
-//     console.log(params)
-//     devicefarm.listDevices(params, function (err, data) {
-//         if (err) console.log(err, err.stack); // an error occurred
-//         else     return data           // successful response
-//     });
-// }
-
-export default devicefarm;
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}

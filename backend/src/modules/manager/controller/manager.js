@@ -3,7 +3,7 @@
 import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
 const multiparty = require('multiparty');
-import devicefarm from '../../deviceFarm/controller/deviceFarm';
+import devicefarm from '../../../utils/deviceFarmUtils';
 
 /**
  * Create user and save data in database.
@@ -32,20 +32,14 @@ exports.addProject = async (req, res) => {
 			var params = {
 				name : projectObj.name
 			}
-			let devicefarmObj = devicefarm
-			devicefarmObj.createProject(params, async function (err, data) {
-		        if (err) console.log(err, err.stack); // an error occurred
-		        else {
-					console.log("HERE", data);
-					projectObj['ARN'] = data.project.arn;
-					newProject = new Projects(projectObj);
-					createdProject = await newProject.save();
-				}           
-		    });
 
+			var deviceFarmObj = await devicefarm.createProject(params);
+			projectObj['ARN'] = deviceFarmObj.project.arn;
+			newProject = new Projects(projectObj);
+			createdProject = await newProject.save();
 			return res
 				.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS)
-				.json()
+				.send(createdProject)
 		});
 
 	} catch (error) {

@@ -13,6 +13,7 @@ const usersRouter = require('../src/modules/user/router/users');
 const managerRouter = require('../src/modules/manager/router/manager');
 const projectRouter = require('../src/modules/project/router/project');
 const emulatorRouter = require('../src/modules/appiumRuns/router/appium');
+const deviceFarmRouter = require('../src/modules/deviceFarm/router/deviceFarm');
 
 // database connections
 require('../src/models/mongoDB/index');
@@ -49,6 +50,7 @@ app.use('/users', usersRouter);
 app.use('/manager', managerRouter);
 app.use('/project', projectRouter);
 app.use('/emulators', emulatorRouter);
+app.use('/devicefarm', deviceFarmRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

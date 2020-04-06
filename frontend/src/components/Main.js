@@ -19,6 +19,8 @@ import ManagerUpdateAccount from "./manager/updateAccount";
 import ManagerViewMyProjects from "./manager/myProjects";
 import MangerCreateProject from "./manager/createProject";
 import ManagerViewProjectDetails from "./manager/projectDetails";
+import ManagerViewProjectDevices from "./manager/AddDevices/projectDevices"
+import ManagerBilling from "./manager/Billing/billing";
 
 import CreateTest from "../components/emulator/CreateTest/CreateTest";
 
@@ -44,12 +46,14 @@ class Main extends Component {
 				<Route path="/tester/announcements" component={TesterAnnouncements} />
 
 				<Route path="/manager/" component={ManagerCheck} />
+				<Route path="/manager/billing" component={ManagerBilling} />
 				<Route path="/manager/dashboard" component={ManagerHome} />
 				<Route path="/manager/update-account" component={ManagerUpdateAccount} />
 
 				<Route path="/manager/project/all" component={ManagerViewMyProjects} />
 				<Route path="/manager/project/new" component={MangerCreateProject} />
 				<Route path="/manager/project/view/:projectId" component={ManagerViewProjectDetails} />
+				<Route path="/manager/project/devices/:projectId" component={ManagerViewProjectDevices} />
 
 				<Route path="/tester/createTest/emulator" component={CreateTest} />
 			</div>

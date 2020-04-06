@@ -3,7 +3,7 @@
 import Users from '../../../models/mongoDB/users'
 import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
-import DeviceFarm from '../../deviceFarm/controller/deviceFarm'
+import devicefarm from '../../../utils/deviceFarmUtils'
 
 /**
  * Returns list of all projects created by the manager.
@@ -15,14 +15,11 @@ exports.getDetails = async (req, res) => {
 	try {
 
 		let projectDetails = await Projects.findById(req.params.projectId)
-		console.log("projectDetails", projectDetails)
-		// var params = {
-		// 	arn : projectDetails.ARN
-		// }
-		// DeviceFarm.listDevices(params)
+		
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(projectDetails)
+
 	} catch (error) {
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
@@ -187,6 +184,31 @@ exports.announcement = async (req, res) => {
 		return res
 			.status(constants.STATUS_CODE.NO_CONTENT_STATUS)
 			.json()
+	} catch (error) {
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+
+/**
+ * Get all devices of the project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.getAllDevices = async (req, res) => {
+
+	try {
+
+		let projectObj = await Projects.findById(req.query.projectId)
+		var params = {
+			arn : projectObj.ARN
+		}
+		let allDevices = await devicefarm.listDevices(params)
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(allDevices)
 	} catch (error) {
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
