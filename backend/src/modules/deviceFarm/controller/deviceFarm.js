@@ -61,3 +61,28 @@ exports.listDevicePools = async (req, res) => {
 			.send(error.message)
 	}
 }
+
+/**
+ * Delete a device pool based on ARN.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.deleteDevicePool = async (req, res) => {
+
+	try {
+		let params = {
+			arn: req.query.arn
+		}
+		let deletedPool = await devicefarm.deleteDevicePool(params)
+		console.log(`deletedPool: ${deletedPool}`)
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(deletedPool)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
