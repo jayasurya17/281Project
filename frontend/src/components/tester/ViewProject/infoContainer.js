@@ -39,7 +39,9 @@ class Landing extends Component {
                     <button className="btn btn-danger w-100">Report Bugs</button>
                 </div>
                 <div className="row mt-2 mb-2">
-                    <button className="btn btn-success w-100">Run test on real devices</button>
+                    <a href={ `/tester/project/run/${this.props.projectId}` } className="w-100">
+                        <button className="btn btn-success w-100">Run test on real devices</button>
+                    </a>
                 </div>
                 <div className="row mt-2 mb-2">
                     <button className="btn btn-info w-100">Run test on emulators</button>

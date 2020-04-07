@@ -86,3 +86,80 @@ exports.deleteDevicePool = async (req, res) => {
 			.send(error.message)
 	}
 }
+
+/**
+ * Create upload on a project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.createUpload = async (req, res) => {
+
+	try {
+		let createdUpload = await devicefarm.createUpload(req.body)
+		console.log(`createdUpload: ${createdUpload}`)
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(createdUpload)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+/**
+ * Schedule Run on a project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.scheduleRun = async (req, res) => {
+
+	try {
+		const params = {
+			appArn: req.body.appArn,
+			projectArn: req.body.projectArn,
+			devicePoolArn: req.body.devicePoolArn,
+			test: {
+				type: req.body.type
+			}
+		}
+		let scheduledRun = await devicefarm.scheduleRun(params)
+		console.log(`scheduledRun: ${scheduledRun}`)
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(scheduledRun)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+/**
+ * Schedule Run on a project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.listUploads = async (req, res) => {
+
+	try {
+		const params = {
+			arn: req.query.projectArn
+		}
+		let allUploads = await devicefarm.listUploads(params)
+		console.log(`allUploads: ${allUploads}`)
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(allUploads)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}

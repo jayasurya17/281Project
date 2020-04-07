@@ -84,3 +84,48 @@ exports.deleteDevicePool = (params) => {
         });
     })    
 }
+
+exports.createUpload = (params) => {
+    console.log(params)
+    return new Promise((resolve, reject) => {
+        devicefarm.createUpload(params, function (err, data) {
+            if (err) {
+                console.log(err, err.stack); // an error occurred
+                reject ();
+            }
+            else {
+                resolve (data);           // successful response
+            }
+        });
+    })    
+}
+
+exports.scheduleRun = (params) => {
+    console.log(params)
+    return new Promise((resolve, reject) => {
+        devicefarm.scheduleRun(params, function (err, data) {
+            if (err) {
+                console.log(err, err.stack); // an error occurred
+                reject ();
+            }
+            else {
+                resolve (data);           // successful response
+            }
+        });
+    })    
+}
+
+exports.listUploads = (params) => {
+    console.log(params)
+    return new Promise((resolve, reject) => {
+        devicefarm.listUploads(params, function (err, data) {
+            if (err) {
+                console.log(err, err.stack); // an error occurred
+                reject ();
+            }
+            else {
+                resolve (data);           // successful response
+            }
+        });
+    })    
+}
