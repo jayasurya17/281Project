@@ -77,7 +77,7 @@ class ProjectForm extends Component {
     }
     onChangeFileUpload = (e) => {
         this.setState({
-            selectedFile: e.target.value
+            selectedFile: e.target.files[0]
         });
     }
     addProjHandler = () => {
