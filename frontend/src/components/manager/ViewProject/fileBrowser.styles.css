@@ -1,0 +1,5 @@
+.browserGrid{
+    display:flex;
+    flex-direction: row;
+    width: 20%;
+}

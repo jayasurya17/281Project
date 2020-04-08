@@ -200,7 +200,7 @@ class ProjectForm extends Component {
                 <FormGroup row>
                     <Label for="image" sm={2}>File</Label>
                     <Col sm={10}>
-                        <Input type="file" name="image" id="image" multiple="" onChange={this.onChangeFileUpload}  value={ this.state.selectedFile } />
+                        <Input type="file" name="image" id="image" multiple="" onChange={this.onChangeFileUpload} />
                         <FormText color="muted">
                             Upload File for your Project
                 </FormText>
