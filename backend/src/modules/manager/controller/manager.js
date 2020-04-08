@@ -3,12 +3,7 @@
 import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
 const multiparty = require('multiparty');
-<<<<<<< Updated upstream
 import devicefarm from '../../../utils/deviceFarmUtils';
-=======
-const fs = require('fs');
-
->>>>>>> Stashed changes
 
 /**
  * Create user and save data in database.
@@ -35,7 +30,6 @@ exports.addProject = async (req, res) => {
 			createdProject
 			
 			projectObj= temp;
-<<<<<<< Updated upstream
 			
 			var params = {
 				name : projectObj.name
@@ -45,14 +39,6 @@ exports.addProject = async (req, res) => {
 			projectObj['ARN'] = deviceFarmObj.project.arn;
 			newProject = new Projects(projectObj);
 			createdProject = await newProject.save();
-=======
-			console.log("projectObj", projectObj);
-
-			newProject = new Projects(projectObj);
-			createdProject = await newProject.save();
-			createdProject = createdProject.toJSON();
-
->>>>>>> Stashed changes
 			return res
 				.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS)
 				.send(createdProject)

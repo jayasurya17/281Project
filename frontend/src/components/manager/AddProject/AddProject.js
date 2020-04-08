@@ -102,7 +102,6 @@ class ProjectForm extends Component {
             fd.append('testCases', this.state.testCases)
             fd.append('technologies', this.state.tech)
             fd.append('file', this.state.selectedFile)
-<<<<<<< Updated upstream
             
             const config = {
                 headers: {
@@ -127,49 +126,8 @@ class ProjectForm extends Component {
                         errMsg: "",
                         successMsg: "Project added!"
                     })
-=======
-
-            // const projectData = {
-            //     managerId: localStorage.getItem('281UserId'),
-            //     name: this.state.name,
-            //     shortDescription: this.state.shortDes,
-            //     detailedDescription: this.state.detDesc,
-            //     companyName: this.state.
-            //     compName,
-            //     address: this.state.address,
-            //     city: this.state.city,
-            //     state: this.state.state,
-            //     zip: this.state.zip,
-            //     testCases: this.state.testCases,
-            //     technologies: this.state.tech
-            // }
-            
-            // axios.defaults.withCredentials = true;//very imp, sets credentials so that backend can load cookies
-            // const config = {
-            //     headers: {
-            //             'Content-Type': 'multipart/form-data',
-            //             'Accept': 'multipart/form-data'
-            //     }
-            // };
-            axios.post(`${Constants.BACKEND_SERVER.URL}/manager/addProject`, fd)
-            .then(() => {
-                this.setState({
-                    name: "",
-                    shortDes: "",
-                    detDesc: "",
-                    compName: "",
-                    address: "",
-                    city: "",
-                    state: "",
-                    zip: "",
-                    testCases: "",
-                    tech: "",
-                    selectedFile: "",
-                    errMsg: "",
-                    successMsg: "Project added!"
->>>>>>> Stashed changes
                 })
-            })
+            
             .catch((error) => { 
                 console.log(error)
                 this.setState({
