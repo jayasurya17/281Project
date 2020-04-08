@@ -136,7 +136,7 @@ class Landing extends Component {
                     </div>
                 </div>
 
-                <FileBrowser />
+                <FileBrowser projectId = { this.props.projectId } />
             </div>
         )
     }

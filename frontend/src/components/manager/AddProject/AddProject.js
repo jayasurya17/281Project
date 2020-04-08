@@ -81,6 +81,7 @@ class ProjectForm extends Component {
         });
     }
     addProjHandler = () => {
+        console.log(this.state)
         if (this.state.name === "" || this.state.shortDes === "" || this.state.testCases === "") {
             this.setState({
                 errMsg: "Required fields are empty",
@@ -101,6 +102,7 @@ class ProjectForm extends Component {
             fd.append('testCases', this.state.testCases)
             fd.append('technologies', this.state.tech)
             fd.append('file', this.state.selectedFile)
+<<<<<<< Updated upstream
             
             const config = {
                 headers: {
@@ -125,17 +127,59 @@ class ProjectForm extends Component {
                         errMsg: "",
                         successMsg: "Project added!"
                     })
-                })
-                .catch((error) => { 
-                    console.log(error)
-                    this.setState({
-                        errMsg: "Error occured",
-                        successMsg: ""
-                    })
-                })
-        }
+=======
 
+            // const projectData = {
+            //     managerId: localStorage.getItem('281UserId'),
+            //     name: this.state.name,
+            //     shortDescription: this.state.shortDes,
+            //     detailedDescription: this.state.detDesc,
+            //     companyName: this.state.
+            //     compName,
+            //     address: this.state.address,
+            //     city: this.state.city,
+            //     state: this.state.state,
+            //     zip: this.state.zip,
+            //     testCases: this.state.testCases,
+            //     technologies: this.state.tech
+            // }
+            
+            // axios.defaults.withCredentials = true;//very imp, sets credentials so that backend can load cookies
+            // const config = {
+            //     headers: {
+            //             'Content-Type': 'multipart/form-data',
+            //             'Accept': 'multipart/form-data'
+            //     }
+            // };
+            axios.post(`${Constants.BACKEND_SERVER.URL}/manager/addProject`, fd)
+            .then(() => {
+                this.setState({
+                    name: "",
+                    shortDes: "",
+                    detDesc: "",
+                    compName: "",
+                    address: "",
+                    city: "",
+                    state: "",
+                    zip: "",
+                    testCases: "",
+                    tech: "",
+                    selectedFile: "",
+                    errMsg: "",
+                    successMsg: "Project added!"
+>>>>>>> Stashed changes
+                })
+            })
+            .catch((error) => { 
+                console.log(error)
+                this.setState({
+                    errMsg: "Error occured",
+                    successMsg: ""
+                })
+            })
     }
+
+}
     render () {
 
         return (
@@ -192,10 +236,6 @@ class ProjectForm extends Component {
                 <FormGroup>
                     <Label for="tests">Test Cases</Label>
                     <Input type="textarea" name="tests" onChange={this.testCaseChangeHandler} id="tests" placeholder='Enter a few test cases'  value={ this.state.testCases } />
-                </FormGroup>
-                <FormGroup>
-                    <Label for="tests">Technologies</Label>
-                    <Input type="textarea" name="tech" onChange={this.techChangeHandler} id="tech" placeholder="Java, React, Node, MongoDB, AWS EC2 etc..."  value={ this.state.tech } />
                 </FormGroup>
                 <FormGroup row>
                     <Label for="image" sm={2}>File</Label>
