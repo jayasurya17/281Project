@@ -3,6 +3,7 @@
 import express from 'express'
 let router = express.Router()
 import managerController from '../controller/manager'
+//import managerController from '../controller/manager2'
 import upload from '../../../utils/upload'
 
 //router.post('/addProject', createBucket, upload.single('file'), managerController.addProject)

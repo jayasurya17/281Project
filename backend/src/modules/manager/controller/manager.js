@@ -36,8 +36,8 @@ exports.addProject = async (req, res) => {
 			var params = {
 				name: projectObj.name
 			}
-			var deviceFarmObj = await devicefarm.createProject(params);
-			projectObj['ARN'] = deviceFarmObj.project.arn;
+			// var deviceFarmObj = await devicefarm.createProject(params);
+			// projectObj['ARN'] = deviceFarmObj.project.arn;
 			newProject = new Projects(projectObj);
 			createdProject = await newProject.save();
 			var resultURL = await s3.fileupload(String(createdProject._id), createdProject.managerId, "Regular", req.file)

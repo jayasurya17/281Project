@@ -37,7 +37,7 @@ exports.fileupload = async (bucketName, folderName, type, fileObj) => {
     await createBucket(bucketName);
     const params = {
         Bucket: bucketName,  // Param 1 of the function
-        Key: `${folderName}/${type}/${String(fileObj.originalFilename)}`, // Folder Name (Param 2) + Type (param 3) + file obj (param 4)
+        Key: `${folderName}/${type}/${String(fileObj.originalname)}`, // Folder Name (Param 2) + Type (param 3) + file obj (param 4)
         ACL: 'public-read', // File name you want to save as in S3
         Body: new Buffer(fileObj.buffer) // Param 4
     };
@@ -52,7 +52,7 @@ exports.fileupload = async (bucketName, folderName, type, fileObj) => {
         })
         .promise()
             .then(() => {
-                var createdURL = s3.getSignedUrl('getObject', { Bucket: bucketName, Key: String(fileObj.originalFilename) })
+                var createdURL = s3.getSignedUrl('getObject', { Bucket: bucketName, Key: `${folderName}/${type}/${String(fileObj.originalname)}` })
                 console.log(`The URL is ${createdURL}`) // Return value of the function
                 resolve(createdURL)
             })

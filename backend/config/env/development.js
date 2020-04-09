@@ -26,8 +26,8 @@ module.exports = {
 	},
 	appiumport: process.env.APPIUM_PORT,	
 	awsKeysSrihari: {
-		AWS_SECRET_ACCESS: process.env.ACCESS_KEY_SRIHARI,
-		AWS_ACCESSKEY: process.env.SECRET_KEY_SRIHARI,
+		AWS_ACCESSKEY: process.env.ACCESS_KEY_SRIHARI,
+		AWS_SECRET_ACCESS: process.env.SECRET_KEY_SRIHARI,
 		REGION: process.env.REGION_SRIHARI
 	},
 	frontendUrl: process.env.FRONTEND_URL || "http://localhost:3000", // For now no use of frontend urls in backend, when security is tighetened, add expected urls to cors.
