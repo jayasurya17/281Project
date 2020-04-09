@@ -81,6 +81,7 @@ class ProjectForm extends Component {
         });
     }
     addProjHandler = () => {
+        console.log(this.state)
         if (this.state.name === "" || this.state.shortDes === "" || this.state.testCases === "") {
             this.setState({
                 errMsg: "Required fields are empty",
@@ -126,16 +127,17 @@ class ProjectForm extends Component {
                         successMsg: "Project added!"
                     })
                 })
-                .catch((error) => { 
-                    console.log(error)
-                    this.setState({
-                        errMsg: "Error occured",
-                        successMsg: ""
-                    })
+            
+            .catch((error) => { 
+                console.log(error)
+                this.setState({
+                    errMsg: "Error occured",
+                    successMsg: ""
                 })
-        }
-
+            })
     }
+
+}
     render () {
 
         return (
@@ -194,13 +196,13 @@ class ProjectForm extends Component {
                     <Input type="textarea" name="tests" onChange={this.testCaseChangeHandler} id="tests" placeholder='Enter a few test cases'  value={ this.state.testCases } />
                 </FormGroup>
                 <FormGroup>
-                    <Label for="tests">Technologies</Label>
-                    <Input type="textarea" name="tech" onChange={this.techChangeHandler} id="tech" placeholder="Java, React, Node, MongoDB, AWS EC2 etc..."  value={ this.state.tech } />
+                    <Label for="company">technologies</Label>
+                    <Input type="text" name="company" onChange={this.techChangeHandler} id="company" placeholder="Ex: React, Node, Python"  value={ this.state.compName } />
                 </FormGroup>
                 <FormGroup row>
                     <Label for="image" sm={2}>File</Label>
                     <Col sm={10}>
-                        <Input type="file" name="image" id="image" multiple="" onChange={this.onChangeFileUpload}  value={ this.state.selectedFile } />
+                        <Input type="file" name="image" id="image" multiple="" onChange={this.onChangeFileUpload} />
                         <FormText color="muted">
                             Upload File for your Project
                 </FormText>
