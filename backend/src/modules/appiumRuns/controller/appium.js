@@ -1,6 +1,7 @@
 import Appium from './RunTest';
 import multer from 'multer';
 import constants from '../../../utils/constants';
+import createEmulator from '../utils/CreateEmulator'
 
 /**
  * Returns list of all projects.
@@ -65,6 +66,12 @@ exports.fileUpload = async (req, res) => {
 
 exports.createTest = async (req, res) => {
   try {
+    if (req.body.deviceName === 'emulator-5554') {
+      createEmulator.createEmulator('Pixel_3a_API_27', 5554);
+    }
+    else if (req.body.deviceName === 'emulator-5556') {
+      createEmulator.createEmulator('Pixel_3a_API_27', 5556);
+    }
     Appium.runAppium(req.body);
     return res.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS).send('Create Run');
   } catch (error) {
