@@ -19,7 +19,6 @@ class Landing extends Component {
     componentDidMount() {
         axios.get(`${constants.BACKEND_SERVER.URL}/project/details/${this.props.match.params.projectId}`)
             .then((response) => {
-                console.log("Project Obj", response.data.ARN)
                 this.setState({
                     arn : response.data.ARN
                 })

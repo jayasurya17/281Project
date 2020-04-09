@@ -19,7 +19,7 @@ module.exports = {
 		database: process.env.RDS_DATABASE,
 		port: process.env.RDS_PORT
 	},
-	awsDeviceFarmKeys: {
+	awsKeysJayasurya: {
 		AWS_SECRET_ACCESS: process.env.AWS_SECRET_ACCESS,
 		AWS_ACCESSKEY: process.env.AWS_ACCESSKEY,
 		REGION: process.env.REGION

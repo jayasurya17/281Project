@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import constants from '../../../../utils/constants';
+import { FormGroup, Input, FormText, Label } from 'reactstrap';
 
 class Landing extends Component {
 
@@ -8,6 +9,7 @@ class Landing extends Component {
         super();
         this.state = {
             name: "",
+            file: "",
             type: "ANDROID_APP"
         }
     }
@@ -24,16 +26,19 @@ class Landing extends Component {
         })
     }
 
+    onChangeFileUpload = (e) => {
+        this.setState({
+            file: e.target.files[0]
+        })
+    }
+
     createUpload = () => {
-        const reqBody = {
-            name: this.state.name,
-            projectArn: this.props.arn,
-            type: this.state.type
-        }
-        if ("".localeCompare(this.state.name) === 0) {
-            return
-        }
-        axios.post(`${constants.BACKEND_SERVER.URL}/devicefarm/createupload`, reqBody)
+        
+        let fd = new FormData();
+        fd.append('projectArn', this.props.arn)
+        fd.append('type', this.state.type)
+        fd.append('file', this.state.file)
+        axios.post(`${constants.BACKEND_SERVER.URL}/devicefarm/createupload`, fd)
             .then((response) => {
                 console.log(response)
             })
@@ -51,10 +56,13 @@ class Landing extends Component {
         }
         return (
             <div>
-                <div className="form-group">
-                    <label htmlFor="runName">Run name</label>
-                    <input id="runName" class="form-control" onChange={this.nameChangeHandler} value={ this.state.name } />
-                </div>
+                <FormGroup>
+                        <Label for="image" sm={2}>File</Label>
+                        <Input type="file" name="image" id="image" multiple="" onChange={this.onChangeFileUpload} />
+                        <FormText color="muted">
+                            Upload File for your Project
+                    </FormText>
+                </FormGroup>
                 <div className="form-group">
                     <label htmlFor="typesAvailable">Types</label>
                     <select id="typesAvailable" class="form-control" onChange={this.typeChangeHandler}>

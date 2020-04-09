@@ -16,10 +16,8 @@ class Landing extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props)
         axios.get(`${constants.BACKEND_SERVER.URL}/devicefarm/listDevicePools?projectId=${this.props.projectId}`)
             .then((response) => {
-                console.log(response.data.devicePools);
                 this.setState({
                     allDevicePools: response.data.devicePools,
                     devicePoolARN: response.data.devicePools[0].arn
@@ -27,7 +25,6 @@ class Landing extends Component {
             })
         axios.get(`${constants.BACKEND_SERVER.URL}/devicefarm/listUploads?projectArn=${this.props.arn}`)
             .then((response) => {
-                console.log(response.data.uploads);
                 if (response.data.uploads.length > 0) {
                     this.setState({
                         allUploads: response.data.uploads,
@@ -88,7 +85,9 @@ class Landing extends Component {
         }
         for (index in this.state.allUploads) {
             uploadObj = this.state.allUploads[index]
-            allUploads.push(<option value={uploadObj.arn}>{uploadObj.name}</option>)
+            if (uploadObj.status === "SUCCEEDED") {
+                allUploads.push(<option value={uploadObj.arn}>{uploadObj.name}</option>)
+            }
         }
         return (
             <div>

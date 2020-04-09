@@ -5,9 +5,9 @@ import AWS from 'aws-sdk';
 import config from '../../config/index';
 
 AWS.config.update({
-    secretAccessKey: config.awsDeviceFarmKeys.AWS_SECRET_ACCESS,
-    accessKeyId: config.awsDeviceFarmKeys.AWS_ACCESSKEY,
-	region: config.awsDeviceFarmKeys.REGION,
+    secretAccessKey: config.awsKeysJayasurya.AWS_SECRET_ACCESS,
+    accessKeyId: config.awsKeysJayasurya.AWS_ACCESSKEY,
+	region: config.awsKeysJayasurya.REGION,
 });
 
 var devicefarm = new AWS.DeviceFarm({apiVersion: '2015-06-23'});

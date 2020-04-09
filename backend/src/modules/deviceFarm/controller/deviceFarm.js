@@ -93,13 +93,19 @@ exports.deleteDevicePool = async (req, res) => {
  * @param  {Object} res response object
  */
 exports.createUpload = async (req, res) => {
-
 	try {
-		let createdUpload = await devicefarm.createUpload(req.body)
-		console.log(`createdUpload: ${createdUpload}`)
+		console.log(`req.file.location: ${req.file.location}`)
+		console.log(req.body)
+		let createUploadObj = {
+			name: `${req.file.location}.zip`,
+			projectArn: req.body.projectArn,
+			type: req.body.type
+		}
+		// let createdUpload = await devicefarm.createUpload(createUploadObj)
+		// console.log(`createdUpload: ${createdUpload}`)
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send(createdUpload)
+			.send("createdUpload")
 
 	} catch (error) {
 		console.log(error.message)
@@ -129,7 +135,7 @@ exports.scheduleRun = async (req, res) => {
 		console.log(`scheduledRun: ${scheduledRun}`)
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send(scheduledRun)
+			.send("scheduledRun")
 
 	} catch (error) {
 		console.log(error.message)
