@@ -197,7 +197,7 @@ class ProjectForm extends Component {
                 </FormGroup>
                 <FormGroup>
                     <Label for="company">technologies</Label>
-                    <Input type="text" name="company" onChange={this.techChangeHandler} id="company" placeholder="Ex: React, Node, Python"  value={ this.state.compName } />
+                    <Input type="text" name="company" onChange={this.techChangeHandler} id="company" placeholder="Ex: React, Node, Python"  value={ this.state.tech } />
                 </FormGroup>
                 <FormGroup row>
                     <Label for="image" sm={2}>File</Label>

@@ -4,6 +4,7 @@ import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
 import devicefarm from '../../../utils/deviceFarmUtils'
 import findProject from '../../../utils/projectUtils'
+import S3 from '../../../utils/s3Upload';
 
 /**
  * Create user and save data in database.
@@ -94,13 +95,14 @@ exports.deleteDevicePool = async (req, res) => {
  */
 exports.createUpload = async (req, res) => {
 	try {
-		console.log(`req.file.location: ${req.file.location}`)
+		console.log(req.file)
 		console.log(req.body)
-		let createUploadObj = {
-			name: `${req.file.location}.zip`,
-			projectArn: req.body.projectArn,
-			type: req.body.type
-		}
+		// await S3.fileupload(req.body.projectArn, req.body.userId, "Test", req.file)
+		// let createUploadObj = {
+		// 	name: `${req.file.location}.zip`,
+		// 	projectArn: req.body.projectArn,
+		// 	type: req.body.type
+		// }
 		// let createdUpload = await devicefarm.createUpload(createUploadObj)
 		// console.log(`createdUpload: ${createdUpload}`)
 		return res

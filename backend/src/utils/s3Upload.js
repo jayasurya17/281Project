@@ -33,12 +33,13 @@ var createBucket = (bucketName) => {
     });
 }
 exports.fileupload = async (bucketName, folderName, type, fileObj) => {
+    console.log("PARAMS", bucketName, folderName, type, fileObj)
     await createBucket(bucketName);
     const params = {
         Bucket: bucketName,  // Param 1 of the function
         Key: `${folderName}/${type}/${String(fileObj.originalFilename)}`, // Folder Name (Param 2) + Type (param 3) + file obj (param 4)
         ACL: 'public-read', // File name you want to save as in S3
-        Body: fs.readFileSync(String(fileObj.path)) // Param 4
+        Body: new Buffer(fileObj.buffer) // Param 4
     };
     console.log("PARAMS FOR UPLOADEING", params)
 
