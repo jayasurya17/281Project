@@ -109,41 +109,41 @@ class Landing extends Component {
 
         return(
             <div className="row browserGrid">
-             
-                              
-                <h1>Enter details to download logs and Screenshots</h1>
-                <Container style={{width:'300%',height:'500%',backgroundColor: "DodgerBlue",padding: "10px",
-      fontFamily: "Arial"}}>
                 
-                <Row form>
-                    <Col md={30}>
+                <div className='fileDownload'>
+                <h3>Enter details to download logs and Screenshots</h3>
                         <FormGroup>
-                            <Label for="projectname" style={{fontSize:'30px'}}>Project Name</Label>
+                            <Label for="projectname" >Project Name</Label>
                             <Input type="text" name="projectname" onChange={this.nameChangeHandler} id="projectname" placeholder="Enter Project Name" value={ this.state.name }/>
                         </FormGroup>
-                    </Col>
                      
-                    <Col md={30}>
                         <FormGroup>
-                            <Label for="projectname" style={{fontSize:'30px'}}>File Name</Label>
+                            <Label for="projectname" >File Name</Label>
                             <Input type="text" name="projectname" onChange={this.filenameChangeHandler} id="filename" placeholder="Enter File Name" value={ this.state.filename }/>
-                        </FormGroup>                        <Button color="danger" onClick={this.getFileHandler} className="w-100"> Download </Button>
+                        </FormGroup>                        
 
-                    </Col>
-                </Row>
-                </Container>
-                <h1>Files in this project</h1>
+
+                    <Button color="danger" onClick={this.getFileHandler} className="w-100"> Download </Button>
+                     
+
+
+                </div>
+                
+                <div>
+                <h3>Files in this project</h3>
+                <ul >
                 { this.state.allProjCards.map((element)=>{
                     return(
-                        <div>
-                            <Card style>
-                         <CardBody style={{fontSize:'25px',padding: "10px",fontFamily: "Arial"}}>{element.Key}</CardBody>
-                         <br></br>
-                         </Card>
-                        </div>
+                        <li className='listOption'>
+                          
+                         {element.Key}
+                         
+                        </li>
                         
                     )
                 }) }
+                </ul>
+                </div>
             </div>
         )
     }

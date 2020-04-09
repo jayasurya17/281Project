@@ -10,8 +10,7 @@
     top:0;
 }
 .listDiv{
-    width:30%;
-    float:right;
+    /* float:right; */
     margin:28px;
     z-index:-1;
 }

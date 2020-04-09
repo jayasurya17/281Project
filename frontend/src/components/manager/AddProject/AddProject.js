@@ -195,6 +195,10 @@ class ProjectForm extends Component {
                     <Label for="tests">Test Cases</Label>
                     <Input type="textarea" name="tests" onChange={this.testCaseChangeHandler} id="tests" placeholder='Enter a few test cases'  value={ this.state.testCases } />
                 </FormGroup>
+                <FormGroup>
+                    <Label for="company">technologies</Label>
+                    <Input type="text" name="company" onChange={this.techChangeHandler} id="company" placeholder="Ex: React, Node, Python"  value={ this.state.compName } />
+                </FormGroup>
                 <FormGroup row>
                     <Label for="image" sm={2}>File</Label>
                     <Col sm={10}>
