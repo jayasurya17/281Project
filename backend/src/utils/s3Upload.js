@@ -1,25 +1,14 @@
 const AWS = require('aws-sdk');
-const REGION = 'us-west-1';
 import fs from 'fs';
-///working
-// Enter copied or downloaded access ID and secret key here
-const ACCESS_KEY = 'AKIAIVH2MFPO6F4XKKJQ';
-const SECRET_KEY = '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';
+import config from '../../config/index';
 
 AWS.config.update({
-    accessKeyId: ACCESS_KEY,
-    secretAccessKey: SECRET_KEY,
-    region: REGION
+    secretAccessKey: config.awsKeysSrihari.AWS_SECRET_ACCESS,
+    accessKeyId: config.awsKeysSrihari.AWS_ACCESSKEY,
+	region: config.awsKeysSrihari.REGION
 })
 
 var s3 = new AWS.S3()
-//console.log("file name is :", req.body.file)
-// s3.putObject({
-// 	Bucket: projectObj._id,
-// 	Key: files.file[0].originalFilename,
-// 	Body: fs.readFileSync(String(files.file[0].path)),
-// 	ACL: 'public-read'
-// })
 
 var createBucket = (bucketName) => {
     const params = {
@@ -27,7 +16,7 @@ var createBucket = (bucketName) => {
         ACL: 'public-read',
         CreateBucketConfiguration: {
             // Set your region here
-            LocationConstraint: "us-west-1"
+            LocationConstraint: config.awsKeysSrihari.REGION
         }
     };
     console.log("VREATING A BUCKET", params)
