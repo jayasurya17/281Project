@@ -10,7 +10,6 @@ import upload from '../../../utils/upload'
 router.post('/addProject', upload.single('file'), managerController.addProject)
 //router.post('/addProject2',managerController.addProject2)
 router.post('/viewProject', managerController.viewProject)
-router.post('/viewFile', managerController.viewFile)
 router.get('/allProjects/:managerId', managerController.allProjects)
 
 module.exports = router
