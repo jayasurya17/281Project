@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import '../AddProject/AddProject.css'
 import axios from 'axios';
 import Constants from '../../../utils/constants';
@@ -9,20 +9,17 @@ class Landing extends Component {
         super();
         this.state = {
             name: "",
-            allProjCards : []
+            allProjCards: []
         }
     }
-    
+
     componentDidMount() {
-        let reqObj = {
-             name : this.props.projectId
-        }
-        axios.post(`${Constants.BACKEND_SERVER.URL}/manager/viewProject`, reqObj)
+        axios.get(`${Constants.BACKEND_SERVER.URL}/project/filesInProject/${this.props.projectId}/${localStorage.getItem('281UserId')}`)
             .then((response) => {
-                console.log('viewproject response', response.data);
-                this.setState({allProjCards:response.data})
-			})
-            .catch((error) => { 
+                console.log(response.data);
+                this.setState({ allProjCards: response.data })
+            })
+            .catch((error) => {
                 console.log(error)
                 this.setState({
                     errMsg: "Error occured",
@@ -31,27 +28,37 @@ class Landing extends Component {
             })
     }
 
-        
-      
-    render(){
 
-        return(
-            <div className="row browserGrid">
-                
-                <div className="viewfiles">
-                <h3>Files in this project</h3>
-                
-                { this.state.allProjCards.map((element)=>{
-                    return(
-                        <div className="row">
-                            <div className="col-md-8">{element.name}</div>
-                            <div className="col-md-4">
-                                <a href={element.url} target="_blank"><button className="btn btn-danger">Download this file</button></a>
-                            </div>
-                        </div>                        
-                    )
-                }) }
+
+    render() {
+
+        let allProjCards = [],
+            files
+        for (var userId in this.state.allProjCards) {
+            files = []
+            for (var index in this.state.allProjCards[userId].files) {
+                var filename = this.state.allProjCards[userId].files[index].name.split("/")
+                files.push(
+                    <div className="row mt-2">
+                        <div className="col-md-8">{filename[filename.length - 1]}</div>
+                        <div className="col-md-4">
+                            <a href={this.state.allProjCards[userId].files[index].url} target="_blank"><button className="btn btn-danger">Download this file</button></a>
+                        </div>
+                    </div>
+                )
+            }
+            allProjCards.push(
+                <div className="p-5 border-bottom">
+                    <h4>{this.state.allProjCards[userId].name}<span className="font-weight-light">(User ID: {userId})</span></h4>
+                    {files}
                 </div>
+            )
+        }
+
+        return (
+            <div className="mt-4">
+                <h3>Files in this project</h3>
+                {allProjCards}
             </div>
         )
     }

@@ -4,8 +4,6 @@ import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
 import devicefarm from '../../../utils/deviceFarmUtils'
 import findProject from '../../../utils/projectUtils'
-import S3 from '../../../utils/s3Upload';
-import Request from 'request';
 const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 
 /**

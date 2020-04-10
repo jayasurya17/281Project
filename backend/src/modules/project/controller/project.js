@@ -4,7 +4,7 @@ import Users from '../../../models/mongoDB/users'
 import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
 import devicefarm from '../../../utils/deviceFarmUtils'
-import S3 from '../../../utils/s3Upload'
+import S3 from '../../../utils/s3Operations'
 
 /**
  * Returns list of all projects created by the manager.
@@ -229,12 +229,54 @@ exports.uploadFile = async (req, res) => {
 
 		console.log(req.body)
 		console.log(req.file)
-		let result = await S3.fileupload(req.body.projectId, req.body.userId, "", req.file)
+		let result = await S3.fileupload(req.body.projectId, req.body.userId, req.file)
 
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(result)
 	} catch (error) {
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+
+exports.getFilesInProject = async (req, res) => {
+
+	try {
+		let projectObj = await Projects.findById(req.params.projectId)
+		let userIDs = []
+		if (String(projectObj.managerId) == req.params.userId) {
+			userIDs = projectObj.acceptedTesters
+			userIDs.push(req.params.userId)
+		} else {
+			userIDs = [req.params.userId, String(projectObj.managerId)]
+		}
+		let listOfURLs = await S3.getAllURLs(req.params.projectId, userIDs)
+		let userFiles = {},
+			index,
+			userId,
+			userObj
+		for (index in userIDs) {
+			userObj = await Users.findById(userIDs[index])
+			userFiles[userIDs[index]] = {
+				name: userObj.name,
+				files: []
+			}
+		}
+		for (index in listOfURLs) {
+			userId = listOfURLs[index].name.split("/")[0]
+			userFiles[userId].files.push(listOfURLs[index])
+		}
+
+
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(userFiles)
+
+	} catch (error) {
+		console.log(error.message)
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
 			.send(error.message)

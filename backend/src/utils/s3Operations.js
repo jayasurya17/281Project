@@ -5,7 +5,7 @@ import config from '../../config/index';
 AWS.config.update({
     secretAccessKey: config.awsKeysSrihari.AWS_SECRET_ACCESS,
     accessKeyId: config.awsKeysSrihari.AWS_ACCESSKEY,
-	region: config.awsKeysSrihari.REGION
+    region: config.awsKeysSrihari.REGION
 })
 
 var s3 = new AWS.S3()
@@ -33,8 +33,8 @@ var createBucket = (bucketName) => {
     });
 }
 
-exports.fileupload = async (bucketName, folderName, type, fileObj) => {
-    console.log("PARAMS", bucketName, folderName, type, fileObj)
+exports.fileupload = async (bucketName, folderName, fileObj) => {
+    console.log("PARAMS", bucketName, folderName, fileObj)
     await createBucket(bucketName);
     const params = {
         Bucket: bucketName,  // Param 1 of the function
@@ -51,12 +51,50 @@ exports.fileupload = async (bucketName, folderName, type, fileObj) => {
             }
             console.log(`File uploaded successfully. ${data.Location}`);
         })
-        .promise()
+            .promise()
             .then(() => {
-                var createdURL = s3.getSignedUrl('getObject', { Bucket: bucketName, Key: `${folderName}/${type}/${String(fileObj.originalname)}` })
+                var createdURL = s3.getSignedUrl('getObject', { Bucket: bucketName, Key: `${folderName}/${String(fileObj.originalname)}` })
                 console.log(`The URL is ${createdURL}`) // Return value of the function
                 resolve(createdURL)
             })
     })
 
+}
+
+
+exports.getAllURLs = (projectId, userIDs) => {
+
+    var params = { Bucket: projectId };
+
+    return new Promise((resolve, reject) => {
+        s3.listObjects(params, function (err, data) {
+            if (err) {
+                console.log("Error", err);
+            } else {
+                let sendingback = data.Contents;
+                let responseData = [],
+                    index,
+                    url,
+                    key,
+                    bucket,
+                    folder
+
+                for (index in sendingback) {
+                    // Get the url for this
+                    bucket = projectId
+                    key = sendingback[index].Key
+                    folder = key.split("/")[0]
+                    if (userIDs.includes(folder)) {
+                        url = s3.getSignedUrl('getObject', { Bucket: bucket, Key: key })
+                        responseData.push({
+                            name: sendingback[index].Key,
+                            url: url
+                        })
+                    }
+                }
+                resolve(responseData);
+            }
+        });
+
+    })
 }
