@@ -17,3 +17,16 @@ margin-top: 30px;
     display: flex;
     justify-content: space-between;
 }
+.viewfiles{
+
+    
+}
+
+.listOption{
+    background: #ff9999;
+    border-radius: 25px;
+    margin: 10px 0;
+
+    padding: 30px;
+    width: 500px;
+}
