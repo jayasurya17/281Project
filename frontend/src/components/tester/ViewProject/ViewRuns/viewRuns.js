@@ -5,8 +5,7 @@ import Navigation from '../../../common/navigation';
 import ProjectNavbar from '../../../common/projectTesterNavbar';
 import axios from 'axios';
 import constants from '../../../../utils/constants';
-// import CreateUpload from './createUpload';
-import ScheduleRun from './scheduleRun';
+import RunContainer from './runContainer';
 
 class Landing extends Component {
 
@@ -14,7 +13,8 @@ class Landing extends Component {
         super();
         this.state = {
             arn : null,
-            projectObj: {}
+            projectObj: {},
+            allRuns: []
         }
     }
 
@@ -25,15 +25,23 @@ class Landing extends Component {
                     arn : response.data.ARN,
                     projectObj: response.data
                 })
+                axios.get(`${constants.BACKEND_SERVER.URL}/devicefarm/listRuns?projectArn=${response.data.ARN}`)
+                .then((response) => {
+                    this.setState({
+                        allRuns: response.data.runs
+                    })
+                })
             })
     }
 
     render() {
 
-        let scheduleRunDisplay = []
-        if (this.state.arn) {
-            scheduleRunDisplay = <ScheduleRun arn = { this.state.arn } projectId = { this.props.match.params.projectId }/>
+        let runs = [],
+            index
+        for (index in this.state.allRuns) {
+            runs.push(<RunContainer runObj={ this.state.allRuns[index] } />)
         }
+
         return (
             <div>
 
@@ -43,15 +51,7 @@ class Landing extends Component {
                     <Navigation />
                     <ProjectNavbar projectObj = { this.state.projectObj } />
                     
-                    <div className="row">
-                        <div className="col-md-8 offset-md-2">
-                            { scheduleRunDisplay }
-                        </div>
-                        {/* <div className="col-md-6">
-                            <CreateUpload arn = { this.state.arn } projectId = { this.props.match.params.projectId } />                            
-                        </div> */}
-                    </div>
-
+                    { runs }
 
                     <Footer />
                 </div>

@@ -20,7 +20,6 @@ exports.createDevicePool = async (req, res) => {
 		let params = {
 			name: req.body.name,
 			description: req.body.description,
-			// maxDevices: req.body.maxDevices,
 			projectArn: result.ARN,
 			rules: [{
 				"attribute": "ARN", 
@@ -136,6 +135,9 @@ exports.scheduleRun = async (req, res) => {
 		const params = {
 			appArn: appUploadARN,
 			devicePoolArn: req.body.devicePoolArn,
+			executionConfiguration: {
+				jobTimeoutMinutes: req.body.jobTimeoutMinutes
+			},
 			name: req.body.name,
 			projectArn: req.body.projectArn,
 			test: {
@@ -174,6 +176,31 @@ exports.listUploads = async (req, res) => {
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(allUploads)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+/**
+ * List runs present in a project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.listRuns = async (req, res) => {
+
+	try {
+		const params = {
+			arn: req.query.projectArn
+		}
+		let allRuns = await devicefarm.listRuns(params)
+		console.log("allRuns: ", allRuns)
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(allRuns)
 
 	} catch (error) {
 		console.log(error.message)

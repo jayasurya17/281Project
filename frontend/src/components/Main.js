@@ -13,6 +13,7 @@ import TesterViewAcceptedProjects from "./tester/viewMyProjects";
 import TesterViewProjectDetails from "./tester/projectDetails";
 import TesterAnnouncements from "./tester/viewAnnouncements";
 import TesterRunTest from "./tester/ViewProject/RunTest/runTest";
+import TesterViewRuns from "./tester/ViewProject/ViewRuns/viewRuns";
 
 import ManagerHome from "./manager/dashboard";
 import ManagerCheck from "./manager/managerCheck";
@@ -45,7 +46,8 @@ class Main extends Component {
 				<Route path="/tester/project/all" component={TesterViewAllProjects} />
 				<Route path="/tester/project/accepted" component={TesterViewAcceptedProjects} />
 				<Route path="/tester/project/view/:projectId" component={TesterViewProjectDetails} />
-				<Route path="/tester/project/run/:projectId" component={TesterRunTest} />
+				<Route path="/tester/project/run/schedule/:projectId" component={TesterRunTest} />
+				<Route path="/tester/project/run/view/:projectId" component={TesterViewRuns} />
 
 				<Route path="/tester/announcements" component={TesterAnnouncements} />
 

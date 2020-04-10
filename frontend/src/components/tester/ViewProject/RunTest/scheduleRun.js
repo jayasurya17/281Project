@@ -19,7 +19,8 @@ class Landing extends Component {
             allUploads: [],
             currentUploadARN: null,
             successMsg: "",
-            warningMsg: ""
+            warningMsg: "",
+            maxTime: 5
         }
         this.testPackageTypes = ['','','APPIUM_JAVA_JUNIT_TEST_PACKAGE','APPIUM_JAVA_TESTNG_TEST_PACKAGE','APPIUM_PYTHON_TEST_PACKAGE',
         'APPIUM_NODE_TEST_PACKAGE','APPIUM_RUBY_TEST_PACKAGE','CALABASH_TEST_PACKAGE','INSTRUMENTATION_TEST_PACKAGE',
@@ -79,6 +80,12 @@ class Landing extends Component {
         })
     }
 
+    timeChangeHandler = (e) => {
+        this.setState({
+            maxTime: e.target.value
+        })
+    }
+
     uploadChangeHandler = (e) => {
         this.setState({
             currentUploadARN: e.target.value
@@ -100,6 +107,7 @@ class Landing extends Component {
         fd.append('testType', this.state.testType)
         fd.append('testTypeName', this.state.testTypeName)
         fd.append('devicePoolArn', this.state.devicePoolARN)
+        fd.append('jobTimeoutMinutes', this.state.maxTime)
         fd.append('file', this.state.file)
         fd.append('testFile', this.state.testFile)
         axios.post(`${constants.BACKEND_SERVER.URL}/devicefarm/schedulerun`, fd)
@@ -175,6 +183,10 @@ class Landing extends Component {
                     <select id="testTypesAvailable" class="form-control" onChange={this.testTypeChangeHandler}>
                         {allTypes}
                     </select>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="testTime">Number of minutes a test run executes before it times out</label>
+                    <input type="text" id="testTime" class="form-control" onChange={this.timeChangeHandler} value={this.state.maxTime} />
                 </div>
                 <p className="text-success text-center">{this.state.successMsg}</p>
                 <p className="text-warning text-center">{this.state.warningMsg}</p>
