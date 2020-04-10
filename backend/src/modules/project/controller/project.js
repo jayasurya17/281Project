@@ -4,6 +4,7 @@ import Users from '../../../models/mongoDB/users'
 import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
 import devicefarm from '../../../utils/deviceFarmUtils'
+import S3 from '../../../utils/s3Upload'
 
 /**
  * Returns list of all projects created by the manager.
@@ -209,6 +210,30 @@ exports.getAllDevices = async (req, res) => {
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(allDevices)
+	} catch (error) {
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+
+/**
+ * Upload a file to the project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.uploadFile = async (req, res) => {
+
+	try {
+
+		console.log(req.body)
+		console.log(req.file)
+		let result = await S3.fileupload(req.body.projectId, req.body.userId, "", req.file)
+
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(result)
 	} catch (error) {
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)

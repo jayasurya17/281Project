@@ -1,6 +1,4 @@
-
 import React, {Component} from 'react';
-import { Button, FormGroup, Label, Input} from 'reactstrap';
 import '../AddProject/AddProject.css'
 import axios from 'axios';
 import Constants from '../../../utils/constants';
@@ -17,7 +15,6 @@ class Landing extends Component {
     
     componentDidMount() {
         let reqObj = {
-             //name: 'testbucket-00710'
              name : this.props.projectId
         }
         axios.post(`${Constants.BACKEND_SERVER.URL}/manager/viewProject`, reqObj)
