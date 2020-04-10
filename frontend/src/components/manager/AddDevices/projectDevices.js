@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Header from '../../common/header';
 import Footer from '../../common/footer';
 import Navigation from '../../common/navigation';
-import ListDevices from './listDevices';
 import ListDevicePool from './listDevicePools';
 import CreateDevicePool from './createDevicePool';
 
@@ -20,14 +19,13 @@ class Landing extends Component {
 
                     <div className="row">
                         <div className="col-md-6">
-                            <CreateDevicePool projectId={this.props.match.params.projectId} updateParent={this.updateParent} />
+                            <CreateDevicePool projectId={this.props.match.params.projectId} />
                         </div>
                         <div className="col-md-6">
                             <ListDevicePool projectId={this.props.match.params.projectId} />
                         </div>
                     </div>
 
-                    <ListDevices projectId={this.props.match.params.projectId} />
                     <Footer />
                 </div>
             </div>

@@ -20,9 +20,13 @@ exports.createDevicePool = async (req, res) => {
 		let params = {
 			name: req.body.name,
 			description: req.body.description,
-			maxDevices: req.body.maxDevices,
+			// maxDevices: req.body.maxDevices,
 			projectArn: result.ARN,
-			rules: []
+			rules: [{
+				"attribute": "ARN", 
+				"operator": "IN",
+				"value": req.body.deviceARNs
+			}]
 		}
 		let createdDevicePool = await devicefarm.createDevicePool(params)
 		console.log("createdDevicePool", createdDevicePool)

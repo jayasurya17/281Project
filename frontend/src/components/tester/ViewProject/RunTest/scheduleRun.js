@@ -17,7 +17,9 @@ class Landing extends Component {
             allDevicePools: [],
             devicePoolARN: null,
             allUploads: [],
-            currentUploadARN: null
+            currentUploadARN: null,
+            successMsg: "",
+            warningMsg: ""
         }
         this.testPackageTypes = ['','','APPIUM_JAVA_JUNIT_TEST_PACKAGE','APPIUM_JAVA_TESTNG_TEST_PACKAGE','APPIUM_PYTHON_TEST_PACKAGE',
         'APPIUM_NODE_TEST_PACKAGE','APPIUM_RUBY_TEST_PACKAGE','CALABASH_TEST_PACKAGE','INSTRUMENTATION_TEST_PACKAGE',
@@ -84,6 +86,10 @@ class Landing extends Component {
     }
 
     scheduleRun = () => {
+        this.setState({
+            warningMsg: "Files are being uploaded. Do not refresh!",
+            successMsg: ""
+        })
 
         let fd = new FormData();
         fd.append('name', this.state.name)
@@ -98,7 +104,16 @@ class Landing extends Component {
         fd.append('testFile', this.state.testFile)
         axios.post(`${constants.BACKEND_SERVER.URL}/devicefarm/schedulerun`, fd)
             .then((response) => {
-                console.log(response)
+                this.setState({
+                    name: "",
+                    file: "",
+                    fileType: "ANDROID_APP",
+                    fileName: "",
+                    testFileName: "",
+                    testTypeName: "BUILTIN_FUZZ",
+                    successMsg: "Run created successfully",
+                    warningMsg: ""
+                })
             })
             .catch((error) => {
                 console.log(error)
@@ -161,6 +176,8 @@ class Landing extends Component {
                         {allTypes}
                     </select>
                 </div>
+                <p className="text-success text-center">{this.state.successMsg}</p>
+                <p className="text-warning text-center">{this.state.warningMsg}</p>
 
                 <button className="btn btn-primary w-100" onClick={this.scheduleRun}>Schedule run</button>
 

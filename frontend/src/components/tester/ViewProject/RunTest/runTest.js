@@ -4,7 +4,7 @@ import Footer from '../../../common/footer';
 import Navigation from '../../../common/navigation';
 import axios from 'axios';
 import constants from '../../../../utils/constants';
-import CreateUpload from './createUpload';
+// import CreateUpload from './createUpload';
 import ScheduleRun from './scheduleRun';
 
 class Landing extends Component {
@@ -40,12 +40,12 @@ class Landing extends Component {
                     <Navigation />
                     
                     <div className="row">
-                        <div className="col-md-6">
+                        <div className="col-md-8 offset-md-2">
                             { scheduleRunDisplay }
                         </div>
-                        <div className="col-md-6">
+                        {/* <div className="col-md-6">
                             <CreateUpload arn = { this.state.arn } projectId = { this.props.match.params.projectId } />                            
-                        </div>
+                        </div> */}
                     </div>
 
 
