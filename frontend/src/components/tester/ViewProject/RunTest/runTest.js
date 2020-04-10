@@ -44,7 +44,7 @@ class Landing extends Component {
                             { scheduleRunDisplay }
                         </div>
                         <div className="col-md-6">
-                            <CreateUpload arn = { this.state.arn } />                            
+                            <CreateUpload arn = { this.state.arn } projectId = { this.props.match.params.projectId } />                            
                         </div>
                     </div>
 

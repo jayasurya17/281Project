@@ -6,7 +6,7 @@ import Constants from '../../../utils/constants';
 import axios from 'axios';
 //import {hostedAddress} from '../../GlobalVar'
 
-let name,shortDes,detDesc,compName,address,city,state,zip,testCases,tech,selectedFile, redirectFlag=false;
+let name,shortDes,detDesc,compName,address,city,state,zip,testCases,tech,selectedFile;
 const ProjectForm = (props) => {
   const nameChangeHandler=(e)=>{
     name=e.target.value;

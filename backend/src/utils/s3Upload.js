@@ -19,7 +19,7 @@ var createBucket = (bucketName) => {
             LocationConstraint: config.awsKeysSrihari.REGION
         }
     };
-    console.log("VREATING A BUCKET", params)
+    console.log("CREATING A BUCKET", params)
     return new Promise((resolve, reject) => {
         s3.createBucket(params, function (err, data) {
             if (err) {

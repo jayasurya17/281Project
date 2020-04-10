@@ -5,6 +5,8 @@ import constants from '../../../utils/constants'
 import devicefarm from '../../../utils/deviceFarmUtils'
 import findProject from '../../../utils/projectUtils'
 import S3 from '../../../utils/s3Upload';
+import Request from 'request';
+const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 
 /**
  * Create user and save data in database.
@@ -23,6 +25,7 @@ exports.createDevicePool = async (req, res) => {
 			rules: []
 		}
 		let createdDevicePool = await devicefarm.createDevicePool(params)
+		console.log("createdDevicePool", createdDevicePool)
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(createdDevicePool)
@@ -89,35 +92,6 @@ exports.deleteDevicePool = async (req, res) => {
 }
 
 /**
- * Create upload on a project.
- * @param  {Object} req request object
- * @param  {Object} res response object
- */
-exports.createUpload = async (req, res) => {
-	try {
-		console.log(req.file)
-		console.log(req.body)
-		// await S3.fileupload(req.body.projectArn, req.body.userId, "Test", req.file)
-		// let createUploadObj = {
-		// 	name: `${req.file.location}.zip`,
-		// 	projectArn: req.body.projectArn,
-		// 	type: req.body.type
-		// }
-		// let createdUpload = await devicefarm.createUpload(createUploadObj)
-		// console.log(`createdUpload: ${createdUpload}`)
-		return res
-			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send("createdUpload")
-
-	} catch (error) {
-		console.log(error.message)
-		return res
-			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
-			.send(error.message)
-	}
-}
-
-/**
  * Schedule Run on a project.
  * @param  {Object} req request object
  * @param  {Object} res response object
@@ -125,19 +99,52 @@ exports.createUpload = async (req, res) => {
 exports.scheduleRun = async (req, res) => {
 
 	try {
-		const params = {
-			appArn: req.body.appArn,
+		let uploadParams
+
+		uploadParams = {
 			projectArn: req.body.projectArn,
+			type: req.body.fileType
+		}
+		let appUploadObj = await devicefarm.createUpload(uploadParams, req.files.file[0])
+
+		uploadParams = {
+			projectArn: req.body.projectArn,
+			type: req.body.testType
+		}
+		let testUploadObj = await devicefarm.createUpload(uploadParams, req.files.testFile[0])
+		const appUploadARN = appUploadObj.upload.arn
+		const testUploadARN = testUploadObj.upload.arn
+		let getAppUploadParams = {
+			arn: appUploadARN
+		}
+		let getTestUploadParams = {
+			arn: testUploadARN
+		}
+		let result1 = await devicefarm.getUpload(getAppUploadParams)
+		let result2 = await devicefarm.getUpload(getTestUploadParams)
+		while (result1.upload.status !== "SUCCEEDED" || result2.upload.status !== "SUCCEEDED") {
+			console.log(result1.upload.status, result2.upload.status)
+			await sleep(3000);
+			result1 = await devicefarm.getUpload(getAppUploadParams)
+			result2 = await devicefarm.getUpload(getTestUploadParams)
+		}
+
+		const params = {
+			appArn: appUploadARN,
 			devicePoolArn: req.body.devicePoolArn,
+			name: req.body.name,
+			projectArn: req.body.projectArn,
 			test: {
-				type: req.body.type
+				testPackageArn: testUploadARN,
+				type: req.body.testTypeName
 			}
 		}
+		console.log("Params for scheduling run", params)
 		let scheduledRun = await devicefarm.scheduleRun(params)
 		console.log(`scheduledRun: ${scheduledRun}`)
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send("scheduledRun")
+			.send(scheduledRun)
 
 	} catch (error) {
 		console.log(error.message)

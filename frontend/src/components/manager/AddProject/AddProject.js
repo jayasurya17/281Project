@@ -20,6 +20,7 @@ class ProjectForm extends Component {
             testCases: "",
             tech: "",
             selectedFile: "",
+            filename: "",
             errMsg: "",
             successMsg: ""
         }
@@ -77,7 +78,8 @@ class ProjectForm extends Component {
     }
     onChangeFileUpload = (e) => {
         this.setState({
-            selectedFile: e.target.files[0]
+            selectedFile: e.target.files[0],
+            filename: e.target.value
         });
     }
     addProjHandler = () => {
@@ -123,6 +125,7 @@ class ProjectForm extends Component {
                         testCases: "",
                         tech: "",
                         selectedFile: "",
+                        filename: "",
                         errMsg: "",
                         successMsg: "Project added!"
                     })
@@ -202,7 +205,7 @@ class ProjectForm extends Component {
                 <FormGroup row>
                     <Label for="image" sm={2}>File</Label>
                     <Col sm={10}>
-                        <Input type="file" name="image" id="image" multiple="" onChange={this.onChangeFileUpload} />
+                        <Input type="file" name="image" id="image" multiple="" onChange={this.onChangeFileUpload} value = { this.state.filename } />
                         <FormText color="muted">
                             Upload File for your Project
                 </FormText>

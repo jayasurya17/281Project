@@ -169,7 +169,7 @@ exports.allProjects = async (req, res) => {
 		// console.log(allProjects)
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send(allProjects)
+			.send(allProjects.reverse())
 	} catch (error) {
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
@@ -200,7 +200,7 @@ exports.acceptedProjects = async (req, res) => {
 
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send(allProjects)
+			.send(allProjects.reverse())
 	} catch (error) {
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)

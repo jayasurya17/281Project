@@ -1,7 +1,6 @@
 
 import React, {Component} from 'react';
-import { Col, Row, Button, FormGroup, Label, Input, Container } from 'reactstrap';
-import { Card, CardBody } from 'react-simple-card';
+import { Button, FormGroup, Label, Input} from 'reactstrap';
 import '../AddProject/AddProject.css'
 import axios from 'axios';
 import Constants from '../../../utils/constants';

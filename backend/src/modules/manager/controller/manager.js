@@ -17,35 +17,23 @@ exports.addProject = async (req, res) => {
 
 	try {
 
-		// var form = new multiparty.Form();
-		// var newObj = {}
-		// form.parse(req, async function (err, fields, files) {
-		// 	let temp = newObj
-		// 	Object.keys(fields).forEach(function (name) {
-		// 		let that = temp
-		// 		let key = String(name), value = String(fields[name])
-		// 		console.log(key, " : ", value)
-		// 		that[key] = value
-		// 	});
-		console.log(req.file)
-			let projectObj,
-				newProject,
-				createdProject
+		let projectObj,
+			newProject,
+			createdProject
 
-			projectObj= req.body;
-			var params = {
-				name: projectObj.name
-			}
-			// var deviceFarmObj = await devicefarm.createProject(params);
-			// projectObj['ARN'] = deviceFarmObj.project.arn;
-			newProject = new Projects(projectObj);
-			createdProject = await newProject.save();
-			var resultURL = await s3.fileupload(String(createdProject._id), createdProject.managerId, "Regular", req.file)
-			console.log("resultURL", resultURL)
-			return res
-				.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS)
-				.send(createdProject)
-		// });
+		projectObj = req.body;
+		var params = {
+			name: projectObj.name
+		}
+		var deviceFarmObj = await devicefarm.createProject(params);
+		projectObj['ARN'] = deviceFarmObj.project.arn;
+		newProject = new Projects(projectObj);
+		createdProject = await newProject.save();
+		var resultURL = await s3.fileupload(String(createdProject._id), createdProject.managerId, "Regular", req.file)
+		console.log("resultURL", resultURL)
+		return res
+			.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS)
+			.send(createdProject)
 
 	} catch (error) {
 		console.log(error.message)
@@ -75,7 +63,7 @@ exports.allProjects = async (req, res) => {
 		// console.log(allProjects)
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send(allProjects)
+			.send(allProjects.reverse())
 	} catch (error) {
 		console.log(error.message)
 		return res

@@ -22,9 +22,9 @@ import MangerCreateProject from "./manager/createProject";
 import ManagerViewProjectDetails from "./manager/projectDetails";
 import ManagerViewProjectDevices from "./manager/AddDevices/projectDevices"
 import ManagerBilling from "./manager/Billing/billing";
-///////////
-import MangerCreateProject2 from "./manager/createproject2";
-////////////
+// import MangerCreateProject2 from "./manager/createproject2";
+import ManagerDummy from "./manager/dummy";
+
 import CreateTest from "../components/emulator/CreateTest/CreateTest";
 
 //Create a Main Component
@@ -50,12 +50,11 @@ class Main extends Component {
 				<Route path="/tester/announcements" component={TesterAnnouncements} />
 
 				<Route path="/manager/" component={ManagerCheck} />
+				<Route path="/manager/dummy" component={ManagerDummy} />
 				<Route path="/manager/billing" component={ManagerBilling} />
 				<Route path="/manager/dashboard" component={ManagerHome} />
 				<Route path="/manager/update-account" component={ManagerUpdateAccount} />
-				//////////
-				<Route path="/manager/project/newer" component={MangerCreateProject2} />
-				////////////
+				{/* <Route path="/manager/project/newer" component={MangerCreateProject2} /> */}
 				<Route path="/manager/project/all" component={ManagerViewMyProjects} />
 				<Route path="/manager/project/new" component={MangerCreateProject} />
 				<Route path="/manager/project/view/:projectId" component={ManagerViewProjectDetails} />

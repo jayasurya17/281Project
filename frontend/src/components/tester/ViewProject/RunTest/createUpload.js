@@ -10,7 +10,8 @@ class Landing extends Component {
         this.state = {
             name: "",
             file: "",
-            type: "ANDROID_APP"
+            type: "ANDROID_APP",
+            fileName: ""
         }
     }
 
@@ -28,19 +29,25 @@ class Landing extends Component {
 
     onChangeFileUpload = (e) => {
         this.setState({
-            file: e.target.files[0]
+            file: e.target.files[0],
+            fileName: e.target.value
         })
     }
 
     createUpload = () => {
         
         let fd = new FormData();
+        fd.append('projectId', this.props.projectId)
+        fd.append('userId', localStorage.getItem('281UserId'))
         fd.append('projectArn', this.props.arn)
         fd.append('type', this.state.type)
         fd.append('file', this.state.file)
         axios.post(`${constants.BACKEND_SERVER.URL}/devicefarm/createupload`, fd)
             .then((response) => {
                 console.log(response)
+                this.setState({
+                    fileName: ""
+                })
             })
             .catch((error) => {
                 console.log(error)
@@ -48,25 +55,26 @@ class Landing extends Component {
     }
 
     render() {
-        const types = ['ANDROID_APP', 'IOS_APP', 'WEB_APP', 'EXTERNAL_DATA', 'APPIUM_JAVA_JUNIT_TEST_PACKAGE', 'APPIUM_JAVA_TESTNG_TEST_PACKAGE', 'APPIUM_PYTHON_TEST_PACKAGE', 'APPIUM_NODE_TEST_PACKAGE', 'APPIUM_RUBY_TEST_PACKAGE', 'APPIUM_WEB_JAVA_JUNIT_TEST_PACKAGE', 'APPIUM_WEB_JAVA_TESTNG_TEST_PACKAGE', 'APPIUM_WEB_PYTHON_TEST_PACKAGE', 'APPIUM_WEB_NODE_TEST_PACKAGE', 'APPIUM_WEB_RUBY_TEST_PACKAGE', 'CALABASH_TEST_PACKAGE', 'INSTRUMENTATION_TEST_PACKAGE', 'UIAUTOMATION_TEST_PACKAGE', 'UIAUTOMATOR_TEST_PACKAGE', 'XCTEST_TEST_PACKAGE', 'XCTEST_UI_TEST_PACKAGE', 'APPIUM_JAVA_JUNIT_TEST_SPEC', 'APPIUM_JAVA_TESTNG_TEST_SPEC', 'APPIUM_PYTHON_TEST_SPEC', 'APPIUM_NODE_TEST_SPEC', 'APPIUM_RUBY_TEST_SPEC', 'APPIUM_WEB_JAVA_JUNIT_TEST_SPEC', 'APPIUM_WEB_JAVA_TESTNG_TEST_SPEC', 'APPIUM_WEB_PYTHON_TEST_SPEC', 'APPIUM_WEB_NODE_TEST_SPEC', 'APPIUM_WEB_RUBY_TEST_SPEC', 'INSTRUMENTATION_TEST_SPEC', 'XCTEST_UI_TEST_SPEC']
+        const fileTypes = ['ANDROID_APP', 'IOS_APP', 'WEB_APP', 'EXTERNAL_DATA', 'APPIUM_JAVA_JUNIT_TEST_PACKAGE', 'APPIUM_JAVA_TESTNG_TEST_PACKAGE', 'APPIUM_PYTHON_TEST_PACKAGE', 'APPIUM_NODE_TEST_PACKAGE', 'APPIUM_RUBY_TEST_PACKAGE', 'APPIUM_WEB_JAVA_JUNIT_TEST_PACKAGE', 'APPIUM_WEB_JAVA_TESTNG_TEST_PACKAGE', 'APPIUM_WEB_PYTHON_TEST_PACKAGE', 'APPIUM_WEB_NODE_TEST_PACKAGE', 'APPIUM_WEB_RUBY_TEST_PACKAGE', 'CALABASH_TEST_PACKAGE', 'INSTRUMENTATION_TEST_PACKAGE', 'UIAUTOMATION_TEST_PACKAGE', 'UIAUTOMATOR_TEST_PACKAGE', 'XCTEST_TEST_PACKAGE', 'XCTEST_UI_TEST_PACKAGE', 'APPIUM_JAVA_JUNIT_TEST_SPEC', 'APPIUM_JAVA_TESTNG_TEST_SPEC', 'APPIUM_PYTHON_TEST_SPEC', 'APPIUM_NODE_TEST_SPEC', 'APPIUM_RUBY_TEST_SPEC', 'APPIUM_WEB_JAVA_JUNIT_TEST_SPEC', 'APPIUM_WEB_JAVA_TESTNG_TEST_SPEC', 'APPIUM_WEB_PYTHON_TEST_SPEC', 'APPIUM_WEB_NODE_TEST_SPEC', 'APPIUM_WEB_RUBY_TEST_SPEC', 'INSTRUMENTATION_TEST_SPEC', 'XCTEST_UI_TEST_SPEC']
         var index,
-            allTypes = []
-        for (index in types) {
-            allTypes.push(<option value={types[index]}>{types[index]}</option>)
+            allfileTypes = []
+        for (index in fileTypes) {
+            allfileTypes.push(<option value={fileTypes[index]}>{fileTypes[index]}</option>)
         }
         return (
             <div>
                 <FormGroup>
                         <Label for="image" sm={2}>File</Label>
-                        <Input type="file" name="image" id="image" multiple="" onChange={this.onChangeFileUpload} />
+                        <Input type="file" name="image" id="image" multiple="" onChange={this.onChangeFileUpload} value = { this.state.fileName }/>
                         <FormText color="muted">
                             Upload File for your Project
                     </FormText>
                 </FormGroup>
                 <div className="form-group">
-                    <label htmlFor="typesAvailable">Types</label>
-                    <select id="typesAvailable" class="form-control" onChange={this.typeChangeHandler}>
-                        {allTypes}
+                    <label htmlFor="fileTypesAvailable">File Types</label>
+                    {/* <Select isMulti options = {devices} id="fileTypesAvailable" class="form-control" /> */}
+                    <select id="fileTypesAvailable" class="form-control" onChange={ this.typeChangeHandler } >
+                        {allfileTypes}
                     </select>
                 </div>
 
