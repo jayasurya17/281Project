@@ -13,5 +13,6 @@ router.post('/announcement', projectController.announcement)
 router.get('/devices/all', projectController.getAllDevices)
 router.post('/uploadFile', upload.single('file'), projectController.uploadFile)
 router.get('/filesInProject/:projectId/:userId', projectController.getFilesInProject)
+router.delete('/details/:projectId', projectController.deleteProject)
 
 module.exports = router

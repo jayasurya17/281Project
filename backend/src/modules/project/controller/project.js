@@ -1,5 +1,6 @@
 'use strict'
 
+import mongoose from 'mongoose'
 import Users from '../../../models/mongoDB/users'
 import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
@@ -274,6 +275,68 @@ exports.getFilesInProject = async (req, res) => {
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(userFiles)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+
+exports.deleteProject = async (req, res) => {
+
+	try {
+
+		let projectId = req.params.projectId
+		let projectObj = await Projects.findById(projectId)
+		await Projects.deleteOne({
+			_id : projectId
+		})
+		let index 
+		for (index in projectObj.requestedTesters) {
+			await Users.findByIdAndUpdate(
+				projectObj.requestedTesters[index],
+				{
+					$pull: {
+						requestedProjects: projectId
+					}
+				}
+			)
+		}
+		for (index in projectObj.acceptedTesters) {
+			await Users.findByIdAndUpdate(
+				projectObj.acceptedTesters[index],
+				{
+					$pull: {
+						acceptedProjects: projectId
+					}
+				}
+			)
+		}
+		for (index in projectObj.rejectedTesters) {
+			await Users.findByIdAndUpdate(
+				projectObj.rejectedTesters[index],
+				{
+					$pull: {
+						rejectedProjects: projectId
+					}
+				}
+			)
+		}
+
+		console.log(projectObj)
+		if (projectObj.ARN != undefined) {
+			const params = {
+				arn: projectObj.ARN
+			}
+			await devicefarm.deleteProject(params)
+		}
+
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(projectObj)
 
 	} catch (error) {
 		console.log(error.message)

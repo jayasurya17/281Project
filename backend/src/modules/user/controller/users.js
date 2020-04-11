@@ -185,17 +185,20 @@ exports.allProjects = async (req, res) => {
 exports.acceptedProjects = async (req, res) => {
 
 	try {
-
+		console.log("HERE")
 		let userObj = await Users.findById(req.params.userId),
 			index,
 			projectId,
 			projectObj,
 			allProjects = []
-
+		console.log(userObj)
 		for (index in userObj.acceptedProjects) {
 			projectId = userObj.acceptedProjects[index]
 			projectObj = await Projects.findById(projectId)
-			allProjects.push(projectObj)
+			console.log(projectObj)
+			if (projectObj !== null) {
+				allProjects.push(projectObj)
+			}
 		}
 
 		return res

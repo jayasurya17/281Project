@@ -82,7 +82,7 @@ class Landing extends Component {
 
         let runDetails
         if (this.state.runDetails) {
-            runDetails = <RunContainer runObj={this.state.runDetails} />
+            runDetails = <RunContainer runObj={this.state.runDetails} projectId={this.props.match.params.projectId} />
         }
         return (
             <div>

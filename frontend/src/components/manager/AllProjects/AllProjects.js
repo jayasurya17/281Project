@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, CardBody, CardHeader, CardText, CardTitle, Container } from 'reactstrap';
+import { Card, CardBody, CardHeader, CardText, CardTitle, Container } from 'reactstrap';
 import './AllProjects.css';
 import axios from 'axios';
 import Constants from '../../../utils/constants';
@@ -25,24 +25,33 @@ class AllProjects extends React.Component {
 						item = response.data[index]
 						// console.log(item)
 						projectCards.push(
-							<a href={`/manager/project/view/${item['_id']}`} className="text-decoration-none text-dark">
-								<Card className="card">
-									<CardHeader>{item['name']}</CardHeader>
-									<CardBody>
-										<CardTitle><b>About</b> {item['shortDescription']}</CardTitle>
-										<CardText><b>Technologies</b> {item['technologies']}</CardText>
-										<CardText><b>Detailed Description</b> {item['detailedDescription']}</CardText>
-										<CardText><b>Company Name</b> {item['companyName']}</CardText>
-										<CardText><b>Address</b> {item['address']}</CardText>
-										<CardText><b>City</b> {item['city']}</CardText>
-										<CardText><b>State</b> {item['state']}</CardText>
-										<CardText><b>Zipcode</b> {item['zip']}</CardText>
-										<CardText><b>TestCases</b> {item['testCases']}</CardText>
-										{/* <CardText><b>Working Testers</b> {item['testers_involved'].join()}</CardText> */}
-										<Button className="btn" color="danger" onClick={ this.remove.bind(this, item['name']) }>Remove</Button>
-									</CardBody>
-								</Card>
-							</a>
+
+							<Card className="card">
+								<CardHeader>{item['name']}</CardHeader>
+								<CardBody>
+									<CardTitle><b>About</b> {item['shortDescription']}</CardTitle>
+									<CardText><b>Technologies</b> {item['technologies']}</CardText>
+									<CardText><b>Detailed Description</b> {item['detailedDescription']}</CardText>
+									<CardText><b>Company Name</b> {item['companyName']}</CardText>
+									<CardText><b>Address</b> {item['address']}</CardText>
+									<CardText><b>City</b> {item['city']}</CardText>
+									<CardText><b>State</b> {item['state']}</CardText>
+									<CardText><b>Zipcode</b> {item['zip']}</CardText>
+									<CardText><b>TestCases</b> {item['testCases']}</CardText>
+									{/* <CardText><b>Working Testers</b> {item['testers_involved'].join()}</CardText> */}
+									<div className="row">
+										<div className="col-md-6">
+											<a href={`/manager/project/view/${item['_id']}`}>
+												<button className="btn btn-success w-100">View</button>
+											</a>
+										</div>
+										<div className="col-md-6">
+											<button className="btn btn-danger w-100" onClick={this.remove.bind(this, item['_id'])}>Remove</button>
+										</div>
+									</div>
+
+								</CardBody>
+							</Card>
 						)
 					}
 
@@ -55,18 +64,15 @@ class AllProjects extends React.Component {
 
 	}
 
-	remove = (name) => {
-		alert('This will delete Project entry, S3 space, related bugs')
-		let data = { projectname: name }
-		console.log('Project Removal Manager: ')
-		console.log(data)
-		axios.post(':3001/admin/deleteProject', data)
+	remove = (projectId) => {
+		alert('This will delete Project, S3 space and related bugs')
+		axios.delete(`${Constants.BACKEND_SERVER.URL}/project/details/${projectId}`)
 			//axios.post(hostedAddress+'/admin/deleteProject',data)
 			.then((response) => {
 				console.log('deleted', response.data)
-				window.location.reload()
 			})
 			.catch(() => { console.log("error") })
+		window.location.reload()
 	}
 	render() {
 		return (
@@ -83,7 +89,7 @@ class AllProjects extends React.Component {
 					<div>
 						<div class="card-arrange">
 							<Container>
-								{ this.state.allProjCards }
+								{this.state.allProjCards}
 							</Container>
 						</div>
 					</div>
@@ -92,8 +98,5 @@ class AllProjects extends React.Component {
 		);
 	}
 }
-
-
-
 
 export default AllProjects;

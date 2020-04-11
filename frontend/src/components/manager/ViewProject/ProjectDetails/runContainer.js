@@ -12,6 +12,7 @@ class Landing extends Component {
     }
 
     deleteRun = () => {
+		alert(`This will delete run from the project and its related artifacts`)
         axios.delete(`${constants.BACKEND_SERVER.URL}/devicefarm/deleteRun?arn=${this.props.runObj.arn}`)
             .then(() => {
                 this.props.updateHandler()
@@ -98,7 +99,7 @@ class Landing extends Component {
                         </a>
                     </div>
                     <div className="col-md-4">
-                        <button className="w-100 btn btn-danger" onClick={this.deleteRun}>Delete this project</button>
+                        <button className="w-100 btn btn-danger" onClick={this.deleteRun}>Delete this run</button>
                     </div>
                 </div>
             </div>
