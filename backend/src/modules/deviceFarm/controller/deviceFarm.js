@@ -342,3 +342,28 @@ exports.listSuites = async (req, res) => {
 			.send(error.message)
 	}
 }
+
+/**
+ * Schedule Run on a project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.listTests = async (req, res) => {
+
+	try {
+		const params = {
+			arn: req.query.suiteArn
+		}
+		let allTests = await devicefarm.listTests(params)
+		
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(allTests)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
