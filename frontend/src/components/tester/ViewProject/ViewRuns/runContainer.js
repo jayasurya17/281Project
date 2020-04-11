@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import constants from '../../../../utils/constants';
 
 class Landing extends Component {
+
+    stopRun = () => {
+        axios.delete(`${constants.BACKEND_SERVER.URL}/devicefarm/stopRun?arn=${this.props.runObj.arn}`)
+            .then(() => {
+                this.props.updateHandler()
+            })
+    }
 
     render() {
 
         console.log(this.props.runObj)
 
         let runStatus
+        let runResult
         if (['PENDING', 'PENDING_CONCURRENCY', 'PENDING_DEVICE'].includes(this.props.runObj.status)) {
             runStatus = <span className="text-info font-weight-bold">{this.props.runObj.status}</span>
         } else if (['PROCESSING', 'SCHEDULING', 'PREPARING'].includes(this.props.runObj.status)) {
@@ -19,7 +29,7 @@ class Landing extends Component {
             runStatus = <span className="text-danger font-weight-bold">{this.props.runObj.status}</span>
         }
 
-        let runResult
+
         if (this.props.runObj.result === 'PENDING') {
             runResult = <span className="text-info font-weight-bold">{this.props.runObj.result}</span>
         } else if (this.props.runObj.result === 'PASSED') {
@@ -28,6 +38,19 @@ class Landing extends Component {
             runResult = <span className="text-warning font-weight-bold">{this.props.runObj.result}</span>
         } else {
             runResult = <span className="text-danger font-weight-bold">{this.props.runObj.result}</span>
+        }
+
+        let projectStatus
+        if (this.props.runObj.status === 'COMPLETED' || this.props.runObj.status === 'STOPPING') {
+            projectStatus = [
+                <h5 className="font-weight-lighter">Status: {runStatus}</h5>,
+                <h5 className="font-weight-lighter">Result: {runResult}</h5>
+            ]
+        } else {
+            projectStatus = [
+                <h5 className="font-weight-lighter">Status: {runStatus}</h5>,
+                <h5 className="font-weight-lighter"><button className="btn btn-danger w-50" onClick={this.stopRun}>Stop run</button></h5>
+            ]
         }
 
         return (
@@ -39,8 +62,7 @@ class Landing extends Component {
                         <h5 className="font-weight-lighter">Platform: {this.props.runObj.platform}</h5>
                     </div>
                     <div className="col-md-6">
-                        <h5 className="font-weight-lighter">Status: {runStatus}</h5>
-                        <h5 className="font-weight-lighter">Result: {runResult}</h5>
+                        {projectStatus}
                     </div>
                 </div>
                 <div className="row border">

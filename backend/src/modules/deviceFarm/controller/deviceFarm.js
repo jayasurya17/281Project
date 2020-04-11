@@ -207,3 +207,29 @@ exports.listRuns = async (req, res) => {
 			.send(error.message)
 	}
 }
+
+/**
+ * Stop a run in the project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.stopRun = async (req, res) => {
+
+	try {
+		const params = {
+			arn: req.query.arn
+		}
+		let runObj = await devicefarm.stopRun(params)
+		console.log("runObj: ", runObj)
+
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(runObj)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}

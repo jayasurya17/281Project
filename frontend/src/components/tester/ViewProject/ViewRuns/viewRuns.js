@@ -34,12 +34,28 @@ class Landing extends Component {
             })
     }
 
+    updateRuns = () => {
+        axios.get(`${constants.BACKEND_SERVER.URL}/project/details/${this.props.match.params.projectId}`)
+            .then((response) => {
+                this.setState({
+                    arn : response.data.ARN,
+                    projectObj: response.data
+                })
+                axios.get(`${constants.BACKEND_SERVER.URL}/devicefarm/listRuns?projectArn=${response.data.ARN}`)
+                .then((response) => {
+                    this.setState({
+                        allRuns: response.data.runs
+                    })
+                })
+            })
+    }
+
     render() {
 
         let runs = [],
             index
         for (index in this.state.allRuns) {
-            runs.push(<RunContainer runObj={ this.state.allRuns[index] } />)
+            runs.push(<RunContainer runObj={ this.state.allRuns[index] } updateHandler = { this.updateRuns } />)
         }
 
         return (
