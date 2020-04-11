@@ -1,6 +1,8 @@
 'use strict'
 
 import Projects from '../../../models/mongoDB/projects'
+import Users from '../../../models/mongoDB/users'
+import Runs from '../../../models/mongoDB/runs'
 import constants from '../../../utils/constants'
 import devicefarm from '../../../utils/deviceFarmUtils'
 import findProject from '../../../utils/projectUtils'
@@ -146,6 +148,14 @@ exports.scheduleRun = async (req, res) => {
 		console.log("Params for scheduling run", params)
 		let scheduledRun = await devicefarm.scheduleRun(params)
 		console.log(`scheduledRun: ${scheduledRun}`)
+		const userObj = await Users.findById(req.body.userId)
+		const runParams = {
+			userId: req.body.userId,
+			userName: userObj.name,
+			ARN: scheduledRun.run.arn
+		}
+		const runObj = new Runs(runParams)
+		await runObj.save()
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(scheduledRun)
@@ -194,11 +204,30 @@ exports.listRuns = async (req, res) => {
 		const params = {
 			arn: req.query.projectArn
 		}
-		let allRuns = await devicefarm.listRuns(params)
-		console.log("allRuns: ", allRuns)
+		let allRuns = await devicefarm.listRuns(params),
+			refinedListOfRuns = [],
+			index
+			allRuns = allRuns.runs
+		if (req.query.type == "Tester") {
+			for (index in allRuns) {
+				let userRuns = await Runs.findOne({ARN: allRuns[index].arn})
+				if (userRuns.userId == req.query.userId) {
+					refinedListOfRuns.push(allRuns[index])
+				}
+			}			
+		} else {
+			for (index in allRuns) {
+				let userRuns = await Runs.findOne({ARN: allRuns[index].arn})
+				allRuns[index]['userName'] = userRuns.userName
+				refinedListOfRuns.push(allRuns[index])
+			}
+		}
+		// refinedListOfRuns = allRuns
+		// console.log("allRuns: ", allRuns)
+		// console.log("refinedListOfRuns: ", refinedListOfRuns)
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send(allRuns)
+			.send(refinedListOfRuns)
 
 	} catch (error) {
 		console.log(error.message)
@@ -220,6 +249,32 @@ exports.stopRun = async (req, res) => {
 			arn: req.query.arn
 		}
 		let runObj = await devicefarm.stopRun(params)
+		console.log("runObj: ", runObj)
+
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(runObj)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+/**
+ * Delete run in the project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.deleteRun = async (req, res) => {
+
+	try {
+		const params = {
+			arn: req.query.arn
+		}
+		let runObj = await devicefarm.deleteRun(params)
 		console.log("runObj: ", runObj)
 
 		return res

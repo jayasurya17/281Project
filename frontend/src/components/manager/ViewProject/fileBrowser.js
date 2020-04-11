@@ -47,12 +47,14 @@ class Landing extends Component {
                     </div>
                 )
             }
-            allProjCards.push(
-                <div className="p-5 border-bottom">
-                    <h4>{this.state.allProjCards[userId].name}<span className="font-weight-light">(User ID: {userId})</span></h4>
-                    {files}
-                </div>
-            )
+            if (files.length > 0) {
+                allProjCards.push(
+                    <div className="p-5 border-bottom">
+                        <h4>{this.state.allProjCards[userId].name}<span className="font-weight-light">(User ID: {userId})</span></h4>
+                        {files}
+                    </div>
+                )
+            }
         }
 
         return (

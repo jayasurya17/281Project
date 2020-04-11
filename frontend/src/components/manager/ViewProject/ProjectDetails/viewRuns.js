@@ -43,7 +43,7 @@ class Landing extends Component {
         let runs = [],
             index
         for (index in this.state.allRuns) {
-            console.log(this.state.allRuns[index])
+            // console.log(this.state.allRuns[index])
             runs.push(<RunContainer runObj={ this.state.allRuns[index] } updateHandler = { this.updateRuns } />)
         }
 

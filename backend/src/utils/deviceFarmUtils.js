@@ -204,3 +204,18 @@ exports.stopRun = (params) => {
         });
     })    
 }
+
+exports.deleteRun = (params) => {
+    console.log(params)
+    return new Promise((resolve, reject) => {
+        devicefarm.deleteRun(params, function (err, data) {
+            if (err) {
+                console.log(err, err.stack); // an error occurred
+                reject ();
+            }
+            else {
+                resolve (data);           // successful response
+            }
+        });
+    })    
+}

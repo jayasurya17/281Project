@@ -12,5 +12,6 @@ router.get('/listRuns', deviceFarmController.listRuns)
 router.delete('/deletepool', deviceFarmController.deleteDevicePool)
 router.post('/schedulerun', upload.fields([{ name: 'file'} , { name: 'testFile'}]), deviceFarmController.scheduleRun)
 router.delete('/stopRun', deviceFarmController.stopRun)
+router.delete('/deleteRun', deviceFarmController.deleteRun)
 
 module.exports = router

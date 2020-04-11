@@ -11,6 +11,13 @@ class Landing extends Component {
             })
     }
 
+    deleteRun = () => {
+        axios.delete(`${constants.BACKEND_SERVER.URL}/devicefarm/deleteRun?arn=${this.props.runObj.arn}`)
+            .then(() => {
+                this.props.updateHandler()
+            })
+    }
+
     render() {
 
         let runStatus
@@ -53,7 +60,7 @@ class Landing extends Component {
 
         return (
             <div className="mt-2 mb-2 p-5 shadow">
-                <p className="display-4">{this.props.runObj.name}</p>
+                <p className="display-4">{this.props.runObj.name}<span className="text-primary"> - {this.props.runObj.userName}</span></p>
                 <div className="row">
                     <div className="col-md-6">
                         <h5 className="font-weight-lighter">Type: {this.props.runObj.type}</h5>
@@ -78,6 +85,11 @@ class Landing extends Component {
                     <div className="col-md-2 bg-danger text-white p-1 text-center font-weight-bold">{this.props.runObj.counters.errored}</div>
                     <div className="col-md-2 bg-info text-dark p-1 text-center font-weight-bold">{this.props.runObj.counters.stopped}</div>
                     <div className="col-md-2 bg-primary text-white p-1 text-center font-weight-bold">{this.props.runObj.counters.skipped}</div>
+                </div>
+                <div className="row mt-5">
+                    <div className="col-md-4 offset-md-8">
+                        <button className="w-100 btn btn-danger" onClick={this.deleteRun}>Delete this project</button>
+                    </div>
                 </div>
             </div>
         )
