@@ -25,7 +25,7 @@ import ManagerViewProjectDetails from "./manager/projectDetails";
 import ManagerViewProjectRuns from "./manager/ViewProject/ProjectDetails/viewRuns";
 import ManagerViewProjectDevices from "./manager/AddDevices/projectDevices"
 import ManagerBilling from "./manager/Billing/billing";
-import ManagerViewRunDetails from "./manager/ViewProject/RunDetails/viewJobs";
+import ManagerViewRunDetails from "./manager/ViewProject/RunDetails/listJobs";
 import ManagerDummy from "./manager/dummy";
 
 import CreateTest from "../components/emulator/CreateTest/CreateTest";

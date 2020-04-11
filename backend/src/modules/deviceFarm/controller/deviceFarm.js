@@ -317,3 +317,28 @@ exports.listJobs = async (req, res) => {
 			.send(error.message)
 	}
 }
+
+/**
+ * Schedule Run on a project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.listSuites = async (req, res) => {
+
+	try {
+		const params = {
+			arn: req.query.jobArn
+		}
+		let allSuites = await devicefarm.listSuites(params)
+		
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(allSuites)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}

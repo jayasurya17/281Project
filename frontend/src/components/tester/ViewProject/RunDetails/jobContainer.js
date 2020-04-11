@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ListSuites from './listSuites';
 
 class Landing extends Component {
 
@@ -41,9 +42,11 @@ class Landing extends Component {
         } else {
             runResult = <span className="text-danger">{this.props.jobObj.result}</span>
         }
-        let suitesButtonText
+        let suitesButtonText,
+            suiteContainer = []
         if (this.state.viewSuites) {
-            suitesButtonText = "Hide suites"
+            suitesButtonText = "Hide suites";
+            suiteContainer = <ListSuites jobArn={this.props.jobObj.arn} />;
         } else {
             suitesButtonText = "View suites"
         }
@@ -75,7 +78,7 @@ class Landing extends Component {
                 <div className="row">
                     <div className="col-md-4 offset-md-8 text-center"><button className="w-75 btn btn-info" onClick={this.toggleDisplay}>{suitesButtonText}</button></div>
                 </div>
-                
+                {suiteContainer}
             </div>
         )
     }
