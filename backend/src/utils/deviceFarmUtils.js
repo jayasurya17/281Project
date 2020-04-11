@@ -279,3 +279,18 @@ exports.listTests = (params) => {
         });
     })    
 }
+
+exports.listArtifacts = (params) => {
+    console.log(params)
+    return new Promise((resolve, reject) => {
+        devicefarm.listArtifacts(params, function (err, data) {
+            if (err) {
+                console.log(err, err.stack); // an error occurred
+                reject ();
+            }
+            else {
+                resolve (data);           // successful response
+            }
+        });
+    })    
+}

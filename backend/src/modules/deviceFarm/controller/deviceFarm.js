@@ -194,6 +194,32 @@ exports.listUploads = async (req, res) => {
 }
 
 /**
+ * Get a run in the project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.getRun = async (req, res) => {
+
+	try {
+		const params = {
+			arn: req.query.runArn
+		}
+		let runObj = await devicefarm.getRun(params)
+		console.log("runObj: ", runObj)
+
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(runObj)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+/**
  * List runs present in a project.
  * @param  {Object} req request object
  * @param  {Object} res response object
@@ -359,6 +385,80 @@ exports.listTests = async (req, res) => {
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(allTests)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+/**
+ * Schedule Run on a project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.listArtifacts = async (req, res) => {
+
+	try {
+		const runParams = {
+			arn: req.query.runArn
+		}
+		let runDetails,
+			jobIndex,
+			allJobs,
+			suiteIndex,
+			suiteParams,
+			allSuites,
+			testIndex,
+			testParams,
+			allTests,
+			artifactParams,
+			allArtifacts = []
+		runDetails = await devicefarm.getRun(runParams)
+		allJobs = await devicefarm.listJobs(runParams)
+		for (jobIndex in allJobs.jobs) {
+			suiteParams = {
+				arn: allJobs.jobs[jobIndex].arn
+			}
+
+
+			allSuites = await devicefarm.listSuites(suiteParams)
+			for (suiteIndex in allSuites.suites) {
+				testParams = {
+					arn: allSuites.suites[suiteIndex].arn
+				}
+
+
+
+				allTests = await devicefarm.listTests(testParams)
+				for (testIndex in allTests.tests) {
+					artifactParams = {
+						arn: allTests.tests[testIndex].arn,
+						type: req.query.type
+					}
+					let artifacts = await devicefarm.listArtifacts(artifactParams)
+					let tempObj = {
+						job: allJobs.jobs[jobIndex].name,
+						suite: allSuites.suites[suiteIndex].name,
+						test: allTests.tests[testIndex].name,
+						artifacts: artifacts.artifacts
+					}
+					allArtifacts.push(tempObj)
+				}
+			}
+		}
+		
+		
+		
+		
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send({
+				runDetails: runDetails.run,
+				allArtifacts: allArtifacts
+			})
 
 	} catch (error) {
 		console.log(error.message)

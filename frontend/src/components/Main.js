@@ -15,6 +15,7 @@ import TesterAnnouncements from "./tester/viewAnnouncements";
 import TesterRunTest from "./tester/ViewProject/RunTest/runTest";
 import TesterViewRuns from "./tester/ViewProject/ViewRuns/viewRuns";
 import TesterViewRunDetails from "./tester/ViewProject/RunDetails/viewJobs";
+import TesterViewRunArtifacts from "./tester/ViewProject/RunArtifacts/viewArtifacts";
 
 import ManagerHome from "./manager/dashboard";
 import ManagerCheck from "./manager/managerCheck";
@@ -26,6 +27,7 @@ import ManagerViewProjectRuns from "./manager/ViewProject/ProjectDetails/viewRun
 import ManagerViewProjectDevices from "./manager/AddDevices/projectDevices"
 import ManagerBilling from "./manager/Billing/billing";
 import ManagerViewRunDetails from "./manager/ViewProject/RunDetails/listJobs";
+import ManagerViewRunArtifacts from "./manager/ViewProject/RunArtifacts/viewArtifacts";
 import ManagerDummy from "./manager/dummy";
 
 import CreateTest from "../components/emulator/CreateTest/CreateTest";
@@ -51,6 +53,7 @@ class Main extends Component {
 				<Route path="/tester/project/run/schedule/:projectId" component={TesterRunTest} />
 				<Route path="/tester/project/run/view/:projectId" component={TesterViewRuns} />
 				<Route path="/tester/project/run/details/:projectId" component={TesterViewRunDetails} />
+				<Route path="/tester/project/run/artifacts/:projectId" component={TesterViewRunArtifacts} />
 
 				<Route path="/tester/announcements" component={TesterAnnouncements} />
 
@@ -65,6 +68,7 @@ class Main extends Component {
 				<Route path="/manager/project/view/:projectId" component={ManagerViewProjectDetails} />
 				<Route path="/manager/project/runs/:projectId" component={ManagerViewProjectRuns} />
 				<Route path="/manager/project/run/details/:projectId" component={ManagerViewRunDetails} />
+				<Route path="/manager/project/run/artifacts/:projectId" component={ManagerViewRunArtifacts} />
 				<Route path="/manager/project/devices/:projectId" component={ManagerViewProjectDevices} />
 
 				<Route path="/tester/createTest/emulator" component={CreateTest} />
