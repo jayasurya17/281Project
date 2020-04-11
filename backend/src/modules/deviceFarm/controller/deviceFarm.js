@@ -288,3 +288,32 @@ exports.deleteRun = async (req, res) => {
 			.send(error.message)
 	}
 }
+
+/**
+ * Schedule Run on a project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.listJobs = async (req, res) => {
+
+	try {
+		const params = {
+			arn: req.query.runArn
+		}
+		let runDetails = await devicefarm.getRun(params)
+		let allJobs = await devicefarm.listJobs(params)
+		
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send({
+				runDetails: runDetails.run,
+				allJobs: allJobs
+			})
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}

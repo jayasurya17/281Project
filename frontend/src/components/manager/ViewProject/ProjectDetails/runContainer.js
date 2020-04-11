@@ -87,7 +87,12 @@ class Landing extends Component {
                     <div className="col-md-2 bg-primary text-white p-1 text-center font-weight-bold">{this.props.runObj.counters.skipped}</div>
                 </div>
                 <div className="row mt-5">
-                    <div className="col-md-4 offset-md-8">
+                    <div className="col-md-4 offset-md-4">
+                        <a href={`/manager/project/run/details/${this.props.projectId}?${this.props.runObj.arn}`}>
+                            <button className="w-75 btn btn-light text-center">View more details</button>
+                        </a>
+                    </div>
+                    <div className="col-md-4">
                         <button className="w-100 btn btn-danger" onClick={this.deleteRun}>Delete this project</button>
                     </div>
                 </div>

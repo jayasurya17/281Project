@@ -14,6 +14,7 @@ import TesterViewProjectDetails from "./tester/projectDetails";
 import TesterAnnouncements from "./tester/viewAnnouncements";
 import TesterRunTest from "./tester/ViewProject/RunTest/runTest";
 import TesterViewRuns from "./tester/ViewProject/ViewRuns/viewRuns";
+import TesterViewRunDetails from "./tester/ViewProject/RunDetails/viewJobs";
 
 import ManagerHome from "./manager/dashboard";
 import ManagerCheck from "./manager/managerCheck";
@@ -49,6 +50,7 @@ class Main extends Component {
 				<Route path="/tester/project/view/:projectId" component={TesterViewProjectDetails} />
 				<Route path="/tester/project/run/schedule/:projectId" component={TesterRunTest} />
 				<Route path="/tester/project/run/view/:projectId" component={TesterViewRuns} />
+				<Route path="/tester/project/run/details/:projectId" component={TesterViewRunDetails} />
 
 				<Route path="/tester/announcements" component={TesterAnnouncements} />
 
@@ -62,6 +64,7 @@ class Main extends Component {
 				<Route path="/manager/project/new" component={MangerCreateProject} />
 				<Route path="/manager/project/view/:projectId" component={ManagerViewProjectDetails} />
 				<Route path="/manager/project/runs/:projectId" component={ManagerViewProjectRuns} />
+				<Route path="/manager/project/run/details/:runArn" component={TesterViewRunDetails} />
 				<Route path="/manager/project/devices/:projectId" component={ManagerViewProjectDevices} />
 
 				<Route path="/tester/createTest/emulator" component={CreateTest} />
