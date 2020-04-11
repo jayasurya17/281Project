@@ -25,7 +25,7 @@ import ManagerViewProjectDetails from "./manager/projectDetails";
 import ManagerViewProjectRuns from "./manager/ViewProject/ProjectDetails/viewRuns";
 import ManagerViewProjectDevices from "./manager/AddDevices/projectDevices"
 import ManagerBilling from "./manager/Billing/billing";
-// import MangerCreateProject2 from "./manager/createproject2";
+import ManagerViewRunDetails from "./manager/ViewProject/RunDetails/viewJobs";
 import ManagerDummy from "./manager/dummy";
 
 import CreateTest from "../components/emulator/CreateTest/CreateTest";
@@ -64,7 +64,7 @@ class Main extends Component {
 				<Route path="/manager/project/new" component={MangerCreateProject} />
 				<Route path="/manager/project/view/:projectId" component={ManagerViewProjectDetails} />
 				<Route path="/manager/project/runs/:projectId" component={ManagerViewProjectRuns} />
-				<Route path="/manager/project/run/details/:runArn" component={TesterViewRunDetails} />
+				<Route path="/manager/project/run/details/:projectId" component={ManagerViewRunDetails} />
 				<Route path="/manager/project/devices/:projectId" component={ManagerViewProjectDevices} />
 
 				<Route path="/tester/createTest/emulator" component={CreateTest} />

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from '../../../common/header';
 import Footer from '../../../common/footer';
 import Navigation from '../../../common/navigation';
-import ProjectNavbar from '../../../common/projectTesterNavbar';
+import ProjectNavbar from '../../../common/projectManagerNavbar';
 import axios from 'axios';
 import constants from '../../../../utils/constants';
 import RunContainer from './runContainer';
