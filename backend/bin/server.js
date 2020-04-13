@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
 const usersRouter = require('../src/modules/user/router/users');
 const managerRouter = require('../src/modules/manager/router/manager');
 const projectRouter = require('../src/modules/project/router/project');
+const bugRouter = require('../src/modules/bugs/router/bugs');
 const emulatorRouter = require('../src/modules/appiumRuns/router/appium');
 const deviceFarmRouter = require('../src/modules/deviceFarm/router/deviceFarm');
 
@@ -49,6 +50,7 @@ app.use((req, res, next) => {
 app.use('/users', usersRouter);
 app.use('/manager', managerRouter);
 app.use('/project', projectRouter);
+app.use('/bugs',bugRouter);
 app.use('/emulators', emulatorRouter);
 app.use('/devicefarm', deviceFarmRouter);
 
