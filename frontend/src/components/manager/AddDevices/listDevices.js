@@ -15,7 +15,7 @@ class Landing extends Component {
     componentDidMount() {
         axios.get(`${Constants.BACKEND_SERVER.URL}/project/devices/all?projectId=${this.props.projectId}`)
             .then((response) => {
-                console.log(response.data.devices);
+                // console.log(response.data.devices);
                 this.setState({
                     allDevices: response.data.devices
                 })

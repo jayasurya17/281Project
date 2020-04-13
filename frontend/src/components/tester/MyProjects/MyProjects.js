@@ -16,6 +16,7 @@ class AllProjects extends React.Component {
 	componentDidMount() {
 		axios.get(`${Constants.BACKEND_SERVER.URL}/users/project/accepted/${localStorage.getItem('281UserId')}`)
 			.then((response) => {
+				console.log(response.data)
 				
 				if (response.data != null) {
 

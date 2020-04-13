@@ -3,6 +3,7 @@ import axios from 'axios';
 import Constants from '../../../utils/constants';
 import FileBrowser from './fileBrowser';
 import InfoContainer from './infoContainer';
+import UploadFile from './uploadFile';
 
 
 class Landing extends Component {
@@ -10,6 +11,7 @@ class Landing extends Component {
     constructor() {
         super();
         this.state = {
+            arn: "",
             name: "",
             about: "",
             description: null,
@@ -31,6 +33,7 @@ class Landing extends Component {
                 var projectObj = response.data
 
                 this.setState({
+                    arn: projectObj.ARN,
                     name: projectObj.name,
                     about: projectObj.shortDescription,
                     description: projectObj.detailedDescription,
@@ -123,7 +126,9 @@ class Landing extends Component {
                     <div className="col-md-6">
                         <InfoContainer projectId={this.props.projectId} />
                         <p className="display-4">Manage project</p>
+                        <UploadFile projectId={this.props.projectId} />
                         <a href={`/manager/project/devices/${this.props.projectId}`}><button className="btn btn-primary w-100">Add device pool for this project</button></a>
+                        <a href={`/manager/project/runs/${this.props.projectId}`}><button className="btn btn-primary w-100">View runs in the project</button></a>
                     </div>
 
                 </div>
@@ -136,7 +141,7 @@ class Landing extends Component {
                     </div>
                 </div>
 
-                <FileBrowser />
+                <FileBrowser projectId = { this.props.projectId } />
             </div>
         )
     }

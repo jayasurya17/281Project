@@ -20,7 +20,7 @@ class CreateTest extends Component {
   };
 
   handleChange = e => {
-    //console.log(this.state.capabilities);
+    console.log(this.state);
     const { value, name } = e.target;
     this.setState({ [name]: value });
   };
@@ -100,71 +100,143 @@ class CreateTest extends Component {
     }
   };
 
+
   render() {
+    const platformVersionSelect = () => {
+      if (this.state.platformName === 'Android') {
+        return (
+          <select name="platformVersion"
+            value={this.state.platformVersion}
+            onChange={this.handleChange}>
+            <option value=''>Select Version</option>
+
+            <option value='8.1'>Oreo 8.1</option>
+          </select>
+        )
+      }
+      else if (this.state.platformName === 'iOS') {
+        return (
+          <select name="platformVersion"
+            value={this.state.platformVersion}
+            onChange={this.handleChange}>
+            <option value=''>Select Version</option>
+
+            <option value='13'>iOS 13</option>
+          </select>
+        )
+      }
+      else {
+        return (
+          <select name="platformVersion"
+            value={this.state.platformVersion}
+            onChange={this.handleChange}>
+            <option >Select Platform Name first</option>
+          </select>
+        )
+      }
+    }
+
+    const deviceSelect = () => {
+      if (this.state.platformVersion === '8.1') {
+        return (
+          <select name="deviceName"
+            value={this.state.deviceName}
+            onChange={this.handleChange}>
+            <option value=''>Select Device</option>
+
+            <option value='emulator-5554'>Pixel 3a</option>
+            <option value='emulator-5556'>Pixel XL</option>
+
+          </select>
+        )
+      }
+      else if (this.state.platformName === 'iOS') {
+        return (
+          <select name="platformVersion"
+            value={this.state.platformVersion}
+            onChange={this.handleChange}>
+            <option value=''>Select Version</option>
+
+            <option value='iPhoneXS'>iPhone XS</option>
+            <option value='iPhone6'>iPhone 6</option>
+
+          </select>
+        )
+      }
+      else {
+        return (
+          <select name="platformVersion"
+            value={this.state.platformVersion}
+            onChange={this.handleChange}>
+            <option >Select Platform Version first</option>
+          </select>
+        )
+      }
+    }
+
+
+
     return (
       <div>
         {/* <!-- Card with information --> */}
-        <div class="bg-white pl-5 pr-5 pb-5">
+        < div className=" bg-white pl-5 pr-5 pb-5" >
           <Header />
           <Navigation />
-          <div>
-            <form className="emulatorForm">
-              Platform Name:{" "}
-              <input
-                type="text"
-                name="platformName"
-                value={this.state.platformName}
-                onChange={this.handleChange}
-              ></input>
+          <div className='createTest'>
+            <div>
+              <form className="emulatorForm">
+                Platform Name:{" "}
+                <select name="platformName"
+                  value={this.state.platformName}
+                  onChange={this.handleChange}>
+                  <option value=''>Select Platform Name</option>
+                  <option value='Android' >Android</option>
+                  <option
+                    value="iOS"
+                  >iOS</option>
+
+                </select>
+
               Platform Version:{" "}
-              <input
-                type="text"
-                name="platformVersion"
-                value={this.state.platformVersion}
-                onChange={this.handleChange}
-              ></input>
+                {platformVersionSelect()}
               Device Name:{" "}
-              <input
-                type="text"
-                name="deviceName"
-                value={this.state.deviceName}
-                onChange={this.handleChange}
-              ></input>
-              {
-                //upload test apk file here
-              }
+                {deviceSelect()}
+                {
+                  //upload test apk file here
+                }
               App:
               <input type="file" onChange={this.onFileChange} />
-              {this.fileData()}
-              <button onClick={this.onFileUpload}>Upload!</button>
+                {this.fileData()}
+                <button onClick={this.onFileUpload}>Upload!</button>
               App Package:{" "}
-              <input
-                type="text"
-                name="appPackage"
-                value={this.state.appPackage}
-                onChange={this.handleChange}
-              ></input>
+                <input
+                  type="text"
+                  name="appPackage"
+                  value={this.state.appPackage}
+                  onChange={this.handleChange}
+                ></input>
               App Activity:{" "}
-              <input
-                type="text"
-                name="appActivity"
-                value={this.state.appActivity}
-                onChange={this.handleChange}
-              ></input>
+                <input
+                  type="text"
+                  name="appActivity"
+                  value={this.state.appActivity}
+                  onChange={this.handleChange}
+                ></input>
               Automation Name:{" "}
-              <input
-                type="text"
-                name="automationName"
-                value={this.state.automationName}
-                onChange={this.handleChange}
-              ></input>
-              <button onClick={this.onSubmit}>Create Test</button>
-            </form>
+                <input
+                  type="text"
+                  name="automationName"
+                  value={this.state.automationName}
+                  onChange={this.handleChange}
+                ></input>
+                <button onClick={this.onSubmit}>Create Test</button>
+              </form>
+            </div>
           </div>
 
           <Footer />
-        </div>
-      </div>
+        </div >
+      </div >
     );
   }
 }

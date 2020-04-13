@@ -113,7 +113,7 @@ class Landing extends Component {
                 <button className="btn btn-primary w-100" onClick={ this.joinProject }><h1 className="display-4">Join Project</h1></button>
             </div>
         } else if (this.state.isMember === "Accepted") {
-            infoContainer = <InfoContainer />
+            infoContainer = <InfoContainer projectId = { this.props.projectId } />
 
         } else if (this.state.isMember === "Requested") {
             infoContainer = 
@@ -149,7 +149,7 @@ class Landing extends Component {
                     { infoContainer }
 
                 </div>
-                <FileBrowser />
+                <FileBrowser projectId = { this.props.projectId } />
             </div>
         )
     }

@@ -1,21 +1,50 @@
 import React, {Component} from 'react';
 import { Col, FormGroup, Input, FormText } from 'reactstrap';
+import axios from 'axios';
+import constants from '../../../utils/constants'
+
 class Landing extends Component {
 
     constructor() {
         super();
         this.state = {
-            selectedFile: ""
+            selectedFile: "",
+            filename: "",
+            successMsg: "",
+            errMsg: ""
         }
     }
 
     onChangeFileUpload = (e) => {
         this.setState({
-            selectedFile: e.target.value
+            selectedFile: e.target.files[0],
+            filename: e.target.value
         });
     }
 
     uploadNewFile = () => {
+        if (this.state.filename === "") {
+            return
+        }
+        let fd = new FormData();
+        fd.append('userId', localStorage.getItem('281UserId'))
+        fd.append('projectId', this.props.projectId)
+        fd.append('file', this.state.selectedFile)
+
+        axios.post(`${constants.BACKEND_SERVER.URL}/project/uploadFile`, fd)
+        .then(() => {
+            this.setState({
+                filename: "",
+                successMsg: "Uploaded successfully",
+                errMsg: ""
+            })
+        })
+        .catch(() => {
+            this.setState({
+                successMsg: "",
+                errMsg: "Failed to upload"
+            })
+        })
 
     }
 
@@ -26,10 +55,10 @@ class Landing extends Component {
                 <h1 className="display-4">Infomation</h1>
                 <FormGroup row>
                     <Col sm={8}>
-                        <Input type="file" name="image" id="image" multiple="" onChange={this.onChangeFileUpload}  value={ this.state.selectedFile } />
-                        <FormText color="muted">
-                            Upload File for your Project
-                        </FormText>
+                        <Input type="file" name="image" id="image" multiple="" onChange={this.onChangeFileUpload}  value={ this.state.filename } />
+                        <FormText color="muted">Upload File for your Project</FormText>                      
+                        <FormText color="danger">{ this.state.errMsg }</FormText>                   
+                        <FormText color="success">{ this.state.successMsg }</FormText>
                     </Col>
                     <Col sm={4}>
                         <button className="btn btn-warning w-100" onClick={ this.uploadNewFile }>Upload file</button>
@@ -39,7 +68,9 @@ class Landing extends Component {
                     <button className="btn btn-danger w-100">Report Bugs</button>
                 </div>
                 <div className="row mt-2 mb-2">
-                    <button className="btn btn-success w-100">Run test on real devices</button>
+                    <a href={ `/tester/project/run/schedule/${this.props.projectId}` } className="w-100">
+                        <button className="btn btn-success w-100">Run test on real devices</button>
+                    </a>
                 </div>
                 <div className="row mt-2 mb-2">
                     <button className="btn btn-info w-100">Run test on emulators</button>

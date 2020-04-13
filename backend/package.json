@@ -42,6 +42,7 @@
     "path": "^0.12.7",
     "redis": "^2.8.0",
     "redis-server": "^1.2.2",
+    "request": "^2.88.2",
     "sequelize": "^5.19.0",
     "uuid": "^3.3.3",
     "webdriverio": "^6.0.13"
