@@ -31,6 +31,14 @@ const Users = new mongoose.Schema({
 		type: String,
 		required: true
 	},
+    fileCount: {
+		type: Number,
+		default: 0
+	},
+    bugsReported: {
+		type: Number,
+		default: 0
+	},
 	acceptedProjects: [ mongoose.Types.ObjectId ],
 	requestedProjects:[ mongoose.Types.ObjectId ],
 	rejectedProjects:[ mongoose.Types.ObjectId ],

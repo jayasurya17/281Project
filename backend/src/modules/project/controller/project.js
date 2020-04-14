@@ -228,8 +228,22 @@ exports.uploadFile = async (req, res) => {
 
 	try {
 
-		console.log(req.body)
-		console.log(req.file)
+		await Projects.findByIdAndUpdate(
+			req.body.projectId,
+			{
+				$inc: {
+					fileCount: 1
+				}
+			}
+		)
+		await Users.findByIdAndUpdate(
+			req.body.userId,
+			{
+				$inc: {
+					fileCount: 1
+				}
+			}
+		)
 		let result = await S3.fileupload(req.body.projectId, req.body.userId, req.file)
 
 		return res

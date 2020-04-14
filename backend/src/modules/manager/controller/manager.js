@@ -3,6 +3,7 @@ const AWS = require('aws-sdk');
 import fs from 'fs';
 import config from '../../../../config';
 import Projects from '../../../models/mongoDB/projects'
+import Users from '../../../models/mongoDB/users'
 import constants from '../../../utils/constants'
 import s3 from '../../../utils/s3Operations';
 const multiparty = require('multiparty');
@@ -33,6 +34,22 @@ exports.addProject = async (req, res) => {
 		newProject = new Projects(projectObj);
 		createdProject = await newProject.save();
 		if (req.file) {
+			await Projects.findByIdAndUpdate(
+				createdProject._id,
+				{
+					$inc: {
+						fileCount: 1
+					}
+				}
+			)
+			await Users.findByIdAndUpdate(
+				createdProject.managerId,
+				{
+					$inc: {
+						fileCount: 1
+					}
+				}
+			)
 			var resultURL = await s3.fileupload(String(createdProject._id), createdProject.managerId, req.file)
 			console.log("resultURL", resultURL)
 		}		
@@ -173,6 +190,23 @@ exports.deleteFile = async (req, res) => {
 
 	try {
 		console.log("Deleting file", req.body)
+		
+		await Projects.findByIdAndUpdate(
+			req.body.projectId,
+			{
+				$inc: {
+					fileCount: -1
+				}
+			}
+		)
+		await Users.findByIdAndUpdate(
+			req.body.userId,
+			{
+				$inc: {
+					fileCount: -1
+				}
+			}
+		)
 		await s3.deleteFile(req.body.projectId, req.body.filename);
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)

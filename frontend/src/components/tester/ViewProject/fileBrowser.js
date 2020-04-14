@@ -6,6 +6,7 @@ class ProjectFile extends Component {
 
     deleteFile = () => {
         let reqData = {
+            userId: localStorage.getItem('281UserId'),
             projectId: this.props.projectId,
             filename: this.props.fileObj.name
         }

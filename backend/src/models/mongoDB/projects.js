@@ -44,8 +44,9 @@ const Project = new mongoose.Schema({
 	technologies: {
 		type: String,
     },
-    file: {
-        file: String,
+    fileCount: {
+		type: Number,
+		default: 0
 	},
 	createdTime: {
 		type: Date,
