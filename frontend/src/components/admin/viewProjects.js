@@ -21,7 +21,7 @@ class ProjectRow extends Component {
                         <h3 className="font-weight-light text-success">Accepted testers: <span className="font-weight-bold">{this.props.projectObj.acceptedTesters.length}</span></h3>
                         <h3 className="font-weight-light text-warning">Requested testers: <span className="font-weight-bold">{this.props.projectObj.requestedTesters.length}</span></h3>
                         <h3 className="font-weight-light text-danger">Rejected testers: <span className="font-weight-bold">{this.props.projectObj.rejectedTesters.length}</span></h3>
-                        <h3 className="font-weight-light text-info">Bugs reported: 0<span className="font-weight-bold">{this.props.projectObj.bugsReported}</span></h3>
+                        <h3 className="font-weight-light text-info">Bugs reported: <span className="font-weight-bold">{this.props.projectObj.bugsReported}</span></h3>
                         <h3 className="font-weight-light text-primary">Number of files: <span className="font-weight-bold">{this.props.projectObj.fileCount}</span></h3>
                     </div>
                 </div>

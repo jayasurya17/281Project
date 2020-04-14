@@ -47,7 +47,10 @@ exports.loginUser = async (req, res) => {
 		var user
 
 		var isAuth = false
-		user = await Users.findOne({ email: req.body.email })
+		user = await Users.findOne({ 
+			email: req.body.email,
+			isActive: true
+		})
 
 		if (user) {
 			const validate = await user.validatePassword(req.body.password)

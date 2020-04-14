@@ -135,12 +135,39 @@ exports.getAllTesters = async (req, res) => {
 	try {
 
         let allTesters = await Users.find({
-            type: 'Tester'
+			type: 'Tester',
+			isActive: true
         })
         
         return res
             .status(constants.STATUS_CODE.SUCCESS_STATUS)
             .send(allTesters)
+	} catch (error) {
+		console.log(`Error while logging in user ${error}`)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+/**
+ * Get all projects in the system.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.blockTester = async (req, res) => {
+	try {
+
+        await Users.findByIdAndUpdate(
+			req.body.userId,
+			{
+            	isActive: false
+			}
+		)
+        
+        return res
+            .status(constants.STATUS_CODE.SUCCESS_STATUS)
+            .send("SUCCESS")
 	} catch (error) {
 		console.log(`Error while logging in user ${error}`)
 		return res

@@ -9,6 +9,7 @@ router.post('/login', adminController.loginAdmin)
 router.get('/projects', adminController.getAllProjects)
 router.get('/managers', adminController.getAllManagers)
 router.get('/testers', adminController.getAllTesters)
+router.post('/block/tester', adminController.blockTester)
 
 
 module.exports = router

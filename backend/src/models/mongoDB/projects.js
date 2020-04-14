@@ -48,6 +48,10 @@ const Project = new mongoose.Schema({
 		type: Number,
 		default: 0
 	},
+    bugsReported: {
+		type: Number,
+		default: 0
+	},
 	createdTime: {
 		type: Date,
 		default: Date.now,
