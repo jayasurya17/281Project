@@ -127,7 +127,14 @@ class Landing extends Component {
                 </div> */}
                 <p className="text-success text-center">{this.state.successMsg}</p>
                 <p className="text-danger text-center">{this.state.errMsg}</p>
-                <button onClick={this.createDevicePool} className="btn btn-primary w-100">Create device pool</button>
+                <div className="row">
+                    <div className="col-md-6">
+                        <button onClick={this.createDevicePool} className="btn btn-primary w-100">Create on-demand pool</button>
+                    </div>
+                    <div className="col-md-6">
+                        <button onClick={this.createDevicePool} className="btn btn-primary w-100">Pre-book device pool</button>
+                    </div>
+                </div>
             </div>
         )
     }

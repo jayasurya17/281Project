@@ -36,14 +36,28 @@ class Landing extends Component {
             files = []
             for (var index in this.state.allProjCards[userId].files) {
                 var filename = this.state.allProjCards[userId].files[index].name.split("/")
-                files.push(
-                    <div className="row mt-2">
-                        <div className="col-md-8">{filename[filename.length - 1]}</div>
-                        <div className="col-md-4">
-                            <a href={this.state.allProjCards[userId].files[index].url} target="_blank"><button className="btn btn-danger">Download this file</button></a>
+                if (userId === localStorage.getItem('281UserId')) {
+                    files.push(
+                        <div className="row mt-2">
+                            <div className="col-md-6">{filename[filename.length - 1]}</div>
+                            <div className="col-md-3">
+                                <a href={this.state.allProjCards[userId].files[index].url} target="_blank"><button className="btn btn-success">Download this file</button></a>
+                            </div>
+                            <div className="col-md-3">
+                                <button className="btn btn-danger">Delete this file</button>
+                            </div>
                         </div>
-                    </div>
-                )
+                    )
+                } else {
+                    files.push(
+                        <div className="row mt-2">
+                            <div className="col-md-6">{filename[filename.length - 1]}</div>
+                            <div className="col-md-3">
+                                <a href={this.state.allProjCards[userId].files[index].url} target="_blank"><button className="btn btn-success">Download this file</button></a>
+                            </div>
+                        </div>
+                    )
+                }
             }
             if (files.length > 0) {
                 allProjCards.push(
@@ -56,7 +70,7 @@ class Landing extends Component {
         }
 
         return (
-            <div className="mt-4">
+            <div className="mt-1 pt-4 border-top">
                 <h3>Files in this project</h3>
                 {allProjCards}
             </div>
