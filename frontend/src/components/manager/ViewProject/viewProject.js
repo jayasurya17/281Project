@@ -127,12 +127,19 @@ class Landing extends Component {
                         <InfoContainer projectId={this.props.projectId} />
                         <p className="display-4">Manage project</p>
                         <UploadFile projectId={this.props.projectId} />
-                        <a href={`/manager/project/devices/${this.props.projectId}`}><button className="btn btn-primary w-100">Add device pool for this project</button></a>
-                        <a href={`/manager/project/runs/${this.props.projectId}`}><button className="btn btn-primary w-100">View runs in the project</button></a>
+                        <div className="row mt-2 mb-2">
+                            <a href={`/manager/project/devices/${this.props.projectId}`} className="w-100">
+                                <button className="btn btn-primary w-100">Add device pool for this project</button>
+                            </a>
+                        </div>
+                        <div className="row mt-2 mb-2">
+                            <a href={`/manager/project/runs/${this.props.projectId}`} className="w-100">
+                                <button className="btn btn-info w-100">View runs in the project</button>
+                            </a>
+                        </div>
                     </div>
-
                 </div>
-                <div className="row">
+                <div className="row pb-4 pt-4">
                     <textarea className="w-100 form-control" style={{ resize: 'none' }} onChange={this.announcementChangeHandler} value={this.state.announcement}></textarea>
                     <div className="col-md-12 mt-2 row">
                         <div className="col-md-4 offset-md-8">
@@ -141,7 +148,7 @@ class Landing extends Component {
                     </div>
                 </div>
 
-                <FileBrowser projectId = { this.props.projectId } />
+                <FileBrowser projectId={this.props.projectId} />
             </div>
         )
     }

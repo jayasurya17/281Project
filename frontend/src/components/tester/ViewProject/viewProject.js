@@ -129,7 +129,7 @@ class Landing extends Component {
 
         return(
             <div className="p-5 shadow">
-                <div className="row">
+                <div className="row border-bottom pb-4">
                     <div className="col-md-6">
 
                         <h1 className="display-4">{ this.state.name }</h1>
