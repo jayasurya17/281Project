@@ -84,7 +84,7 @@ exports.viewProject = async (req, res) => {
 	try {
 
 		let projectObj = req.body;
-		console.log(projectObj);
+		console.log(req.body);
 
 		AWS.config.update({
 			secretAccessKey: config.awsKeysSrihari.AWS_SECRET_ACCESS,
@@ -135,3 +135,81 @@ exports.viewProject = async (req, res) => {
 			.send(error.message)
 	}
 }
+
+exports.deleteProject = async (req, res) => {
+
+	try {
+
+		let projectObj = req;
+		console.log("Her i am ",req.body);
+
+		AWS.config.update({
+			secretAccessKey: config.awsKeysSrihari.AWS_SECRET_ACCESS,
+			accessKeyId: config.awsKeysSrihari.AWS_ACCESSKEY,
+			region: config.awsKeysSrihari.REGION
+		})
+		
+		var s3 = new AWS.S3()
+
+       console.log("req.body,projectname contains:",req.body.projectname);
+		// 			var fileStream = fs.createWriteStream('test.png');
+		// var s3Stream = s3.getObject({Bucket: projectObj.name, Key: 'catImage_1585898550190.png'}).createReadStream();
+		var params = { Bucket: req.body.projectname};
+
+		s3.deleteBucket(params, function(err, data) {
+    if (err) console.log(err, err.stack);
+    else console.log('Bucket deleted Successfully');
+});
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+exports.deleteFile = async (req, res) => {
+
+	try {
+
+		let projectObj = req.body;
+		console.log("Here i am: file ",projectObj);
+
+		AWS.config.update({
+			secretAccessKey: config.awsKeysSrihari.AWS_SECRET_ACCESS,
+			accessKeyId: config.awsKeysSrihari.AWS_ACCESSKEY,
+			region: config.awsKeysSrihari.REGION
+		})
+		
+		var s3 = new AWS.S3()
+
+       console.log("req.body contains:",req.body);
+		// 			var fileStream = fs.createWriteStream('test.png');
+		// var s3Stream = s3.getObject({Bucket: projectObj.name, Key: 'catImage_1585898550190.png'}).createReadStream();
+		
+var params = {
+	Bucket: '5e90de7c40e3df4374787add', 
+	Delete: { // required
+	  Objects: [ // required
+		{
+		  Key: '5e86b47bb204090758c8af2a/Regular/AutomationScreenshots-1024x576.png' 
+		}
+	  ],
+	},
+  };
+  
+  s3.deleteObjects(params, function(err, data) {
+	if (err) console.log(err, err.stack); // an error occurred
+	else     console.log(data);           // successful response
+  });
+
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
