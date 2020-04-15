@@ -10,5 +10,6 @@ router.get('/viewBug/:bugId', bugsController.getBug)
 router.post('/updateBug/:bugId',bugsController.updateBug)
 router.delete('/deleteBug',bugsController.deleteBug)
 router.put('/allByProjectId/:projectId',bugsController.getBugsInProject)
+router.post('/getErrorReports',bugsController.getErrorReport)
 
 module.exports = router

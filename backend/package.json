@@ -24,6 +24,7 @@
     "express": "~4.16.1",
     "express-validation": "^1.0.2",
     "fs": "0.0.1-security",
+    "http": "0.0.1-security",
     "http-errors": "~1.6.3",
     "joi": "^14.3.1",
     "jsonwebtoken": "^8.5.1",
@@ -44,6 +45,7 @@
     "redis-server": "^1.2.2",
     "request": "^2.88.2",
     "sequelize": "^5.19.0",
+    "url": "^0.11.0",
     "uuid": "^3.3.3",
     "webdriverio": "^6.0.13"
   },

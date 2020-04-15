@@ -5,6 +5,9 @@ import Bugs from '../../../models/mongoDB/bugs'
 import Users from '../../../models/mongoDB/users';
 import constants from '../../../utils/constants';
 
+var https = require('https');
+const url = require('url');
+
 exports.createBug = async (req, res) => {
 	try {
         var bugObject = {
@@ -29,20 +32,17 @@ exports.createBug = async (req, res) => {
 }
 
 exports.getAllBugs = async (req, res) => {
-	console.log("req here is ",req.params.userId);
 	try {
         let details = await Users.findById(
 			mongoose.Types.ObjectId(req.params.userId)
 		)
 		if (details) {
 			let projects = details.toJSON().acceptedProjects;
-			console.log(projects)
             let bugs = await Bugs.find({
                 projectId : {
                     $in : projects
                 }
 			})
-			console.log(bugs);
             return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
             .send(bugs)
@@ -120,7 +120,7 @@ exports.getBugsInProject = async (req, res) => {
 
 exports.deleteBug = async (req,res) => {
 	try{
-		Bugs.remove({ _id: req.body.bugId }, 
+		Bugs.deleteOne({ _id: req.body.bugId }, 
 			function(err, result) {
 				if (err) {
 				res.send(err);
@@ -137,3 +137,65 @@ exports.deleteBug = async (req,res) => {
 			.send(error.message)
 	}
 }
+
+exports.getErrorReport = async (req,res) => {
+	try{
+		let errorObjects = [];
+		let allArtifacts = req.body["allArtifacts"];
+		allArtifacts.forEach(item => {
+			let artifacts = item.artifacts
+			artifacts.forEach(async element =>{
+				let urlString = element.url;
+				console.log(urlString)
+				await getUrlContent(urlString,errorObjects)
+			})
+			// return res
+			// 	.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			// 	.send(errorObjects)
+		});
+	}
+	catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+let getUrlContent =  (artifactURL,errorObjects) =>{
+	return new Promise(function (resolve, reject) {
+	var q = url.parse(artifactURL, true);
+	var x = 1;
+	let options = {
+    path:  q.pathname,
+    host: q.hostname,
+    port: q.port,
+	};
+	var request = https.request(options, function (res) {
+		var data = '';
+		res.on('data', function (chunk) {
+			data += chunk;
+			console.log(data);
+		});
+		res.on('end', function () {
+			console.log(data);
+			// data.forEach(element => {
+			// 	console.log(element)
+			// 	if(element.level==="Error"){
+			// 		errorObjects.push({
+			// 			"pid" : element.pid,
+			// 			"data" : element.data
+			// 		})
+			// 	}
+			// })
+			resolve();
+		})
+	});
+	request.on('error', function (e) {
+		console.log(e.message);
+		reject();
+	});
+	request.end();
+})
+}
+
