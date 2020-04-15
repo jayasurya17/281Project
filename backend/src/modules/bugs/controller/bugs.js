@@ -5,8 +5,7 @@ import Bugs from '../../../models/mongoDB/bugs'
 import Users from '../../../models/mongoDB/users';
 import constants from '../../../utils/constants';
 
-var https = require('https');
-const url = require('url');
+const fetch = require("node-fetch");
 
 exports.createBug = async (req, res) => {
 	try {
@@ -138,21 +137,29 @@ exports.deleteBug = async (req,res) => {
 	}
 }
 
-exports.getErrorReport = async (req,res) => {
+exports.getErrorReport =  (req,res) => {
 	try{
-		let errorObjects = [];
+		let resultObject = {}
+		resultObject["arn"] = req.body["runDetails"].arn;
+		let artifactsObject = []
+		let promises = [] 
 		let allArtifacts = req.body["allArtifacts"];
 		allArtifacts.forEach(item => {
+			let errorObjects = [];
+			let artifactObject = {};
+			artifactObject["job"] = item.job;
 			let artifacts = item.artifacts
-			artifacts.forEach(async element =>{
-				let urlString = element.url;
-				console.log(urlString)
-				await getUrlContent(urlString,errorObjects)
+			artifacts.forEach( element =>{
+				console.log(element.url);
+				promises.push( getUrlContent(element.url,errorObjects));
 			})
-			// return res
-			// 	.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			// 	.send(errorObjects)
+			artifactObject["errors"] = errorObjects;
+			artifactsObject.push(artifactObject);
 		});
+		Promise.all(promises)
+		.then( result => {
+			return res.send(artifactsObject)
+		})
 	}
 	catch (error) {
 		console.log(error.message)
@@ -164,38 +171,30 @@ exports.getErrorReport = async (req,res) => {
 
 let getUrlContent =  (artifactURL,errorObjects) =>{
 	return new Promise(function (resolve, reject) {
-	var q = url.parse(artifactURL, true);
-	var x = 1;
-	let options = {
-    path:  q.pathname,
-    host: q.hostname,
-    port: q.port,
-	};
-	var request = https.request(options, function (res) {
-		var data = '';
-		res.on('data', function (chunk) {
-			data += chunk;
-			console.log(data);
-		});
-		res.on('end', function () {
-			console.log(data);
-			// data.forEach(element => {
-			// 	console.log(element)
-			// 	if(element.level==="Error"){
-			// 		errorObjects.push({
-			// 			"pid" : element.pid,
-			// 			"data" : element.data
-			// 		})
-			// 	}
-			// })
-			resolve();
+	fetch(artifactURL, {
+		mode: 'no-cors',
+		headers: {
+		  'Access-Control-Allow-Origin':'*'
+		}
+	})
+	.then( response => {
+		return response.json();
+	})
+	.then( response => {
+		response.map(element => {
+			if(element.level==="Error"){
+				errorObjects.push({
+					"pid" : element.pid,
+					"data" : element.data
+				})
+			}
 		})
-	});
-	request.on('error', function (e) {
-		console.log(e.message);
+		resolve(errorObjects);
+	})
+	.catch(error => {
+		console.log("error",error.message);
 		reject();
-	});
-	request.end();
+	})
 })
 }
 
