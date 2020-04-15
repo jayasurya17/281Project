@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../common/footer';
+import Header from '../common/header';
+
 import Constants from '../../utils/constants';
 import axios from 'axios';
 import { Redirect } from 'react-router';
@@ -131,11 +133,12 @@ class Home extends Component {
 
         return (
             <div>
+                <Header />
                 {RedirectVar}
                 {/* <!-- Card with information --> */}
-                <div class="bg-white p-5">
+                <div class=" p-5">
 
-                    <div className="row pt-5">
+                    <div className="row pt-5 mb-5">
                         <div className="col-md-6 offset-md-3 p-5 shadow">
                             <h5 className="text-center font-weight-bolder">Create Account</h5>
                             <div className="mt-3">

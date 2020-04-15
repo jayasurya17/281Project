@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import Root from "./root/root";
 import Login from "./root/login";
 import Logout from "./root/logout";
 import CreateAccount from "./root/createAccount";
@@ -38,6 +37,7 @@ import ManagerViewRunDetails from "./manager/ViewProject/RunDetails/listJobs";
 import ManagerViewRunArtifacts from "./manager/ViewProject/RunArtifacts/viewArtifacts";
 
 import CreateTest from "../components/emulator/CreateTest/CreateTest";
+import LandingPage from "./common/LandingPage/LandingPage";
 
 //Create a Main Component
 class Main extends Component {
@@ -45,7 +45,8 @@ class Main extends Component {
 		return (
 			<div>
 				{/*Render Different Component based on Route*/}
-				<Route path="/" component={Root} />
+				{/* <Route path="/" component={Root} /> */}
+				<Route exact path="/" component={LandingPage} />
 				<Route path="/login" component={Login} />
 				<Route path="/logout" component={Logout} />
 				<Route path="/create-account" component={CreateAccount} />
@@ -69,6 +70,8 @@ class Main extends Component {
 				<Route path="/tester/project/run/view/:projectId" component={TesterViewRuns} />
 				<Route path="/tester/project/run/details/:projectId" component={TesterViewRunDetails} />
 				<Route path="/tester/project/run/artifacts/:projectId" component={TesterViewRunArtifacts} />
+				<Route path="/tester/project/run/emulator/:projectId" component={CreateTest} />
+
 
 				<Route path="/tester/announcements" component={TesterAnnouncements} />
 
@@ -84,7 +87,6 @@ class Main extends Component {
 				<Route path="/manager/project/run/artifacts/:projectId" component={ManagerViewRunArtifacts} />
 				<Route path="/manager/project/devices/:projectId" component={ManagerViewProjectDevices} />
 
-				<Route path="/tester/createTest/emulator" component={CreateTest} />
 			</div>
 		);
 	}

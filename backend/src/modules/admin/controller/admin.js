@@ -135,8 +135,7 @@ exports.getAllTesters = async (req, res) => {
 	try {
 
         let allTesters = await Users.find({
-			type: 'Tester',
-			isActive: true
+			type: 'Tester'
         })
         
         return res

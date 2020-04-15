@@ -18,6 +18,18 @@ class TesterRow extends Component {
     }
 
     render() {
+        let blockUser = [
+            <div className="col-md-2 offset-md-8">
+                <button className="btn btn-danger" onClick={this.blockTester}>Block this tester</button>
+            </div>
+        ]
+        if (this.props.testerObj.isActive === false) {
+            blockUser = [
+                <div className="col-md-4 offset-md-8">
+                    <h3 className="font-weight-light text-danger">Tester has been blocked</h3>
+                </div>
+            ]
+        }
         return (
             <div className="m-3 p-3 shadow">
                 <div className="row">
@@ -33,9 +45,7 @@ class TesterRow extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-2 offset-md-8">
-                        <button className="btn btn-danger" onClick={this.blockTester}>Block this tester</button>
-                    </div>
+                    {blockUser}
                 </div>
             </div>
         )
@@ -74,7 +84,7 @@ class Home extends Component {
         }
 
         return (
-            <div class="bg-white p-5">
+            <div class="bg-white pl-5 pr-5">
                 <Header />
                 <Navbar />
 
