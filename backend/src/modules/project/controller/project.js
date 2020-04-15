@@ -303,6 +303,7 @@ exports.deleteProject = async (req, res) => {
 
 	try {
 
+		console.log("DELETING PROJECT FROM MONGO")
 		let projectId = req.params.projectId
 		let projectObj = await Projects.findById(projectId)
 		await Projects.deleteOne({

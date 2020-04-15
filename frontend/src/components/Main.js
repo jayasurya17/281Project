@@ -30,7 +30,6 @@ import ManagerCheck from "./manager/managerCheck";
 import ManagerUpdateAccount from "./manager/updateAccount";
 import ManagerViewMyProjects from "./manager/myProjects";
 import MangerCreateProject from "./manager/createProject";
-import ManagerdeleteProject from "./manager/deleteproject"
 import ManagerViewProjectDetails from "./manager/projectDetails";
 import ManagerViewProjectRuns from "./manager/ViewProject/ProjectDetails/viewRuns";
 import ManagerViewProjectDevices from "./manager/AddDevices/projectDevices"
@@ -79,7 +78,6 @@ class Main extends Component {
 				<Route path="/manager/update-account" component={ManagerUpdateAccount} />
 				<Route path="/manager/project/all" component={ManagerViewMyProjects} />
 				<Route path="/manager/project/new" component={MangerCreateProject} />
-				<Route path="/manager/project/delete" component={ManagerdeleteProject} />
 				<Route path="/manager/project/view/:projectId" component={ManagerViewProjectDetails} />
 				<Route path="/manager/project/runs/:projectId" component={ManagerViewProjectRuns} />
 				<Route path="/manager/project/run/details/:projectId" component={ManagerViewRunDetails} />
