@@ -17,7 +17,7 @@ class Landing extends Component {
                     <Navigation />
                     <div >
                         <div >
-                            <img src={jumboImage} style={{ width: '100%' }} />
+                            <img src={jumboImage} style={{ width: '100%' }} alt="manager-dashboard" />
 
                         </div>
                         <div>

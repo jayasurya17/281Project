@@ -18,7 +18,7 @@ class Landing extends Component {
 
                     <div >
                         <div >
-                            <img src={jumboImage} style={{ width: '100%' }} />
+                            <img src={jumboImage} style={{ width: '100%' }} alt="tester-landing" />
 
                         </div>
                         <div>

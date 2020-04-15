@@ -55,7 +55,7 @@ class LandingPage extends Component {
 
                 <div className='landingPage' style={{ background: '#f8f9fb' }} >
                     <div >
-                        <img src={landingImage} style={{ width: '100%' }} />
+                        <img src={landingImage} style={{ width: '100%' }} alt="landing-page" />
 
                     </div>
                     <div style={{ color: '#000', position: 'absolute', top: '20%', left: '50%' }}>

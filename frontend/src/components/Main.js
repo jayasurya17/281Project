@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import Root from "./root/root";
 import Login from "./root/login";
 import Logout from "./root/logout";
 import CreateAccount from "./root/createAccount";
