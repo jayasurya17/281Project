@@ -4,6 +4,7 @@ import Footer from '../common/footer';
 import Constants from '../../utils/constants';
 import axios from 'axios';
 import { Redirect } from 'react-router';
+import Header from '../common/header';
 
 class Home extends Component {
 
@@ -35,22 +36,22 @@ class Home extends Component {
             password: this.state.password,
         }
         axios.post(Constants.BACKEND_SERVER.URL + "/users/login", usrData)
-        .then((response) => {
-            console.log(response.data);
-            localStorage.setItem('281Username', response.data.name);
-            localStorage.setItem('281UserId', response.data._id);
-            localStorage.setItem('281UserType', response.data.type);
-            this.setState({
-                loginId: '',
-                password: '',
+            .then((response) => {
+                console.log(response.data);
+                localStorage.setItem('281Username', response.data.name);
+                localStorage.setItem('281UserId', response.data._id);
+                localStorage.setItem('281UserType', response.data.type);
+                this.setState({
+                    loginId: '',
+                    password: '',
+                })
             })
-        })
-        .catch(() => {
-            this.setState({
-                errMsg: 'Failed to login',
-                successMsg: '',
-            });
-        })
+            .catch(() => {
+                this.setState({
+                    errMsg: 'Failed to login',
+                    successMsg: '',
+                });
+            })
     }
 
     render() {
@@ -61,11 +62,12 @@ class Home extends Component {
 
         return (
             <div>
-                { RedirectVar }
+                <Header />
+                {RedirectVar}
                 {/* <!-- Card with information --> */}
-                <div class="bg-white p-5">
+                <div class=" p-5 ">
 
-                    <div className="row pt-5">
+                    <div className="row pt-5 mb-5">
                         <div className="col-md-4 offset-md-4 p-5 shadow">
                             <h5 className="text-center font-weight-bolder">Login</h5>
                             <div className="mt-3">
