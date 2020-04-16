@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 // router for modules
 const usersRouter = require('../src/modules/user/router/users');
 const managerRouter = require('../src/modules/manager/router/manager');
+const adminRouter = require('../src/modules/admin/router/admin');
 const projectRouter = require('../src/modules/project/router/project');
 const bugRouter = require('../src/modules/bugs/router/bugs');
 const emulatorRouter = require('../src/modules/appiumRuns/router/appium');
@@ -49,6 +50,7 @@ app.use((req, res, next) => {
 // base routes for modules
 app.use('/users', usersRouter);
 app.use('/manager', managerRouter);
+app.use('/admin', adminRouter);
 app.use('/project', projectRouter);
 app.use('/bugs',bugRouter);
 app.use('/emulators', emulatorRouter);

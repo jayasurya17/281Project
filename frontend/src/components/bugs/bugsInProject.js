@@ -31,13 +31,15 @@ class BugsInProject extends Component {
             <div>
                 
                 {/* <!-- Card with information --> */}
-                <div class="bg-white pl-5 pr-5 pb-5">
+                <div class="bg-white pl-5 pr-5 pb-5" style={{position:"relative"}}>
                     <Header />
                     <Navigation />
                     <div style={{display : "flex",flexDirection :"column",paddingTop:"50px"}}>
                         <DisplayBugs bugs = {this.state.bugs} />
-                        <Footer />
+                        <Footer  />
+
                     </div>
+
                 </div>
             </div>
         )

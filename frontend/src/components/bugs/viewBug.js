@@ -1,4 +1,4 @@
-import React, { Component,useState } from 'react';
+import React, { Component } from 'react';
 import Header from '../common/header';
 import Footer from '../common/footer';
 import Navigation from '../common/navigation';
@@ -50,6 +50,7 @@ class BugView extends Component {
                     successMsg: 'Bug deleted successfully',
                     errMsg: '',
                 });
+                this.props.history.push(`/${localStorage.getItem('281UserType').toLowerCase()}/bugs/all`);
             }else {
                 this.setState({
                     successMsg: '',
@@ -121,7 +122,7 @@ class BugView extends Component {
                                 </div>
                                 <div style = {{ display : "flex",  flexDirection :"row", padding : "40px"}}>
                                     Tester:
-                                    <div style = {{ paddingLeft : "50px"}} >
+                                    <div style = {{ paddingLeft : "48px"}} >
                                     <CardText>{this.state.bug.tester}</CardText>
                                     </div>
                                 </div>

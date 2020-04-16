@@ -73,6 +73,7 @@ class EditBugView extends Component {
         }))
       }
 
+      
     updateBug = (e) => {
         e.preventDefault();
         
@@ -91,6 +92,8 @@ class EditBugView extends Component {
                         successMsg: 'Bug updated successfully',
                         errMsg: '',
                     });
+                    this.props.history.push(`/${localStorage.getItem('281UserType').toLowerCase()}/bugs/all`);
+
                 }
             })
             .catch(() => {

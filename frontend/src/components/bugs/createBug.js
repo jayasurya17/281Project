@@ -46,19 +46,16 @@ class CreateBugView extends Component {
     changeSeverityValue = (event) => {
     event.preventDefault();
     var value = event.currentTarget.textContent;
+    console.log(value);
     this.setState((prevState) => ({
         ...prevState,
-        bug: {
-            ...prevState.bug,
-            severity: value,
-        },
+        severity: value,
         dropdownOpenSeverity: !prevState.dropdownOpenSeverity,
     }))
     }
 
     createBug = (e) => {
         e.preventDefault();
-        
         const bug = {
             name: this.state.name,
             subject: this.state.subject,
@@ -67,6 +64,7 @@ class CreateBugView extends Component {
             status: this.state.status,
             tester : this.state.tester
         }
+        console.log("bug");
         axios.post(Constants.BACKEND_SERVER.URL + "/bugs/createBug", bug)
             .then((response) => {
                 this.setState({
@@ -96,29 +94,10 @@ class CreateBugView extends Component {
 
     }
 
-    toggleState =() => {
-        this.setState({
-          dropdownOpenState: !this.state.dropdownOpenState
-        });
-      }
-
-    changeStateValue = (e) => {
-        var value = e.currentTarget.textContent;
-        this.setState((prevState) => ({
-            ...prevState,
-            bug: {
-                ...prevState.bug,
-                status: value,
-            },
-            dropdownOpenState: !prevState.dropdownOpenState,
-        }))
-      }
-    
-    toggle = () => {
-        this.setState(prevState => ({
-          dropdownOpen: !prevState.dropdownOpen
-        }));
-      }
+    goToDashBoard = (e) => {
+        e.preventDefault();
+        this.props.history.push(`/${localStorage.getItem('281UserType').toLowerCase()}/bugs/all`);
+    }
 
     render() { 
 
@@ -139,25 +118,25 @@ class CreateBugView extends Component {
                             <div style = {{ display : "flex",  flexDirection :"row", padding : "40px"}}>
                                     <Label>Name:</Label>
                                     <div style={{paddingLeft : "40px"}}>
-                                    <Input type="text" name="name" id="name"  onChange={this.changeHandler} required/>
+                                    <Input type="text" name="name" id="name"  onChange={this.changeHandler} value = {this.state.name==null ? "" : this.state.name} required/> 
                                     </div>
                                 </div>
                                 <div style = {{ display : "flex",  flexDirection :"row", padding : "40px"}}>
                                     <Label>Subject:</Label>
                                     <div style={{paddingLeft : "40px"}}>
-                                    <Input type="text" name="subject" id="subject"  onChange={this.changeHandler} required/>
+                                    <Input type="text" name="subject" id="subject" value = {this.state.subject==null ? "" : this.state.subject}  onChange={this.changeHandler} required/>
                                     </div>
                                 </div>
                                 <div style = {{ display : "flex",  flexDirection :"row", padding : "40px"}}>
                                     Project Id:
                                     <div style={{paddingLeft : "28px"}}>
-                                    <Input type="text" name="projectId" id="projectId" onChange={this.changeHandler} required />
+                                    <Input type="text" name="projectId" id="projectId" onChange={this.changeHandler} value = {this.state.projectId==null ? "" : this.state.projectId} required />
                                     </div>
                                 </div>
                                 <div style = {{ display : "flex",  flexDirection :"row", padding : "40px"}}>
                                     Severity:
                                     <div style={{paddingLeft : "37px"}}>
-                                    <Dropdown isOpen={this.state.dropdownOpenSeverity} onClick={this.toggleSeverity}>
+                                    <Dropdown isOpen={this.state.dropdownOpenSeverity} toggle={this.toggleSeverity}>
                                         <DropdownToggle caret tag="span"
                                             data-toggle="dropdown"
                                             aria-expanded={this.state.dropdownOpenSeverity}>{this.state.severity==null ? "Select Severity" : this.state.severity}</DropdownToggle>
@@ -171,8 +150,9 @@ class CreateBugView extends Component {
                                 </div>
                             </div>
                             </Form>
-                            <div style={{paddingLeft : "40px"}}>
+                            <div style={{paddingLeft : "40px",display:"flex",flexDirection:"row",justifyContent:"space-evenly"}}>
                             <Button onClick={this.createBug}>Create Bug</Button>
+                            <Button onClick={this.goToDashBoard} > Go To Dashboard</Button>
                             <div className="text-center">
                                     <p className="text-danger">
                                         {' '}

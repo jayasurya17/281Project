@@ -1,9 +1,16 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import Root from "./root/root";
 import Login from "./root/login";
 import Logout from "./root/logout";
 import CreateAccount from "./root/createAccount";
+
+import AdminCheck from "./admin/adminCheck";
+import AdminCreateAccount from "./admin/createAccount";
+import AdminLogin from "./admin/login";
+import AdminDashboard from "./admin/dashboard";
+import AdminViewManagers from "./admin/viewManagers";
+import AdminViewProjects from "./admin/viewProjects";
+import AdminViewTesters from "./admin/viewTesters";
 
 import TesterHome from "./tester/dashboard";
 import TesterCheck from "./tester/testerCheck";
@@ -33,9 +40,9 @@ import CreateBug from './bugs/createBug';
 import BugsInProjectDashboard from './bugs/bugsInProject';
 import ManagerViewRunDetails from "./manager/ViewProject/RunDetails/listJobs";
 import ManagerViewRunArtifacts from "./manager/ViewProject/RunArtifacts/viewArtifacts";
-import ManagerDummy from "./manager/dummy";
 
 import CreateTest from "../components/emulator/CreateTest/CreateTest";
+import LandingPage from "./common/LandingPage/LandingPage";
 
 //Create a Main Component
 class Main extends Component {
@@ -43,10 +50,19 @@ class Main extends Component {
 		return (
 			<div>
 				{/*Render Different Component based on Route*/}
-				<Route path="/" component={Root} />
+				{/* <Route path="/" component={Root} /> */}
+				<Route exact path="/" component={LandingPage} />
 				<Route path="/login" component={Login} />
 				<Route path="/logout" component={Logout} />
 				<Route path="/create-account" component={CreateAccount} />
+
+				<Route path="/admin/" component={AdminCheck} />
+				<Route path="/admin/create-account" component={AdminCreateAccount} />
+				<Route path="/admin/login" component={AdminLogin} />
+				<Route path="/admin/dashboard" component={AdminDashboard} />
+				<Route path="/admin/managers" component={AdminViewManagers} />
+				<Route path="/admin/projects" component={AdminViewProjects} />
+				<Route path="/admin/testers" component={AdminViewTesters} />
 
 				<Route path="/tester/" component={TesterCheck} />
 				<Route path="/tester/dashboard" component={TesterHome} />
@@ -59,6 +75,8 @@ class Main extends Component {
 				<Route path="/tester/project/run/view/:projectId" component={TesterViewRuns} />
 				<Route path="/tester/project/run/details/:projectId" component={TesterViewRunDetails} />
 				<Route path="/tester/project/run/artifacts/:projectId" component={TesterViewRunArtifacts} />
+				<Route path="/tester/project/run/emulator/:projectId" component={CreateTest} />
+
 
 				<Route path="/tester/announcements" component={TesterAnnouncements} />
 
@@ -70,11 +88,9 @@ class Main extends Component {
 
 
 				<Route path="/manager/" component={ManagerCheck} />
-				<Route path="/manager/dummy" component={ManagerDummy} />
 				<Route path="/manager/billing" component={ManagerBilling} />
 				<Route path="/manager/dashboard" component={ManagerHome} />
 				<Route path="/manager/update-account" component={ManagerUpdateAccount} />
-				{/* <Route path="/manager/project/newer" component={MangerCreateProject2} /> */}
 				<Route path="/manager/project/all" component={ManagerViewMyProjects} />
 				<Route path="/manager/project/new" component={MangerCreateProject} />
 				<Route path="/manager/project/view/:projectId" component={ManagerViewProjectDetails} />
@@ -90,6 +106,7 @@ class Main extends Component {
 				<Route path="/manager/bugs/project/:projectId" component={BugsInProjectDashboard} />
 
 				<Route path="/tester/createTest/emulator" component={CreateTest} />
+
 			</div>
 		);
 	}

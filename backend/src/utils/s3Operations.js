@@ -69,7 +69,7 @@ exports.getAllURLs = (projectId, userIDs) => {
     return new Promise((resolve, reject) => {
         s3.listObjects(params, function (err, data) {
             if (err) {
-                console.log("Error", err);
+                resolve("NO SUCK BUCKET")
             } else {
                 let sendingback = data.Contents;
                 let responseData = [],
@@ -97,4 +97,50 @@ exports.getAllURLs = (projectId, userIDs) => {
         });
 
     })
+}
+
+exports.deleteFile = async (bucketName, filename) => {
+
+    var params = {
+        Bucket: bucketName,
+        Delete: { // required
+            Objects: [ // required
+                {
+                    Key: filename
+                }
+            ],
+        },
+    };
+    console.log(params)
+    return new Promise((resolve, reject) => {
+        s3.deleteObjects(params, function (err, data) {
+            if (err) {
+                resolve ("BUCKER DOES NOT EXIST");
+            } // an error occurred
+            else {
+                console.log(data);           // successful response
+                resolve(data);
+            }
+        });
+    })
+}
+
+exports.deleteBucket = async (bucketName) => {
+
+    var params = {
+        Bucket: bucketName
+    };
+    console.log(params)
+    return new Promise((resolve, reject) => {
+        s3.deleteBucket(params, function (err, data) {
+            if (err) {
+                resolve ("BUCKET DOES NOT EXIST");
+            } // an error occurred
+            else {
+                console.log("SUCCESS");           // successful response
+                resolve(data);
+            }
+        });
+    })
+
 }

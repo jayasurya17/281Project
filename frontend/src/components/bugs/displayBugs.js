@@ -23,7 +23,7 @@ class BugsDisplay extends Component {
         return (<div>
             <Table bordered hidden={this.props.bugs==null}>
                 <thead>
-                    <tr>
+                    <tr style={{backgroundColor:"#cceeff"}}>
                     <th>BugId</th>
                     <th>Name</th>
                     <th>Subject</th>

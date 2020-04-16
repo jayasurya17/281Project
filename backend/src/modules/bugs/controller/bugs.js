@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import Bugs from '../../../models/mongoDB/bugs'
 import Users from '../../../models/mongoDB/users';
 import constants from '../../../utils/constants';
+import deviceFarmController from '../../deviceFarm/controller/deviceFarm';
 
 const fetch = require("node-fetch");
 
@@ -16,7 +17,8 @@ exports.createBug = async (req, res) => {
             status : req.body.status,
             severity : req.body.severity,
             tester : req.body.tester
-        }
+		}
+		console.log(bugObject)
         var newBug = new Bugs(bugObject);
         var createdBug = await newBug.save();
         return res
@@ -137,24 +139,30 @@ exports.deleteBug = async (req,res) => {
 	}
 }
 
-exports.getErrorReport =  (req,res) => {
+exports.getErrorReports = async (req,res) => {
 	try{
+		let listArtifacts = await deviceFarmController.listArtifactsInternal(req.query.runArn,req.query.type);
 		let resultObject = {}
-		resultObject["arn"] = req.body["runDetails"].arn;
 		let artifactsObject = []
 		let promises = [] 
-		let allArtifacts = req.body["allArtifacts"];
+		let runDetails = listArtifacts["runDetails"];
+		resultObject["arn"] = runDetails["arn"];
+		let allArtifacts = listArtifacts["allArtifacts"];
+
 		allArtifacts.forEach(item => {
+
 			let errorObjects = [];
 			let artifactObject = {};
-			artifactObject["job"] = item.job;
 			let artifacts = item.artifacts
+
+			artifactObject["job"] = item.job;
 			artifacts.forEach( element =>{
-				console.log(element.url);
 				promises.push( getUrlContent(element.url,errorObjects));
 			})
+
 			artifactObject["errors"] = errorObjects;
 			artifactsObject.push(artifactObject);
+
 		});
 		Promise.all(promises)
 		.then( result => {
