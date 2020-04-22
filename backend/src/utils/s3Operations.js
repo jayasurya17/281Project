@@ -116,7 +116,7 @@ exports.deleteFile = async (bucketName, filename) => {
         s3.deleteObjects(params, function (err, data) {
             if (err) {
                 console.log(err, err.stack);
-                resolve (err);
+                resolve(err);
             } // an error occurred
             else {
                 console.log(data);           // successful response

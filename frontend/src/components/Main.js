@@ -39,7 +39,10 @@ import ManagerViewRunDetails from "./manager/ViewProject/RunDetails/listJobs";
 import ManagerViewRunArtifacts from "./manager/ViewProject/RunArtifacts/viewArtifacts";
 
 import CreateTest from "../components/emulator/CreateTest/CreateTest";
+import ViewEmulatorRuns from '../components/emulator/ViewTests/viewRuns'
 import LandingPage from "./common/LandingPage/LandingPage";
+import Emulators from "./emulator/Emulators";
+import RunConfirmation from "./emulator/RunConfirmation/RunConfirmation";
 
 //Create a Main Component
 class Main extends Component {
@@ -72,7 +75,10 @@ class Main extends Component {
 				<Route path="/tester/project/run/view/:projectId" component={TesterViewRuns} />
 				<Route path="/tester/project/run/details/:projectId" component={TesterViewRunDetails} />
 				<Route path="/tester/project/run/artifacts/:projectId" component={TesterViewRunArtifacts} />
-				<Route path="/tester/project/run/emulator/:projectId" component={CreateTest} />
+
+				<Route path="/tester/project/run/emulator/:projectId" component={Emulators} />
+				<Route path="/tester/project/run/viewTestRun" component={RunConfirmation} />
+				<Route path="/tester/project/run/viewemulator/:projectId" component={ViewEmulatorRuns} />
 
 
 				<Route path="/tester/announcements" component={TesterAnnouncements} />
