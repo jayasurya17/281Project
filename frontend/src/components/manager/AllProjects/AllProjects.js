@@ -66,8 +66,15 @@ class AllProjects extends React.Component {
 
 	remove = (projectId) => {
 		alert('This will delete Project, S3 space and related bugs')
+		let reqBody = {
+			managerId: localStorage.getItem('281UserId'),
+			projectname: projectId
+		}
+		axios.post(`${Constants.BACKEND_SERVER.URL}/manager/deleteProject`, reqBody)
+			.then(() => {
+				console.log("Deleting files")
+			})
 		axios.delete(`${Constants.BACKEND_SERVER.URL}/project/details/${projectId}`)
-			//axios.post(hostedAddress+'/admin/deleteProject',data)
 			.then((response) => {
 				console.log('deleted', response.data)
 			})

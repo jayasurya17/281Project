@@ -56,7 +56,7 @@ class Home extends Component {
             allProjects.push(<ProjectRow projectObj={this.state.allProjects[index]} />)
         }
         return (
-            <div class="bg-white p-5">
+            <div class="bg-white pl-5 pr-5">
                 <Header />
                 <Navbar />
 

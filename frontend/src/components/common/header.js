@@ -56,7 +56,7 @@ class Header extends Component {
                 <div class="row">
                     <div class="col-md-10">
                         <a href={dashboardlinker} class=" headerLogo text-dark text-decoration-none" style={{ display: 'flex' }}>
-                            <img src={logo} style={{ height: '90px' }} />
+                            <img src={logo} style={{ height: '90px' }} alt="logo"/>
                             <h1 class="display-4 text-break ">Mobile TaaS</h1>
                         </a>
                     </div>

@@ -4,6 +4,7 @@ import Constants from '../../../utils/constants';
 import FileBrowser from './fileBrowser';
 import InfoContainer from './infoContainer';
 import UploadFile from './uploadFile';
+import ProjectDashboard from './projectDashboard';
 
 
 class Landing extends Component {
@@ -147,7 +148,7 @@ class Landing extends Component {
                         </div>
                     </div>
                 </div>
-
+                <ProjectDashboard />
                 <FileBrowser projectId={this.props.projectId} />
             </div>
         )

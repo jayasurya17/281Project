@@ -467,3 +467,65 @@ exports.listArtifacts = async (req, res) => {
 			.send(error.message)
 	}
 }
+
+
+exports.listArtifactsInternal = async (runArn,type) => {
+
+	try {
+		const runParams = {
+			arn: runArn
+		}
+		let runDetails,
+			jobIndex,
+			allJobs,
+			suiteIndex,
+			suiteParams,
+			allSuites,
+			testIndex,
+			testParams,
+			allTests,
+			artifactParams,
+			allArtifacts = []
+		runDetails = await devicefarm.getRun(runParams)
+		allJobs = await devicefarm.listJobs(runParams)
+		for (jobIndex in allJobs.jobs) {
+			suiteParams = {
+				arn: allJobs.jobs[jobIndex].arn
+			}
+
+
+			allSuites = await devicefarm.listSuites(suiteParams)
+			for (suiteIndex in allSuites.suites) {
+				testParams = {
+					arn: allSuites.suites[suiteIndex].arn
+				}
+
+
+
+				allTests = await devicefarm.listTests(testParams)
+				for (testIndex in allTests.tests) {
+					artifactParams = {
+						arn: allTests.tests[testIndex].arn,
+						type: type
+					}
+					let artifacts = await devicefarm.listArtifacts(artifactParams)
+					let tempObj = {
+						job: allJobs.jobs[jobIndex].name,
+						suite: allSuites.suites[suiteIndex].name,
+						test: allTests.tests[testIndex].name,
+						artifacts: artifacts.artifacts
+					}
+					allArtifacts.push(tempObj)
+				}
+			}
+		}	
+		return {
+				runDetails: runDetails.run,
+				allArtifacts: allArtifacts
+			}
+
+	} catch (error) {
+		console.log(error.message)
+		return null;
+	}
+}

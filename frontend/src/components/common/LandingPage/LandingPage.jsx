@@ -12,6 +12,7 @@ import ResultIcon from '../../../Assets/Icons/Result.svg'
 import MoneyIcon from '../../../Assets/Icons/MoneyMobile.svg'
 import CloudIcon from '../../../Assets/Icons/Cloud.svg'
 import ScaleIcon from '../../../Assets/Icons/Scaling.svg'
+import { Redirect } from 'react-router'
 
 
 
@@ -48,6 +49,11 @@ class LandingPage extends Component {
                 text: 'Scalability kicks in when you want to extend your testing capabilities'
             }
         ]
+        if (localStorage.getItem('281UserId')) {
+            return (
+                <Redirect to="/tester/dashboard" />
+            )
+        }
         return (
             <div>
                 <Header />
@@ -55,7 +61,7 @@ class LandingPage extends Component {
 
                 <div className='landingPage' style={{ background: '#f8f9fb' }} >
                     <div >
-                        <img src={landingImage} style={{ width: '100%' }} />
+                        <img src={landingImage} style={{ width: '100%' }} alt="landing-page" />
 
                     </div>
                     <div style={{ color: '#000', position: 'absolute', top: '20%', left: '50%' }}>
