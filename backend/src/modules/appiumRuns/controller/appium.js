@@ -3,6 +3,7 @@ import multer from 'multer';
 import constants from '../../../utils/constants';
 import createEmulator from '../utils/CreateEmulator'
 import emulatorRuns from '../../../models/mongoDB/emulatorRuns'
+import RunGenyMotion from '../../appiumRuns/controller/GenymotionControls/RunGenyMotion'
 
 import s3upload from '../controller/s3FileUpload';
 
@@ -68,10 +69,65 @@ exports.fileUpload = async (req, res) => {
 	}
 };
 
+// exports.createTest = async (req, res) => {
+// 	try {
+
+
+// 		let runobj = {
+// 			...req.body.capabilities,
+// 			userId: req.body.userId,
+// 			userName: req.body.userName,
+// 			projectId: req.body.projectId
+// 		}
+
+// 		let newRun = new emulatorRuns(runobj);
+// 		let createdRun = await newRun.save();
+
+// 		console.log(createdRun._id);
+
+
+// 		if (req.body.capabilities.deviceName === 'emulator-5554') {
+// 			createEmulator.createEmulator('Pixel_3a_API_27', 5554);
+// 		}
+// 		else if (req.body.capabilities.deviceName === 'emulator-5556') {
+// 			createEmulator.createEmulator('Pixel_3a_API_27', 5556);
+// 		}
+
+// 		const uploadObj = {
+// 			userId: req.body.userId,
+// 			projectId: req.body.projectId,
+// 			runId: createdRun._id
+// 		}
+
+
+// 		let appiumobj = {
+// 			capabilities: req.body.capabilities,
+// 			runId: createdRun._id
+// 		}
+
+// 		await Appium.runAppium(appiumobj);
+// 		await s3upload.fileUpload(uploadObj);
+
+// 		return res.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS).send(createdRun._id);
+// 	} catch (error) {
+// 		console.log(error);
+// 		return res.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS).send(error.message);
+// 	}
+// };
+
+
+
+
 exports.createTest = async (req, res) => {
+	let ports = {
+		5554: true,
+		5556: true,
+		5558: true,
+		5560: true,
+		5562: true,
+		5564: true,
+	}
 	try {
-
-
 		let runobj = {
 			...req.body.capabilities,
 			userId: req.body.userId,
@@ -83,14 +139,25 @@ exports.createTest = async (req, res) => {
 		let createdRun = await newRun.save();
 
 		console.log(createdRun._id);
+		let availablePortNumber = 5554;
+		let portFlag = false;
+		while (!portFlag) {
 
-
-		if (req.body.capabilities.deviceName === 'emulator-5554') {
-			createEmulator.createEmulator('Pixel_3a_API_27', 5554);
+			if (ports[availablePortNumber] === true) {
+				portFlag = true;
+			}
+			else {
+				availablePortNumber = availablePortNumber + 2;
+			}
 		}
-		else if (req.body.capabilities.deviceName === 'emulator-5556') {
-			createEmulator.createEmulator('Pixel_3a_API_27', 5556);
+		let Genyobj = {
+			capabilities: { deviceName: `localhost:${availablePortNumber}`, ...req.body.capabilities },
+			runId: createdRun._id,
+			port: availablePortNumber,
+			recipeId: req.body.capabilities.deviceName
 		}
+		await RunGenyMotion.RunGenyMotion(Genyobj);
+		ports[availablePortNumber] = true;
 
 		const uploadObj = {
 			userId: req.body.userId,
@@ -98,13 +165,6 @@ exports.createTest = async (req, res) => {
 			runId: createdRun._id
 		}
 
-
-		let appiumobj = {
-			capabilities: req.body.capabilities,
-			runId: createdRun._id
-		}
-
-		await Appium.runAppium(appiumobj);
 		await s3upload.fileUpload(uploadObj);
 
 		return res.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS).send(createdRun._id);
@@ -113,5 +173,4 @@ exports.createTest = async (req, res) => {
 		return res.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS).send(error.message);
 	}
 };
-
 

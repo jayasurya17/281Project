@@ -126,8 +126,10 @@ class CreateTest extends Component {
 						className='form-control'
 					>
 						<option value=''>Select Version</option>
-
+						<option value='9.0'>Pie 9.0</option>
 						<option value='8.1'>Oreo 8.1</option>
+						<option value='7.1.0'>Nougat 7.1</option>
+
 					</select>
 				)
 			}
@@ -158,7 +160,23 @@ class CreateTest extends Component {
 		}
 
 		const deviceSelect = () => {
-			if (this.state.platformVersion === '8.1') {
+			if (this.state.platformVersion === '9.0') {
+				return (
+					<select name="deviceName"
+						value={this.state.deviceName}
+						onChange={this.handleChange}
+						className='form-control'
+					>
+						<option value=''>Select Device</option>
+						<option value='e20da1a3-313c-434a-9d43-7268b12fee08'>Samsung Galaxy S9</option>
+						<option value='a3f26fce-0632-4df4-88aa-cbddbc739e1e'>Samsung Galaxy Note 10+</option>
+						<option value='bd402826-4ee6-4598-94df-da4f89021042'>Google Pixel XL</option>
+						<option value='143eb44a-1d3a-4f27-bcac-3c40124e2836'>Google Pixel 3</option>
+						<option value='d8b10016-c02a-41f9-8a91-ce9b44197d21'>Xiaomi Redmi Note 7</option>
+					</select>
+				)
+			}
+			else if (this.state.platformVersion === '8.1') {
 				return (
 					<select name="deviceName"
 						value={this.state.deviceName}
@@ -167,8 +185,26 @@ class CreateTest extends Component {
 					>
 						<option value=''>Select Device</option>
 
-						<option value='emulator-5554'>Pixel 3a</option>
-						<option value='emulator-5556'>Pixel XL</option>
+						<option value='ea5fda48-fa8b-48c1-8acc-07d910856141'>Google Pixel XL</option>
+						<option value='81122aa5-a45e-4858-9848-b23ff03a9e9d'>Samsung Galaxy S8 </option>
+						<option value='20ee73af-5c32-405c-8582-cd19ffd175c2'>Google Pixel</option>
+
+
+					</select>
+				)
+			}
+
+			else if (this.state.platformVersion === '7.1.0') {
+				return (
+					<select name="deviceName"
+						value={this.state.deviceName}
+						onChange={this.handleChange}
+						className='form-control'
+					>
+						<option value=''>Select Device</option>
+						<option value='d777f454-c238-4a59-a587-6b88efcd5986'>Samsung Galaxy S7</option>
+						<option value='bccf86e5-7280-47bf-a502-6f64eba116f7'>Google Nexus 9 </option>
+						<option value='4b13441b-dacc-4803-b2e3-cb2d8d23def2'>Google Nexus 5X</option>
 
 					</select>
 				)
@@ -192,7 +228,8 @@ class CreateTest extends Component {
 				return (
 					<select name="platformVersion"
 						value={this.state.platformVersion}
-						onChange={this.handleChange}>
+						onChange={this.handleChange}
+						className='form-control'>
 						<option >Select Platform Version first</option>
 					</select>
 				)
@@ -217,9 +254,7 @@ class CreateTest extends Component {
 									onChange={this.handleChange}>
 									<option value=''>Select Platform Name</option>
 									<option value='Android' >Android</option>
-									<option
-										value="iOS"
-									>iOS</option>
+									<option value="iOS">iOS</option>
 
 								</select>
 
@@ -227,9 +262,7 @@ class CreateTest extends Component {
 								{platformVersionSelect()}
               Device Name:{" "}
 								{deviceSelect()}
-								{
-									//upload test apk file here
-								}
+
               App:
               <input type="file" onChange={this.onFileChange} />
 								{this.fileData()}
