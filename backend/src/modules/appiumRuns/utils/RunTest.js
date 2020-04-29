@@ -32,7 +32,7 @@ exports.runAppium = async (req) => {
 			automationName: req.automationName,
 		},
 	};
-	console.log("current path " + process.cwd())
+	//console.log("current path " + process.cwd())
 	const client = await wdio.remote(opts);
 
 	const field = await client.$('android.widget.EditText');

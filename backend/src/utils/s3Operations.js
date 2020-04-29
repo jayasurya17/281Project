@@ -115,7 +115,7 @@ exports.deleteFile = async (bucketName, filename) => {
     return new Promise((resolve, reject) => {
         s3.deleteObjects(params, function (err, data) {
             if (err) {
-                resolve ("BUCKER DOES NOT EXIST");
+                resolve("BUCKER DOES NOT EXIST");
             } // an error occurred
             else {
                 console.log(data);           // successful response
@@ -134,7 +134,7 @@ exports.deleteBucket = async (bucketName) => {
     return new Promise((resolve, reject) => {
         s3.deleteBucket(params, function (err, data) {
             if (err) {
-                resolve ("BUCKET DOES NOT EXIST");
+                resolve("BUCKET DOES NOT EXIST");
             } // an error occurred
             else {
                 console.log("SUCCESS");           // successful response

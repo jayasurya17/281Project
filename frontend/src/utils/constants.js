@@ -1,5 +1,5 @@
 module.exports = {
-	BACKEND_SERVER: {
+    BACKEND_SERVER: {
         URL: 'http://localhost:9000', // Should have http://
     },
     USER_INFORMATION: {

@@ -1,8 +1,9 @@
-import common from '../../../../config/env/common';
-import config from '../../../../config/index';
+
 
 const wdio = require('webdriverio');
 const assert = require('assert');
+const fs = require('fs')
+
 
 // const opts = {
 //   port: 4723,
@@ -19,6 +20,7 @@ const assert = require('assert');
 // };
 
 exports.runAppium = async (req) => {
+	req = req.capabilities;
 	const opts = {
 		port: 4723,
 		path: '/wd/hub/',
@@ -26,7 +28,7 @@ exports.runAppium = async (req) => {
 			platformName: req.platformName,
 			platformVersion: req.platformVersion,
 			deviceName: req.deviceName,
-			app: `./src/apkStore/${req.app}`,
+			app: `./${req.app}`,
 			appPackage: req.appPackage,
 			appActivity: req.appActivity,
 			automationName: req.automationName,
@@ -39,8 +41,19 @@ exports.runAppium = async (req) => {
 	await field.setValue('Hello World!');
 	const value = await field.getText();
 
-	assert.equal(value, 'Hello World!');
-	//  let logs = wdio.getLogs('driver');
+	// let screenshot = client.takeScreenshot();
 
+	assert.equal(value, 'Hello World!');
+	let bugreport = await client.getLogs('bugreport');
+	let logs = await client.getLogs('logcat');
+	const date = new Date();
+	const fileName = req.runId + "_" + (date.getMonth() + 1) + "" + date.getDate() + "" + date.getFullYear() + "" + date.getHours() + "" + date.getMinutes() + "_Logs.txt";
+	let path = `./src/apkStore/${fileName}`
+	//JSON.stringify(logs.map(entry => entry.message).join('\n'))
+	try {
+		fs.writeFileSync(path, JSON.stringify(logs.map(entry => entry.message).join('\n')));
+	} catch (err) {
+		console.error(err)
+	}
 	await client.deleteSession();
 };

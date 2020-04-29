@@ -33,11 +33,19 @@ import ManagerViewProjectDetails from "./manager/projectDetails";
 import ManagerViewProjectRuns from "./manager/ViewProject/ProjectDetails/viewRuns";
 import ManagerViewProjectDevices from "./manager/AddDevices/projectDevices"
 import ManagerBilling from "./manager/Billing/billing";
+import ViewBugsDashboard from './bugs/bugsDashboard';
+import ViewBug from './bugs/viewBug';
+import EditBug from './bugs/editBug';
+import CreateBug from './bugs/createBug';
+import BugsInProjectDashboard from './bugs/bugsInProject';
 import ManagerViewRunDetails from "./manager/ViewProject/RunDetails/listJobs";
 import ManagerViewRunArtifacts from "./manager/ViewProject/RunArtifacts/viewArtifacts";
 
 import CreateTest from "../components/emulator/CreateTest/CreateTest";
+import ViewEmulatorRuns from '../components/emulator/ViewTests/viewRuns'
 import LandingPage from "./common/LandingPage/LandingPage";
+import Emulators from "./emulator/Emulators";
+import RunConfirmation from "./emulator/RunConfirmation/RunConfirmation";
 
 //Create a Main Component
 class Main extends Component {
@@ -70,10 +78,20 @@ class Main extends Component {
 				<Route path="/tester/project/run/view/:projectId" component={TesterViewRuns} />
 				<Route path="/tester/project/run/details/:projectId" component={TesterViewRunDetails} />
 				<Route path="/tester/project/run/artifacts/:projectId" component={TesterViewRunArtifacts} />
-				<Route path="/tester/project/run/emulator/:projectId" component={CreateTest} />
+
+				<Route path="/tester/project/run/emulator/:projectId" component={Emulators} />
+				<Route path="/tester/project/run/viewTestRun" component={RunConfirmation} />
+				<Route path="/tester/project/run/viewemulator/:projectId" component={ViewEmulatorRuns} />
 
 
 				<Route path="/tester/announcements" component={TesterAnnouncements} />
+
+				<Route exact path="/tester/bugs/all" component={ViewBugsDashboard} />
+				<Route path="/tester/bugs/viewBug/:bugId" component={ViewBug} />
+				<Route path="/tester/bugs/editBug/:bugId" component={EditBug} />
+				<Route path="/tester/bugs/createBug" component={CreateBug} />
+				<Route path="/tester/bugs/project/:projectId" component={BugsInProjectDashboard} />
+
 
 				<Route path="/manager/" component={ManagerCheck} />
 				<Route path="/manager/billing" component={ManagerBilling} />
@@ -86,6 +104,14 @@ class Main extends Component {
 				<Route path="/manager/project/run/details/:projectId" component={ManagerViewRunDetails} />
 				<Route path="/manager/project/run/artifacts/:projectId" component={ManagerViewRunArtifacts} />
 				<Route path="/manager/project/devices/:projectId" component={ManagerViewProjectDevices} />
+
+				<Route exact path="/manager/bugs/all" component={ViewBugsDashboard} />
+				<Route path="/manager/bugs/viewBug/:bugId" component={ViewBug} />
+				<Route path="/manager/bugs/editBug/:bugId" component={EditBug} />
+				<Route path="/manager/bugs/createBug" component={CreateBug} />
+				<Route path="/manager/bugs/project/:projectId" component={BugsInProjectDashboard} />
+
+				<Route path="/tester/createTest/emulator" component={CreateTest} />
 
 			</div>
 		);
