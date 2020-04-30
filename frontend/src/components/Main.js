@@ -31,6 +31,7 @@ import ManagerViewMyProjects from "./manager/myProjects";
 import MangerCreateProject from "./manager/createProject";
 import ManagerViewProjectDetails from "./manager/projectDetails";
 import ManagerViewProjectRuns from "./manager/ViewProject/ProjectDetails/viewRuns";
+import ManagerViewEmulatorRuns from "./manager/ViewProject/EmulatorRuns/emulatorRuns";
 import ManagerViewProjectDevices from "./manager/AddDevices/projectDevices"
 import ManagerBilling from "./manager/Billing/billing";
 import ManagerViewBill from "./manager/Billing/generateBill";
@@ -101,7 +102,8 @@ class Main extends Component {
 				<Route path="/manager/project/all" component={ManagerViewMyProjects} />
 				<Route path="/manager/project/new" component={MangerCreateProject} />
 				<Route path="/manager/project/view/:projectId" component={ManagerViewProjectDetails} />
-				<Route path="/manager/project/runs/:projectId" component={ManagerViewProjectRuns} />
+				<Route path="/manager/project/runs/devicefarm/:projectId" component={ManagerViewProjectRuns} />
+				<Route path="/manager/project/runs/emulators/:projectId" component={ManagerViewEmulatorRuns} />
 				<Route path="/manager/project/run/details/:projectId" component={ManagerViewRunDetails} />
 				<Route path="/manager/project/run/artifacts/:projectId" component={ManagerViewRunArtifacts} />
 				<Route path="/manager/project/devices/:projectId" component={ManagerViewProjectDevices} />
