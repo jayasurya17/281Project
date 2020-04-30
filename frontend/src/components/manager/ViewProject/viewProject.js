@@ -79,10 +79,10 @@ class Landing extends Component {
         if (this.state.arn === "") {
             return (
                 <div className="p-5 shadow">
-                    <p className="display-4">Fetching</p>    
+                    <p className="display-4">Fetching</p>
                 </div>
             )
-        } 
+        }
 
         let description,
             technologies,

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Header from '../../common/header';
 import Footer from '../../common/footer';
 import Navigation from '../../common/navigation';
-// import GenerateBill from './generateBill';
 
 class Landing extends Component {
 

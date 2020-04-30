@@ -35,6 +35,7 @@ import ManagerViewEmulatorRuns from "./manager/ViewProject/EmulatorRuns/emulator
 import ManagerViewProjectDevices from "./manager/AddDevices/projectDevices"
 import ManagerBilling from "./manager/Billing/billing";
 import ManagerViewBill from "./manager/Billing/generateBill";
+import ManagerViewProjectBill from "./manager/ViewProject/billing";
 import ViewBugsDashboard from './bugs/bugsDashboard';
 import ViewBug from './bugs/viewBug';
 import EditBug from './bugs/editBug';
@@ -108,6 +109,7 @@ class Main extends Component {
 				<Route path="/manager/project/run/artifacts/:projectId" component={ManagerViewRunArtifacts} />
 				<Route path="/manager/project/devices/:projectId" component={ManagerViewProjectDevices} />
 				<Route path="/manager/view/bill" component={ManagerViewBill} />
+				<Route path="/manager/project/costs/:projectId" component={ManagerViewProjectBill} />
 
 				<Route exact path="/manager/bugs/all" component={ViewBugsDashboard} />
 				<Route path="/manager/bugs/viewBug/:bugId" component={ViewBug} />
