@@ -76,6 +76,13 @@ class Landing extends Component {
     }
 
     render() {
+        if (this.state.arn === "") {
+            return (
+                <div className="p-5 shadow">
+                    <p className="display-4">Fetching</p>    
+                </div>
+            )
+        } 
 
         let description,
             technologies,
@@ -148,7 +155,7 @@ class Landing extends Component {
                         </div>
                     </div>
                 </div>
-                <ProjectDashboard />
+                <ProjectDashboard ARN={this.state.arn} projectId={this.props.projectId} />
                 <FileBrowser projectId={this.props.projectId} />
             </div>
         )

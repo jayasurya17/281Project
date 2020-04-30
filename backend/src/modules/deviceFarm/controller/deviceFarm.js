@@ -2,6 +2,7 @@
 
 import Projects from '../../../models/mongoDB/projects'
 import Users from '../../../models/mongoDB/users'
+import EmulatorRuns from '../../../models/mongoDB/emulatorRuns'
 import Runs from '../../../models/mongoDB/runs'
 import constants from '../../../utils/constants'
 import devicefarm from '../../../utils/deviceFarmUtils'
@@ -22,7 +23,7 @@ exports.createDevicePool = async (req, res) => {
 			description: req.body.description,
 			projectArn: result.ARN,
 			rules: [{
-				"attribute": "ARN", 
+				"attribute": "ARN",
 				"operator": "IN",
 				"value": req.body.deviceARNs
 			}]
@@ -126,6 +127,11 @@ exports.scheduleRun = async (req, res) => {
 		let result1 = await devicefarm.getUpload(getAppUploadParams)
 		let result2 = await devicefarm.getUpload(getTestUploadParams)
 		while (result1.upload.status !== "SUCCEEDED" || result2.upload.status !== "SUCCEEDED") {
+			if (result1.upload.status !== "FAILED" || result2.upload.status !== "FAILED") {
+				return res
+					.status(constants.STATUS_CODE.BAD_REQUEST)
+					.send("Upload of files failed")
+			}
 			console.log(result1.upload.status, result2.upload.status)
 			await sleep(3000);
 			result1 = await devicefarm.getUpload(getAppUploadParams)
@@ -233,17 +239,17 @@ exports.listRuns = async (req, res) => {
 		let allRuns = await devicefarm.listRuns(params),
 			refinedListOfRuns = [],
 			index
-			allRuns = allRuns.runs
+		allRuns = allRuns.runs
 		if (req.query.type == "Tester") {
 			for (index in allRuns) {
-				let userRuns = await Runs.findOne({ARN: allRuns[index].arn})
+				let userRuns = await Runs.findOne({ ARN: allRuns[index].arn })
 				if (userRuns.userId == req.query.userId) {
 					refinedListOfRuns.push(allRuns[index])
 				}
-			}			
+			}
 		} else {
 			for (index in allRuns) {
-				let userRuns = await Runs.findOne({ARN: allRuns[index].arn})
+				let userRuns = await Runs.findOne({ ARN: allRuns[index].arn })
 				allRuns[index]['userName'] = userRuns.userName
 				refinedListOfRuns.push(allRuns[index])
 			}
@@ -328,7 +334,7 @@ exports.listJobs = async (req, res) => {
 		}
 		let runDetails = await devicefarm.getRun(params)
 		let allJobs = await devicefarm.listJobs(params)
-		
+
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send({
@@ -356,7 +362,7 @@ exports.listSuites = async (req, res) => {
 			arn: req.query.jobArn
 		}
 		let allSuites = await devicefarm.listSuites(params)
-		
+
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(allSuites)
@@ -381,7 +387,7 @@ exports.listTests = async (req, res) => {
 			arn: req.query.suiteArn
 		}
 		let allTests = await devicefarm.listTests(params)
-		
+
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(allTests)
@@ -449,10 +455,10 @@ exports.listArtifacts = async (req, res) => {
 				}
 			}
 		}
-		
-		
-		
-		
+
+
+
+
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send({
@@ -527,5 +533,99 @@ exports.listArtifactsInternal = async (runArn,type) => {
 	} catch (error) {
 		console.log(error.message)
 		return null;
+	}
+}
+
+/**
+ * Schedule Run on a project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.getDevicePool = async (req, res) => {
+
+	try {
+		const params = {
+			arn: req.query.arn
+		}
+		let devicePool = await devicefarm.getDevicePool(params)
+
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(devicePool)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+/**
+ * Schedule Run on a project.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.dashboardDetails = async (req, res) => {
+
+	try {
+		let allRuns,
+			runParams,
+			allJobs,
+			totalPassed = 0,
+			totalFailed = 0,
+			activeRuns = 0,
+			completedRuns = 0,
+			devicesInActiveRuns = 0,
+			run
+
+		const params = {
+			arn: req.query.projectArn
+		}
+		allRuns = await devicefarm.listRuns(params)
+		for(run of allRuns.runs) {		
+			totalPassed += run.counters.passed
+			totalFailed += run.counters.failed
+			if (run.status !== "COMPLETED") {
+				activeRuns += 1
+				runParams = {
+					arn: run.arn
+				}
+				allJobs = await devicefarm.listJobs(runParams)
+				devicesInActiveRuns += allJobs.jobs.length
+			} else {
+				completedRuns += 1
+			}		
+		}
+
+		let projectDetails = await Projects.findById(req.query.projectId)
+		let averageDeviceFarmRunsPerTester = allRuns.runs.length / projectDetails.acceptedTesters.length
+		// console.log("Average")
+		// console.log(allRuns.runs)
+		// console.log(projectDetails.acceptedTesters)
+		let allEmulatorRuns = await EmulatorRuns.find({
+			projectId: req.query.projectId
+		})
+		let averageEmulatorRunsPerTester = allEmulatorRuns.length / projectDetails.acceptedTesters.length
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send({
+				totalPassed: totalPassed,
+				totalFailed: totalFailed,
+				activeRuns: activeRuns,
+				completedRuns: completedRuns,
+				devicesInActiveRuns: devicesInActiveRuns,
+				averageDeviceFarmRunsPerTester: averageDeviceFarmRunsPerTester,
+				averageEmulatorRunsPerTester: averageEmulatorRunsPerTester,
+				acceptedTesters: projectDetails.acceptedTesters.length,
+				requestedTesters: projectDetails.requestedTesters.length,
+				rejectedTesters: projectDetails.rejectedTesters.length,
+			})
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
 	}
 }

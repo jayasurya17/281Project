@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Header from '../../common/header';
 import Footer from '../../common/footer';
 import Navigation from '../../common/navigation';
+// import GenerateBill from './generateBill';
 
 class Landing extends Component {
 
@@ -15,8 +16,15 @@ class Landing extends Component {
                     <Header />
                     <Navigation />
                     
-                    {/* Component design goes here */}
-                    <p className="display-4">Show costs based on resource utilization categorized by projects.</p> 
+                    <div className="row pt-5">
+                        <div className="col-md-3 offset-md-8">
+                            <a href="/manager/view/bill" target="_blank">
+                                <button className="btn btn-warning">View printer friendly page</button>
+                            </a>
+                        </div>
+                    </div>
+                    {/* https://reactjs.org/docs/dom-elements.html#style */}
+                    {/* <GenerateBill /> */}
                     
                     <Footer />
                 </div>
