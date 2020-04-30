@@ -151,11 +151,12 @@ exports.createTest = async (req, res) => {
 			}
 		}
 		let Genyobj = {
-			capabilities: { deviceName: `localhost:${availablePortNumber}`, ...req.body.capabilities },
+			capabilities: { ...req.body.capabilities, deviceName: `localhost:${availablePortNumber}` },
 			runId: createdRun._id,
 			port: availablePortNumber,
 			recipeId: req.body.capabilities.deviceName
 		}
+		//console.log(JSON.stringify(Genyobj));
 		await RunGenyMotion.RunGenyMotion(Genyobj);
 		ports[availablePortNumber] = true;
 

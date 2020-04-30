@@ -4,7 +4,7 @@ let portCounter = 5556;
 exports.linkADB = (UUID, port) => {
     return new Promise((resolve, reject) => {
         let cmd = 'gmsaas'
-        console.log("linking to ADB " + UUID);
+        console.log("linking to ADB " + UUID + "------" + port);
         let cp = child_process.spawnSync(cmd, ['instances', 'adbconnect', `${UUID}`, '--adb-serial-port', `${port}`])
         // cp = child_process.spawn('adb', ['devices'])
         // portCounter = portCounter + 2;
