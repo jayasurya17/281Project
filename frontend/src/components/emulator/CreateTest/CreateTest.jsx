@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import Header from "../../common/header";
-import Footer from "../../common/footer";
-import Navigation from "../../common/navigation";
 import axios from "axios";
 import Constants from "../../../utils/constants";
 
