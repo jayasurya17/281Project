@@ -49,6 +49,7 @@ import ViewEmulatorRuns from '../components/emulator/ViewTests/viewRuns'
 import LandingPage from "./common/LandingPage/LandingPage";
 import Emulators from "./emulator/Emulators";
 import RunConfirmation from "./emulator/RunConfirmation/RunConfirmation";
+import BarGraph from '../components/common/BarGraph/BarGraph'
 
 //Create a Main Component
 class Main extends Component {
@@ -118,6 +119,11 @@ class Main extends Component {
 				<Route path="/manager/bugs/project/:projectId" component={BugsInProjectDashboard} />
 
 				<Route path="/tester/createTest/emulator" component={CreateTest} />
+
+				<Route path="/manager/bargraph" component={BarGraph} />
+
+
+
 
 			</div>
 		);
