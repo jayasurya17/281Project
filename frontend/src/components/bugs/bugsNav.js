@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Button, Input} from 'reactstrap';
-import { Route , withRouter} from 'react-router-dom';
+import { withRouter} from 'react-router-dom';
 
 
 class BugsNav extends Component {

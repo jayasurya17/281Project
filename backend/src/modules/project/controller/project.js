@@ -1,6 +1,6 @@
 'use strict'
 
-import mongoose from 'mongoose'
+import EmulatorRuns from '../../../models/mongoDB/emulatorRuns'
 import Users from '../../../models/mongoDB/users'
 import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
@@ -355,6 +355,62 @@ exports.deleteProject = async (req, res) => {
 
 	} catch (error) {
 		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+/**
+ * Returns list of all projects created by the manager.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.getUsage = async (req, res) => {
+
+	try {
+
+		let projectDetails = await Projects.findById(req.params.projectId)
+		let allRuns,
+			runParams,
+			allJobs,
+			numberOfRuns = 0,
+			numberOfDevices = 0,
+			devicefarmRuntime = 0,
+			numberOfEmulatorRuns = 0
+			
+		const params = {
+			arn: projectDetails.ARN
+		}
+		allRuns = await devicefarm.listRuns(params)
+		numberOfRuns = allRuns.runs.length
+		for(var run of allRuns.runs) {	
+			if (run.deviceMinutes) {
+				devicefarmRuntime += run.deviceMinutes.total
+			}
+			runParams = {
+				arn: run.arn
+			}	
+			allJobs = await devicefarm.listJobs(runParams)
+			numberOfDevices += allJobs.jobs.length
+		}
+		let allEmulatorRuns = await EmulatorRuns.find({
+			projectId: req.query.projectId
+		})
+		numberOfEmulatorRuns = allEmulatorRuns.length
+
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send({
+				fileCount: projectDetails.fileCount,
+				numberOfRuns: numberOfRuns,
+				numberOfDevices: numberOfDevices,
+				devicefarmRuntime: devicefarmRuntime.toFixed(2),
+				numberOfEmulatorRuns: numberOfEmulatorRuns,
+				projectObj: projectDetails
+			})
+
+	} catch (error) {
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
 			.send(error.message)

@@ -31,8 +31,11 @@ import ManagerViewMyProjects from "./manager/myProjects";
 import MangerCreateProject from "./manager/createProject";
 import ManagerViewProjectDetails from "./manager/projectDetails";
 import ManagerViewProjectRuns from "./manager/ViewProject/ProjectDetails/viewRuns";
+import ManagerViewEmulatorRuns from "./manager/ViewProject/EmulatorRuns/emulatorRuns";
 import ManagerViewProjectDevices from "./manager/AddDevices/projectDevices"
 import ManagerBilling from "./manager/Billing/billing";
+import ManagerViewBill from "./manager/Billing/generateBill";
+import ManagerViewProjectBill from "./manager/ViewProject/billing";
 import ViewBugsDashboard from './bugs/bugsDashboard';
 import ViewBug from './bugs/viewBug';
 import EditBug from './bugs/editBug';
@@ -42,7 +45,11 @@ import ManagerViewRunDetails from "./manager/ViewProject/RunDetails/listJobs";
 import ManagerViewRunArtifacts from "./manager/ViewProject/RunArtifacts/viewArtifacts";
 
 import CreateTest from "../components/emulator/CreateTest/CreateTest";
+import ViewEmulatorRuns from '../components/emulator/ViewTests/viewRuns'
 import LandingPage from "./common/LandingPage/LandingPage";
+import Emulators from "./emulator/Emulators";
+import RunConfirmation from "./emulator/RunConfirmation/RunConfirmation";
+import BarGraph from '../components/common/BarGraph/BarGraph'
 
 //Create a Main Component
 class Main extends Component {
@@ -75,7 +82,10 @@ class Main extends Component {
 				<Route path="/tester/project/run/view/:projectId" component={TesterViewRuns} />
 				<Route path="/tester/project/run/details/:projectId" component={TesterViewRunDetails} />
 				<Route path="/tester/project/run/artifacts/:projectId" component={TesterViewRunArtifacts} />
-				<Route path="/tester/project/run/emulator/:projectId" component={CreateTest} />
+
+				<Route path="/tester/project/run/emulator/:projectId" component={Emulators} />
+				<Route path="/tester/project/run/viewTestRun" component={RunConfirmation} />
+				<Route path="/tester/project/run/viewemulator/:projectId" component={ViewEmulatorRuns} />
 
 
 				<Route path="/tester/announcements" component={TesterAnnouncements} />
@@ -94,10 +104,13 @@ class Main extends Component {
 				<Route path="/manager/project/all" component={ManagerViewMyProjects} />
 				<Route path="/manager/project/new" component={MangerCreateProject} />
 				<Route path="/manager/project/view/:projectId" component={ManagerViewProjectDetails} />
-				<Route path="/manager/project/runs/:projectId" component={ManagerViewProjectRuns} />
+				<Route path="/manager/project/runs/devicefarm/:projectId" component={ManagerViewProjectRuns} />
+				<Route path="/manager/project/runs/emulators/:projectId" component={ManagerViewEmulatorRuns} />
 				<Route path="/manager/project/run/details/:projectId" component={ManagerViewRunDetails} />
 				<Route path="/manager/project/run/artifacts/:projectId" component={ManagerViewRunArtifacts} />
 				<Route path="/manager/project/devices/:projectId" component={ManagerViewProjectDevices} />
+				<Route path="/manager/view/bill" component={ManagerViewBill} />
+				<Route path="/manager/project/costs/:projectId" component={ManagerViewProjectBill} />
 
 				<Route exact path="/manager/bugs/all" component={ViewBugsDashboard} />
 				<Route path="/manager/bugs/viewBug/:bugId" component={ViewBug} />
@@ -106,6 +119,11 @@ class Main extends Component {
 				<Route path="/manager/bugs/project/:projectId" component={BugsInProjectDashboard} />
 
 				<Route path="/tester/createTest/emulator" component={CreateTest} />
+
+				<Route path="/manager/bargraph" component={BarGraph} />
+
+
+
 
 			</div>
 		);
