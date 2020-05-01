@@ -12,12 +12,14 @@ class Landing extends Component {
         super()
         this.state = {
             projectObj: null,
+
             numberOfFiles: 5,
             numberOfDevicefarmRuns: 13,
             numberOfMinutesinDeviceFarms: 7,
             numberOfDevices: 3,
             numberOfEmulatorRuns: 10,
             numberOfMinutesinEmulators: 0
+
         }
     }
 
@@ -53,8 +55,6 @@ class Landing extends Component {
         let deviceFarmCosts = this.state.numberOfDevicefarmRuns * 0.6 + this.state.numberOfMinutesinDeviceFarms * 0.1 + this.state.numberOfDevices * 0.15
         let emulatorCosts = this.state.numberOfEmulatorRuns * 0.5 + this.state.numberOfMinutesinEmulators * 0.1;
         let subTotal = S3costs + deviceFarmCosts + emulatorCosts + 3 + 5
-        let tax = subTotal * 0.09
-        let total = subTotal + tax
 
         return (
             <div>

@@ -9,12 +9,7 @@ import logo4 from './devicefarm.jpg'
 import logo5 from './mtaas.jpg'
 import logo6 from './tax.jpg'
 import ViewBillTable from './viewBillTable'
-
-
-
 import { Card, CardBody, CardHeader, CardText, CardTitle, Container, CardImg } from 'reactstrap';
-
-// import GenerateBill from './generateBill';
 
 class Landing extends Component {
 

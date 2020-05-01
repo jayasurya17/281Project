@@ -4,7 +4,7 @@ import Footer from '../common/footer';
 import Navigation from '../common/navigation';
 import {
     Card, CardBody, Dropdown,
-    CardTitle, Button, Form, Input, Label, DropdownToggle, DropdownMenu, DropdownItem
+    CardTitle, Button, Form, Input, Label, DropdownToggle, DropdownMenu, DropdownItem, CardText
   } from 'reactstrap';
 import axios from 'axios';
 import Constants from '../../utils/constants';
@@ -17,7 +17,7 @@ class CreateBugView extends Component {
         super(props);
         this.state = {
                 subject :  null,
-                projectId : null,
+                projectId : this.props.match.params.projectId,
                 status : "Open",
                 severity : null,
                 tester : localStorage.getItem('281Username'),
@@ -46,7 +46,6 @@ class CreateBugView extends Component {
     changeSeverityValue = (event) => {
     event.preventDefault();
     var value = event.currentTarget.textContent;
-    console.log(value);
     this.setState((prevState) => ({
         ...prevState,
         severity: value,
@@ -59,18 +58,16 @@ class CreateBugView extends Component {
         const bug = {
             name: this.state.name,
             subject: this.state.subject,
-            projectId: this.state.projectId,
+            projectId: this.props.match.params.projectId,
             severity: this.state.severity,
             status: this.state.status,
             tester : this.state.tester
         }
-        console.log("bug");
         axios.post(Constants.BACKEND_SERVER.URL + "/bugs/createBug", bug)
             .then((response) => {
                 this.setState({
                     subject: null,
                     severity: null,
-                    projectId: null,
                     name: null
                 });
                 if (response.status === 201) {
@@ -128,9 +125,9 @@ class CreateBugView extends Component {
                                     </div>
                                 </div>
                                 <div style = {{ display : "flex",  flexDirection :"row", padding : "40px"}}>
-                                    Project Id:
+                                    <Label>Project Id:</Label>
                                     <div style={{paddingLeft : "28px"}}>
-                                    <Input type="text" name="projectId" id="projectId" onChange={this.changeHandler} value = {this.state.projectId==null ? "" : this.state.projectId} required />
+                                    <CardText id="projectId" >{this.props.match.params.projectId}</CardText>
                                     </div>
                                 </div>
                                 <div style = {{ display : "flex",  flexDirection :"row", padding : "40px"}}>

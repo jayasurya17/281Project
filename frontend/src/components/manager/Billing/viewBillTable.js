@@ -7,13 +7,16 @@ class Landing extends Component {
     constructor() {
         super()
         this.state = {
+
             projectObj: null,
-            numberOfFiles: 5,
-            numberOfDevicefarmRuns: 13,
-            numberOfMinutesinDeviceFarms: 7,
-            numberOfDevices: 3,
-            numberOfEmulatorRuns: 10,
+            numberOfFiles: 0,
+            numberOfDevicefarmRuns: 0,
+            numberOfMinutesinDeviceFarms: 0,
+            numberOfDevices: 0,
+            numberOfEmulatorRuns: 0,
             numberOfMinutesonEmulators: 0
+
+           
         }
     }
 
@@ -22,7 +25,6 @@ class Landing extends Component {
             .then((response) => {
                 // console.log(response)
                 this.setState({
-                    projectObj: response.data.projectObj,
                     numberOfFiles: response.data.fileCount,
                     numberOfDevicefarmRuns: response.data.numberOfRuns,
                     numberOfDevices: response.data.numberOfDevices,
@@ -35,7 +37,7 @@ class Landing extends Component {
     }
 
     render() {
-        if (this.state.projectObj === null) {
+        if (this.state.numberOfFiles === null) {
             return (
                 <div className="text-center p-5 display-4">Generating bill...</div>
             )

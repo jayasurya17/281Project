@@ -139,6 +139,46 @@ exports.deleteBug = async (req,res) => {
 	}
 }
 
+exports.getBugStatsByProject = async (req,res) => {
+	try {
+		let filter = {
+			projectId: req.params.projectId
+		}
+		let result = {
+			total : 0,
+			open : 0,
+			closed : 0,
+			severity : {
+				high : 0,
+				medium : 0,
+				low : 0
+			}
+		}
+		let bugs = await Bugs.find(filter)
+		bugs.forEach(bug => {
+			result.total = result.total+1;
+			if(bug.status=="Closed")
+				result.closed = result.closed+1;
+			else 
+				result.open = result.open+1;
+			if(bug.severity=="High")
+				result.severity.high = result.severity.high+1;
+			else if(bug.severity=="Medium")
+				result.severity.medium = result.severity.medium+1;
+			else
+				result.severity.low = result.severity.low+1;
+		})
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(result)
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
 exports.getErrorReports = async (req,res) => {
 	try{
 		let listArtifacts = await deviceFarmController.listArtifactsInternal(req.query.runArn,req.query.type);
@@ -154,19 +194,18 @@ exports.getErrorReports = async (req,res) => {
 			let errorObjects = [];
 			let artifactObject = {};
 			let artifacts = item.artifacts
-
 			artifactObject["job"] = item.job;
+
 			artifacts.forEach( element =>{
 				promises.push( getUrlContent(element.url,errorObjects));
 			})
 
 			artifactObject["errors"] = errorObjects;
 			artifactsObject.push(artifactObject);
-
 		});
 		Promise.all(promises)
 		.then( result => {
-			return res.send(artifactsObject)
+			return res.status(constants.STATUS_CODE.SUCCESS_STATUS).send(artifactsObject)
 		})
 	}
 	catch (error) {

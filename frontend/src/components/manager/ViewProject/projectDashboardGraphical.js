@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import DashboardCard from '../../common/Dashboard/card';
 import axios from 'axios';
 import constants from '../../../utils/constants';
 import { VictoryPie, VictoryChart, VictoryBar, VictoryTheme } from 'victory'

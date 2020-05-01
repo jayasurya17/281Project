@@ -5,7 +5,6 @@ import Navigation from '../common/navigation';
 import DisplayBugs from './displayBugs';
 import axios from 'axios';
 import Constants from '../../utils/constants';
-import BugsNav from './bugsNav';
 
 class BugsDashboard extends Component {
 
@@ -36,7 +35,6 @@ class BugsDashboard extends Component {
                 <div class="bg-white pl-5 pr-5 pb-5">
                     <Header />
                     <Navigation />
-                    <BugsNav />
                     <div style={{display : "flex",flexDirection :"column",paddingTop:"50px"}}>
                         <DisplayBugs bugs = {this.state.bugs} />
                         <Footer />

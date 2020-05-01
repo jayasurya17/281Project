@@ -8,24 +8,49 @@ class Landing extends Component {
     constructor() {
         super()
         this.state = {
-
+            numberOfFiles: null,
+            numberOfDevicefarmRuns: null,
+            numberOfMinutesinDeviceFarms: null,
+            numberOfDevices: null,
+            numberOfEmulatorRuns: null,
+            managerObj: {}
         }
     }
 
     componentDidMount() {
-        axios.get(`${constants.BACKEND_SERVER.URL}`)
+        axios.get(`${constants.BACKEND_SERVER.URL}/manager/bill/${localStorage.getItem('281UserId')}`)
             .then((response) => {
-                console.log(response.data)
+                this.setState({
+                    numberOfFiles: response.data.fileCount,
+                    numberOfDevicefarmRuns: response.data.numberOfRuns,
+                    numberOfDevices: response.data.numberOfDevices,
+                    numberOfMinutesinDeviceFarms: response.data.devicefarmRuntime,
+                    numberOfEmulatorRuns: response.data.numberOfEmulatorRuns,
+                    managerObj: response.data.managerObj
+                })
             })
     }
 
     render() {
+        if (this.state.numberOfFiles === null) {
+            return (
+                <div className="text-center p-5 display-4">Generating bill...</div>
+            )
+        }
+
+        let S3costs = this.state.numberOfFiles * 0.15 + 0.5
+        let deviceFarmCosts = this.state.numberOfDevicefarmRuns * 0.6 + this.state.numberOfMinutesinDeviceFarms * 0.1 + this.state.numberOfDevices * 0.15
+        let emulatorCosts = this.state.numberOfEmulatorRuns * 0.5
+        let subTotal = S3costs + deviceFarmCosts + emulatorCosts + 3 + 5
+        let tax = subTotal * 0.09
+        let total = subTotal + tax
+
         return (
             <body>
                 <div class="container" id="invoice">
                     <div>
-                        <div class="class1" > <img src="helmet.png" height="240"
-                            width="450" />
+                        <div class="class1" > 
+                        <img src="helmet.png" height="240" width="450" alt="..." />
                         </div>
                         <div class="class2" ><b>
                             <pre align="right">         SJSU           1 Washington Sq</pre>
@@ -33,138 +58,123 @@ class Landing extends Component {
                             <pre align="right">                                  95110</pre>
                             <pre align="right"> United States</pre></b>
                         </div>
-                        {/* <div style="clear: left;" /> */}
+                        <div class="class3" />
                     </div>
-                    {/* <b>
-                        <div style="float:left; margin-top: 50px; margin-left: 50px;">
-                            <pre><b style="color:blue">                                      </b></pre>
-                            <pre>Jayasurya Pinaki                 04/15/2020                 0000001
-                            CMPE281
-328 N Market St                  <b style="color:blue">Due Date                   Reference</b>
-San Jose, California        	 04/29/2020                 AWSMTaaS
-95110
-United States</pre>
+                    <div class="row p-4">
+                        <div className="col-md-3">
+                            <p className="class5">Billed to</p>
+                            <p className="font-weight-bold">{this.state.managerObj.name}</p>
+                            <p className="font-weight-bold">CMPE281</p>
+                            <p className="font-weight-bold">328 N Market St</p>
+                            <p className="font-weight-bold">San Jose, California</p>
+                            <p className="font-weight-bold">95110   </p>
+                            <p className="font-weight-bold">United States</p>
                         </div>
-                    </b>
-                    <div style="float:right;margin-top:50px; margin-right:50px; font-size: 18px;">
-                        <pre><b style="color:blue">Amount Due (USD)</b></pre>
-                        <h1 align="right" id="amt_due1">$170</h1>
+                        <div className="col-md-3">
+                            <div className="pb-2">
+                                <p className="class5">Date of issue</p>
+                                <p className="font-weight-bold">04/15/2020</p>
+                            </div>
+                            <div className="pt-2">
+                                <p className="class5">Due Date</p>
+                                <p className="font-weight-bold">04/29/2020</p>
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <div className="pb-2">
+                                <p className="class5">Invoice Number</p>
+                                <p className="font-weight-bold">0000001</p>
+                            </div>
+                            <div className="pt-2">
+                                <p className="class5">Reference</p>
+                                <p className="font-weight-bold">AWSMTaaS</p>
+                            </div>
+                        </div>
+                        <div className="col-md-3">
+                            <p className="class5">Amount Due (USD)</p>
+                            <p className="display-4 font-weight-bold">${total.toFixed(2)}</p>
+                        </div>
                     </div>
-                    <div style="clear: left;" />
-                    <hr style="border-bottom:4px solid #1a10e7;padding-top:50px; margin-right:50px">
+                    <div class="class7" />
 
-                        <div style="margin-right:50px; font-size: 18px;">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Description</th>
-                                        <th style="padding-left:415px">Rate</th>
-                                        <th>Qty </th>
-                                        <th>Line Total</th>
-                                    </tr>
-                                </thead>
+                    <div className="p-5">
 
-                                <tbody>
-                                    <tr>
-                                        <td id=" descrption1"><b>AWS-EC2 Instance</b></td>
-                                        <p>t2.micro(Utilization-70%)</p>
-
-                                        <td style="padding-left:400px" id="price1"><b>14.00</b></td>
-                                        <td class="text-right" id="qty1"><b>5</b></td>
-                                        <td class="text-right" id="linetotal1"><b>$14</b></td>
-
-                                    </tr>
-                                    <tr>
-                                        <td id="descrption2"><b>AWS-S3 Buckets</b>
-                                            <p id="number_of_file_uploads">Number of file uploads-6</p>
-                                        </td>
-                                        <td style="padding-left:400px" id="price2"><b>12.00</b></td>
-                                        <td class="text-right" id="qty2"><b>3</b></td>
-                                        <td class="text-right" id="linetotal2"><b>12</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td id="descrption3"><b>AWS-Device Farm</b>
-                                            <p id="number_of_devices_in_pool">Number of Devices in pool-12</p>
-                                            <p id="aws_number_of_runs">Number of runs-4</p>
-                                        </td>
-                                        <td style="padding-left:400px" id="price3"><b>24.00</b></td>
-                                        <td class="text-right" id="qty3"><b>2</b></td>
-                                        <td class="text-right" id="linetotal3"><b>14</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td id="descrption4"><b>CloudWatch Monitoring</b>
-                                            <p>Alarms and log reports</p>
-                                        </td>
-                                        <td style="padding-left:400px" id="price4"><b>6.00</b></td>
-                                        <td class="text-right" id="qty4"><b>1</b></td>
-                                        <td class="text-right" id="linetotal4"><b>$6</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td id="descrption5"><b>Tester Fee</b>
-                                            <p id="tester_number_of_runs"> Number_of runs-4</p>
-                                        </td>
-                                        <td style="padding-left:400px" id="price5"><b>20.00</b></td>
-                                        <td class="text-right" id="qty5"><b>1</b></td>
-                                        <td class="text-right" id="linetotal5"><b>$14</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td id="descrption6"><b>Platform Usage</b></td>
-                                        <td style="padding-left:400px" id="price6"><b>10.00</b></td>
-                                        <td class="text-right" id="qty6"><b>2</b></td>
-                                        <td class="text-right" id="linetotal6"><b>$14</b></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div className="row border-top border-bottom p-2 class5">
+                            <div className="col-md-6 offset-md-2"><h5>Description</h5></div>
+                            <div className="col-md-2"><h5>Cost</h5></div>
                         </div>
-                        <div style="float:right;margin-right:50px;margin-top:30px">
-                            <table class="table">
-                                <tr class="text-right">
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td><b>Subtotal</b></td>
 
-                                    <td id="subtot"><b>$1000.00</b></td>
-                                </tr>
-                                <tr class="text-right">
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td><b>7.5% Discount</b></td>
-                                    <td id="discount"><b>$1000.00</b></td>
-                                </tr>
-                                <tr class="text-right">
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td><b>Tax</b></td>
-                                    <td id="tax"><b>$1000.00</b></td>
-                                </tr>
-                                <tr class="text-right">
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td><b>Total</b></td>
-                                    <td id="total"><b>$1000.00</b></td>
-                                </tr>
-                                <tr class="text-right">
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td><b>Amount Paid</b></td>
-                                    <td id="amt_paid"><b>0.00</b></td>
-                                </tr>
-                                <tr class="text-right">
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td><b style="color:blue">Amount Due (USD)</b></td>
-                                    <td id="amt_due"><b>$1000.00</b></td>
-                                </tr>
-
-
-                            </table>
+                        <div className="row border-top border-bottom p-2">
+                            <div className="col-md-6 offset-md-2">
+                                <h5>Charges for using S3 storage</h5>
+                                <h5 className="font-weight-light">Base price: $0.50</h5>
+                                <h5 className="font-weight-light">$0.15 * {this.state.numberOfFiles} files</h5>
+                            </div>
+                            <div className="col-md-2"><h2>${S3costs.toFixed(2)}</h2></div>
                         </div>
-                        <div style="float:left;">
-                            <p style="padding-top:310px;color:blue"><b>Terms</b></p>
-                            <p>Please pay by 04/29/2020 to avoid penalty</p>
+
+                        <div className="row border-top border-bottom p-2">
+                            <div className="col-md-6 offset-md-2">
+                                <h5>Charges for using real devices</h5>
+                                <h5 className="font-weight-light">Base cost for each run: $0.60 ({this.state.numberOfDevicefarmRuns} runs)</h5>
+                                <h5 className="font-weight-light">$0.10 * {this.state.numberOfMinutesinDeviceFarms} minutes of runtime</h5>
+                                <h5 className="font-weight-light">$0.15 * {this.state.numberOfDevices} devices</h5>
+                            </div>
+                            <div className="col-md-2"><h2>${deviceFarmCosts.toFixed(2)}</h2></div>
                         </div>
-                        <div style="clear: left;" />
-                    </hr> */}
+
+                        <div className="row border-top border-bottom p-2">
+                            <div className="col-md-6 offset-md-2">
+                                <h5>Charges for using emulators</h5>
+                                <h5 className="font-weight-light">$0.50 * {this.state.numberOfEmulatorRuns} runs</h5>
+                            </div>
+                            <div className="col-md-2"><h2>${emulatorCosts.toFixed(2)}</h2></div>
+                        </div>
+
+                        <div className="row border-top border-bottom p-2">
+                            <div className="col-md-6 offset-md-2">
+                                <h5>Base cost for EC2 instances</h5>
+                            </div>
+                            <div className="col-md-2"><h2>$3</h2></div>
+                        </div>
+
+                        <div className="row border-top border-bottom p-2">
+                            <div className="col-md-6 offset-md-2">
+                                <h5>Base cost for using the service</h5>
+                            </div>
+                            <div className="col-md-2"><h2>$5</h2></div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-md-4 offset-md-4 border-top border-bottom"><h2>Subtotal</h2></div>
+                            <div className="col-md-2 border-top border-bottom"><h2>${subTotal.toFixed(2)}</h2></div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-md-4 offset-md-4 border-top border-bottom"><h2>Tax</h2></div>
+                            <div className="col-md-2 border-top border-bottom"><h2>${tax.toFixed(2)}</h2></div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-md-4 offset-md-4 border-top border-bottom"><h2>Total</h2></div>
+                            <div className="col-md-2 border-top border-bottom"><h2>${total.toFixed(2)}</h2></div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-md-4 offset-md-4 border-top border-bottom"><h2>Amount paid</h2></div>
+                            <div className="col-md-2 border-top border-bottom"><h2>$0.00</h2></div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-md-4 offset-md-4 border-top border-bottom class5"><h2>Amount Due (USD)</h2></div>
+                            <div className="col-md-2 border-top border-bottom"><h2>${total.toFixed(2)}</h2></div>
+                        </div>
+
+                    </div>
+                    <div>
+                        <p class="class5"><b>Terms</b></p>
+                        <p>Please pay by 04/29/2020 to avoid penalty</p>
+                    </div>
                 </div>
             </body>
         )

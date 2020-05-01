@@ -224,7 +224,11 @@ exports.getUsage = async (req, res) => {
 				devicefarmRuntime: devicefarmRuntime.toFixed(2),
 				numberOfEmulatorRuns: numberOfEmulatorRuns,
 				projectObj: projectDetails,
+
 				emulatorRunTime: emulatorRunTime
+
+				managerObj: await Users.findById(req.params.managerId)
+
 			})
 
 	} catch (error) {
