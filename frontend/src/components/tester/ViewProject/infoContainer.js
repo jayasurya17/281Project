@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Col, FormGroup, Input, FormText } from 'reactstrap';
 import axios from 'axios';
 import constants from '../../../utils/constants'
+import {  withRouter} from 'react-router-dom';
 
 class Landing extends Component {
 
@@ -13,6 +14,11 @@ class Landing extends Component {
             successMsg: "",
             errMsg: ""
         }
+    }
+
+    goToBugsByProject = (e) =>{
+        e.preventDefault();
+        this.props.history.push(`/${localStorage.getItem('281UserType').toLowerCase()}/bugs/project/`+this.props.projectId);
     }
 
     onChangeFileUpload = (e) => {
@@ -65,7 +71,7 @@ class Landing extends Component {
                     </Col>
                 </FormGroup>
                 <div className="row mt-2 mb-2">
-                    <button className="btn btn-danger w-100">Report Bugs</button>
+                    <button className="btn btn-danger w-100" onClick={this.goToBugsByProject}>Report Bugs</button>
                 </div>
                 <div className="row mt-2 mb-2">
                     <a href={`/tester/project/run/schedule/${this.props.projectId}`} className="w-100">
@@ -82,4 +88,4 @@ class Landing extends Component {
     }
 }
 //export Landing Component
-export default Landing;
+export default withRouter(Landing);

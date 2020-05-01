@@ -139,6 +139,32 @@ exports.deleteBug = async (req,res) => {
 	}
 }
 
+exports.getBugsCountInProject = async (req,res) => {
+	try {
+		let filter = {
+			projectId: req.params.projectId
+		}
+		Bugs.count(filter,function(err,count){
+			if(err){
+				return res
+				.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+				.send(error.message)
+			}
+			else{
+				return res
+				.status(constants.STATUS_CODE.SUCCESS_STATUS)
+				.send({count})
+			}
+		})
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.status(500)
+			.send(error.message)
+	}
+}
+
 exports.getErrorReports = async (req,res) => {
 	try{
 		let listArtifacts = await deviceFarmController.listArtifactsInternal(req.query.runArn,req.query.type);
@@ -154,19 +180,18 @@ exports.getErrorReports = async (req,res) => {
 			let errorObjects = [];
 			let artifactObject = {};
 			let artifacts = item.artifacts
-
 			artifactObject["job"] = item.job;
+
 			artifacts.forEach( element =>{
 				promises.push( getUrlContent(element.url,errorObjects));
 			})
 
 			artifactObject["errors"] = errorObjects;
 			artifactsObject.push(artifactObject);
-
 		});
 		Promise.all(promises)
 		.then( result => {
-			return res.send(artifactsObject)
+			return res.status(constants.STATUS_CODE.SUCCESS_STATUS).send(artifactsObject)
 		})
 	}
 	catch (error) {
