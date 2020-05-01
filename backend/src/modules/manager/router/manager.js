@@ -9,6 +9,7 @@ router.post('/addProject', upload.single('file'), managerController.addProject)
 router.get('/allProjects/:managerId', managerController.allProjects)
 router.post('/deleteProject', managerController.deleteProject)
 router.post('/deleteFile', managerController.deleteFile)
+router.get('/bill/:managerId', managerController.getUsage)
 
 
 module.exports = router

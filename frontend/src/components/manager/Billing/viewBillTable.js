@@ -1,8 +1,4 @@
 import React, { Component } from 'react';
-import Header from '../../common/header';
-import Footer from '../../common/footer';
-import Navigation from '../../common/navigation';
-import ProjectNavbar from '../../common/projectManagerNavbar';
 import axios from 'axios';
 import constants from '../../../utils/constants';
 
@@ -21,7 +17,7 @@ class Landing extends Component {
     }
 
     componentDidMount() {
-        axios.get(`${constants.BACKEND_SERVER.URL}/project/bill/${this.props.match.params.projectId}`)
+        axios.get(`${constants.BACKEND_SERVER.URL}/manager/bill/${localStorage.getItem('281UserId')}`)
             .then((response) => {
                 this.setState({
                     projectObj: response.data.projectObj,
@@ -37,11 +33,7 @@ class Landing extends Component {
     render() {
         if (this.state.projectObj === null) {
             return (
-                <div>
-                    <Header />
-                    <Navigation />
-                    <p className="p-5 display-4 text-center">We are checking your usage...</p>
-                </div>
+                <div className="text-center p-5 display-4">Generating bill...</div>
             )
         }
 
@@ -55,11 +47,8 @@ class Landing extends Component {
 
         return (
             <div>
-                <Header />
-                <Navigation />
-                <ProjectNavbar projectObj={this.state.projectObj} />
 
-                <div className="m-5 p-5 shadow">
+                <div className="p-5">
 
                     <div className="row bg-secondary p-2 text-white">
                         <div className="col-md-2 offset-md-8"><h5>Cost</h5></div>
@@ -111,9 +100,28 @@ class Landing extends Component {
                         <div className="col-md-2"><h2>${subTotal.toFixed(2)}</h2></div>
                     </div>
 
+                    <div className="row bg-secondary p-2 text-white">
+                        <div className="col-md-6 offset-md-2"><h5>Tax</h5></div>
+                        <div className="col-md-2"><h2>${tax.toFixed(2)}</h2></div>
+                    </div>
+
+                    <div className="row bg-secondary p-2 text-white">
+                        <div className="col-md-6 offset-md-2"><h5>Total</h5></div>
+                        <div className="col-md-2"><h2>${total.toFixed(2)}</h2></div>
+                    </div>
+
+                    <div className="row bg-secondary p-2 text-white">
+                        <div className="col-md-6 offset-md-2"><h5>Amount paid</h5></div>
+                        <div className="col-md-2"><h2>$0.00</h2></div>
+                    </div>
+
+                    <div className="row bg-secondary p-2 text-white">
+                        <div className="col-md-6 offset-md-2"><h5>Amount due</h5></div>
+                        <div className="col-md-2"><h2>${total.toFixed(2)}</h2></div>
+                    </div>
+
                 </div>
 
-                <Footer />
             </div>
         )
     }
