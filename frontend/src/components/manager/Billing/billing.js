@@ -86,16 +86,17 @@ class Landing extends Component {
 							</Card>
 						</Container>
 					</div>
-
 					<div className="row p-5">
 						<div className="col-md-3 offset-md-8">
-							<a href="/manager/view/bill" target="_blank">
-								<button className="btn btn-warning">View my bill in printer friendly page</button>
+							<a href="/manager/view/detailedbill" target="_blank">
+								<button className="btn btn-warning">Detailed Bill</button>
 							</a>
 						</div>
 					</div>
+
+
 					{/* https://reactjs.org/docs/dom-elements.html#style */}
-					<ViewBillTable />
+					{/* <ViewBillTable /> */}
 
 					<Footer />
 				</div>

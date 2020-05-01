@@ -43,6 +43,7 @@ import CreateBug from './bugs/createBug';
 import BugsInProjectDashboard from './bugs/bugsInProject';
 import ManagerViewRunDetails from "./manager/ViewProject/RunDetails/listJobs";
 import ManagerViewRunArtifacts from "./manager/ViewProject/RunArtifacts/viewArtifacts";
+import ManagerViewDetailedBill from "./manager/Billing/DetailedBill";
 
 import CreateTest from "../components/emulator/CreateTest/CreateTest";
 import ViewEmulatorRuns from '../components/emulator/ViewTests/viewRuns'
@@ -110,6 +111,8 @@ class Main extends Component {
 				<Route path="/manager/project/run/artifacts/:projectId" component={ManagerViewRunArtifacts} />
 				<Route path="/manager/project/devices/:projectId" component={ManagerViewProjectDevices} />
 				<Route path="/manager/view/bill" component={ManagerViewBill} />
+				<Route path="/manager/view/detailedbill" component={ManagerViewDetailedBill} />
+
 				<Route path="/manager/project/costs/:projectId" component={ManagerViewProjectBill} />
 
 				<Route exact path="/manager/bugs/all" component={ViewBugsDashboard} />

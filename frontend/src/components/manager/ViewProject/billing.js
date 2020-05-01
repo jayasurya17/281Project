@@ -16,20 +16,23 @@ class Landing extends Component {
             numberOfDevicefarmRuns: 13,
             numberOfMinutesinDeviceFarms: 7,
             numberOfDevices: 3,
-            numberOfEmulatorRuns: 10
+            numberOfEmulatorRuns: 10,
+            numberOfMinutesinEmulators: 0
         }
     }
 
     componentDidMount() {
         axios.get(`${constants.BACKEND_SERVER.URL}/project/bill/${this.props.match.params.projectId}`)
             .then((response) => {
+                console.log(response)
                 this.setState({
                     projectObj: response.data.projectObj,
                     numberOfFiles: response.data.fileCount,
                     numberOfDevicefarmRuns: response.data.numberOfRuns,
                     numberOfDevices: response.data.numberOfDevices,
                     numberOfMinutesinDeviceFarms: response.data.devicefarmRuntime,
-                    numberOfEmulatorRuns: response.data.numberOfEmulatorRuns
+                    numberOfEmulatorRuns: response.data.numberOfEmulatorRuns,
+                    numberOfMinutesinEmulators: response.data.emulatorRuntime
                 })
             })
     }
@@ -48,7 +51,7 @@ class Landing extends Component {
         // let subTotal = 0
         let S3costs = this.state.numberOfFiles * 0.15 + 0.5
         let deviceFarmCosts = this.state.numberOfDevicefarmRuns * 0.6 + this.state.numberOfMinutesinDeviceFarms * 0.1 + this.state.numberOfDevices * 0.15
-        let emulatorCosts = this.state.numberOfEmulatorRuns * 0.5
+        let emulatorCosts = this.state.numberOfEmulatorRuns * 0.5 + this.state.numberOfMinutesinEmulators * 0.1;
         let subTotal = S3costs + deviceFarmCosts + emulatorCosts + 3 + 5
         let tax = subTotal * 0.09
         let total = subTotal + tax
@@ -88,6 +91,8 @@ class Landing extends Component {
                         <div className="col-md-6 offset-md-2">
                             <h5>Charges for using emulators</h5>
                             <h5 className="font-weight-light">$0.50 * {this.state.numberOfEmulatorRuns} runs</h5>
+                            <h5 className="font-weight-light">$0.15 * {this.state.numberOfMinutesinEmulators} Minutes</h5>
+
                         </div>
                         <div className="col-md-2"><h2>${emulatorCosts.toFixed(2)}</h2></div>
                     </div>

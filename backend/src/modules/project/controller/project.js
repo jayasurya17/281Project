@@ -6,6 +6,7 @@ import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
 import devicefarm from '../../../utils/deviceFarmUtils'
 import S3 from '../../../utils/s3Operations'
+import emulator from '../../appiumRuns/controller/getRuns'
 
 /**
  * Returns list of all projects created by the manager.
@@ -17,7 +18,7 @@ exports.getDetails = async (req, res) => {
 	try {
 
 		let projectDetails = await Projects.findById(req.params.projectId)
-		
+
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(projectDetails)
@@ -42,13 +43,13 @@ exports.getRequestedUsers = async (req, res) => {
 		let requestedUserIds = projectDetails.requestedTesters
 		let requestedUsers = [],
 			userObj
-		for ( var index in requestedUserIds ) {
+		for (var index in requestedUserIds) {
 			userObj = await Users.findById(requestedUserIds[index]);
 			delete userObj.password;
 			requestedUsers.push(userObj);
 		}
 		var returnObj = {
-			requestedUsers : requestedUsers
+			requestedUsers: requestedUsers
 		}
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
@@ -77,24 +78,24 @@ exports.acceptUser = async (req, res) => {
 
 		await Projects.findByIdAndUpdate(
 			req.body.projectId,
-			{ 
-				$pull : {
-					requestedTesters : req.body.userId
+			{
+				$pull: {
+					requestedTesters: req.body.userId
 				},
-				$push : {
-					acceptedTesters : req.body.userId
+				$push: {
+					acceptedTesters: req.body.userId
 				}
 			}
 		)
 
 		await Users.findByIdAndUpdate(
 			req.body.userId,
-			{ 
-				$pull : {
-					requestedProjects : req.body.projectId
+			{
+				$pull: {
+					requestedProjects: req.body.projectId
 				},
-				$push : {
-					acceptedProjects : req.body.projectId
+				$push: {
+					acceptedProjects: req.body.projectId
 				}
 			}
 		)
@@ -127,24 +128,24 @@ exports.rejectUser = async (req, res) => {
 
 		await Projects.findByIdAndUpdate(
 			req.body.projectId,
-			{ 
-				$pull : {
-					requestedTesters : req.body.userId
+			{
+				$pull: {
+					requestedTesters: req.body.userId
 				},
-				$push : {
-					rejectedTesters : req.body.userId
+				$push: {
+					rejectedTesters: req.body.userId
 				}
 			}
 		)
 
 		await Users.findByIdAndUpdate(
 			req.body.userId,
-			{ 
-				$pull : {
-					requestedProjects : req.body.projectId
+			{
+				$pull: {
+					requestedProjects: req.body.projectId
 				},
-				$push : {
-					rejectedProjects : req.body.projectId
+				$push: {
+					rejectedProjects: req.body.projectId
 				}
 			}
 		)
@@ -171,13 +172,13 @@ exports.announcement = async (req, res) => {
 	try {
 		console.log(req.body)
 		const newAnnouncement = {
-			text : req.body.announcement
+			text: req.body.announcement
 		}
 		await Projects.findByIdAndUpdate(
 			req.body.projectId,
-			{ 
-				$push : {
-					announcements :  newAnnouncement
+			{
+				$push: {
+					announcements: newAnnouncement
 				}
 			}
 		)
@@ -205,7 +206,7 @@ exports.getAllDevices = async (req, res) => {
 
 		let projectObj = await Projects.findById(req.query.projectId)
 		var params = {
-			arn : projectObj.ARN
+			arn: projectObj.ARN
 		}
 		let allDevices = await devicefarm.listDevices(params)
 		return res
@@ -307,9 +308,9 @@ exports.deleteProject = async (req, res) => {
 		let projectId = req.params.projectId
 		let projectObj = await Projects.findById(projectId)
 		await Projects.deleteOne({
-			_id : projectId
+			_id: projectId
 		})
-		let index 
+		let index
 		for (index in projectObj.requestedTesters) {
 			await Users.findByIdAndUpdate(
 				projectObj.requestedTesters[index],
@@ -377,20 +378,21 @@ exports.getUsage = async (req, res) => {
 			numberOfRuns = 0,
 			numberOfDevices = 0,
 			devicefarmRuntime = 0,
-			numberOfEmulatorRuns = 0
-			
+			numberOfEmulatorRuns = 0,
+			emulatorRunTime = 0
+
 		const params = {
 			arn: projectDetails.ARN
 		}
 		allRuns = await devicefarm.listRuns(params)
 		numberOfRuns = allRuns.runs.length
-		for(var run of allRuns.runs) {	
+		for (var run of allRuns.runs) {
 			if (run.deviceMinutes) {
 				devicefarmRuntime += run.deviceMinutes.total
 			}
 			runParams = {
 				arn: run.arn
-			}	
+			}
 			allJobs = await devicefarm.listJobs(runParams)
 			numberOfDevices += allJobs.jobs.length
 		}
@@ -398,7 +400,9 @@ exports.getUsage = async (req, res) => {
 			projectId: req.query.projectId
 		})
 		numberOfEmulatorRuns = allEmulatorRuns.length
-
+		let timed = await emulator.getRunTime(req.params.projectId)
+		timed = timed / 60000
+		// console.log("project e time : " + JSON.stringify(timed))
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send({
@@ -407,7 +411,8 @@ exports.getUsage = async (req, res) => {
 				numberOfDevices: numberOfDevices,
 				devicefarmRuntime: devicefarmRuntime.toFixed(2),
 				numberOfEmulatorRuns: numberOfEmulatorRuns,
-				projectObj: projectDetails
+				projectObj: projectDetails,
+				emulatorRuntime: timed
 			})
 
 	} catch (error) {
