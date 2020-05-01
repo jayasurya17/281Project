@@ -139,28 +139,42 @@ exports.deleteBug = async (req,res) => {
 	}
 }
 
-exports.getBugsCountInProject = async (req,res) => {
+exports.getBugStatsByProject = async (req,res) => {
 	try {
 		let filter = {
 			projectId: req.params.projectId
 		}
-		Bugs.count(filter,function(err,count){
-			if(err){
-				return res
-				.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
-				.send(error.message)
+		let result = {
+			total : 0,
+			open : 0,
+			closed : 0,
+			severity : {
+				high : 0,
+				medium : 0,
+				low : 0
 			}
-			else{
-				return res
-				.status(constants.STATUS_CODE.SUCCESS_STATUS)
-				.send({count})
-			}
+		}
+		let bugs = await Bugs.find(filter)
+		bugs.forEach(bug => {
+			result.total = result.total+1;
+			if(bug.status=="Closed")
+				result.closed = result.closed+1;
+			else 
+				result.open = result.open+1;
+			if(bug.severity=="High")
+				result.severity.high = result.severity.high+1;
+			else if(bug.severity=="Medium")
+				result.severity.medium = result.severity.medium+1;
+			else
+				result.severity.low = result.severity.low+1;
 		})
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(result)
 	} catch (error) {
 		console.log(error.message)
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
-			.status(500)
 			.send(error.message)
 	}
 }
