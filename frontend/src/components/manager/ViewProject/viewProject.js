@@ -146,8 +146,13 @@ class Landing extends Component {
                             </a>
                         </div>
                         <div className="row mt-2 mb-2">
-                            <a href={`/manager/project/runs/${this.props.projectId}`} className="w-100">
+                            <a href={`/manager/project/runs/devicefarm/${this.props.projectId}`} className="w-100">
                                 <button className="btn btn-info w-100">View runs in the project</button>
+                            </a>
+                        </div>
+                        <div className="row mt-2 mb-2">
+                            <a href={`/manager/project/costs/${this.props.projectId}`} className="w-100">
+                                <button className="btn btn-warning w-100">View costs associated to the project</button>
                             </a>
                         </div>
                     </div>
