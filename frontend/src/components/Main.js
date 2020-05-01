@@ -93,7 +93,7 @@ class Main extends Component {
 				<Route exact path="/tester/bugs/all" component={ViewBugsDashboard} />
 				<Route path="/tester/bugs/viewBug/:bugId" component={ViewBug} />
 				<Route path="/tester/bugs/editBug/:bugId" component={EditBug} />
-				<Route path="/tester/bugs/createBug" component={CreateBug} />
+				<Route path="/tester/bugs/createBug/:projectId" component={CreateBug} />
 				<Route path="/tester/bugs/project/:projectId" component={BugsInProjectDashboard} />
 
 
@@ -115,7 +115,7 @@ class Main extends Component {
 				<Route exact path="/manager/bugs/all" component={ViewBugsDashboard} />
 				<Route path="/manager/bugs/viewBug/:bugId" component={ViewBug} />
 				<Route path="/manager/bugs/editBug/:bugId" component={EditBug} />
-				<Route path="/manager/bugs/createBug" component={CreateBug} />
+				<Route path="/manager/bugs/createBug/:projectId" component={CreateBug} />
 				<Route path="/manager/bugs/project/:projectId" component={BugsInProjectDashboard} />
 
 				<Route path="/tester/createTest/emulator" component={CreateTest} />
