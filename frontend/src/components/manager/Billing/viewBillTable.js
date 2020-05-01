@@ -48,7 +48,7 @@ class Landing extends Component {
         return (
             <div>
 
-                <div className="p-5">
+                <div className="p-0">
 
                     <div className="row bg-secondary p-2 text-white">
                         <div className="col-md-2 offset-md-8"><h5>Cost</h5></div>

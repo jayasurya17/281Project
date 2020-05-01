@@ -5,6 +5,7 @@ import FileBrowser from './fileBrowser';
 import InfoContainer from './infoContainer';
 import UploadFile from './uploadFile';
 import ProjectDashboard from './projectDashboard';
+import ProjectDashboardGraphical from './projectDashboardGraphical'
 
 
 class Landing extends Component {
@@ -114,8 +115,12 @@ class Landing extends Component {
         }
 
         return (
-            <div className="p-5 shadow">
+            <div className="p-5 shadow" style={{ display: "flex", flexDirection: "column" }}>
                 <div className="row">
+                    <div className="row pb-4 pt-4" style={{ width: "60%" }}>
+
+                        <ProjectDashboardGraphical ARN={this.state.arn} projectId={this.props.projectId} />
+                    </div>
                     <div className="col-md-6">
 
                         <h1 className="display-4">{this.state.name}</h1>
@@ -160,7 +165,6 @@ class Landing extends Component {
                         </div>
                     </div>
                 </div>
-                <ProjectDashboard ARN={this.state.arn} projectId={this.props.projectId} />
                 <FileBrowser projectId={this.props.projectId} />
             </div>
         )
