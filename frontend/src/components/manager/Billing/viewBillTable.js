@@ -7,12 +7,11 @@ class Landing extends Component {
     constructor() {
         super()
         this.state = {
-            projectObj: null,
-            numberOfFiles: 5,
-            numberOfDevicefarmRuns: 13,
-            numberOfMinutesinDeviceFarms: 7,
-            numberOfDevices: 3,
-            numberOfEmulatorRuns: 10
+            numberOfFiles: null,
+            numberOfDevicefarmRuns: null,
+            numberOfMinutesinDeviceFarms: null,
+            numberOfDevices: null,
+            numberOfEmulatorRuns: null
         }
     }
 
@@ -20,7 +19,6 @@ class Landing extends Component {
         axios.get(`${constants.BACKEND_SERVER.URL}/manager/bill/${localStorage.getItem('281UserId')}`)
             .then((response) => {
                 this.setState({
-                    projectObj: response.data.projectObj,
                     numberOfFiles: response.data.fileCount,
                     numberOfDevicefarmRuns: response.data.numberOfRuns,
                     numberOfDevices: response.data.numberOfDevices,
@@ -31,7 +29,7 @@ class Landing extends Component {
     }
 
     render() {
-        if (this.state.projectObj === null) {
+        if (this.state.numberOfFiles === null) {
             return (
                 <div className="text-center p-5 display-4">Generating bill...</div>
             )

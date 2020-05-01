@@ -12,11 +12,11 @@ class Landing extends Component {
         super()
         this.state = {
             projectObj: null,
-            numberOfFiles: 5,
-            numberOfDevicefarmRuns: 13,
-            numberOfMinutesinDeviceFarms: 7,
-            numberOfDevices: 3,
-            numberOfEmulatorRuns: 10
+            numberOfFiles: null,
+            numberOfDevicefarmRuns: null,
+            numberOfMinutesinDeviceFarms: null,
+            numberOfDevices: null,
+            numberOfEmulatorRuns: null
         }
     }
 

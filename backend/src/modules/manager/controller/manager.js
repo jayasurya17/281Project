@@ -211,7 +211,8 @@ exports.getUsage = async (req, res) => {
 				numberOfDevices: numberOfDevices,
 				devicefarmRuntime: devicefarmRuntime.toFixed(2),
 				numberOfEmulatorRuns: numberOfEmulatorRuns,
-				projectObj: projectDetails
+				projectObj: projectDetails,
+				managerObj: await Users.findById(req.params.managerId)
 			})
 
 	} catch (error) {
