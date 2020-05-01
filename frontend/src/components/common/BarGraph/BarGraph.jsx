@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import CustomLabel from './CustomLabel';
 import { VictoryPie, VictoryTheme, VictoryChart, VictoryBar } from 'victory';
 class BarGraph extends Component {
     state = {}

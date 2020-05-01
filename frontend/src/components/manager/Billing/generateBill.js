@@ -49,8 +49,8 @@ class Landing extends Component {
             <body>
                 <div class="container" id="invoice">
                     <div>
-                        <div class="class1" > <img src="helmet.png" height="240"
-                            width="450" />
+                        <div class="class1" > 
+                        <img src="helmet.png" height="240" width="450" alt="..." />
                         </div>
                         <div class="class2" ><b>
                             <pre align="right">         SJSU           1 Washington Sq</pre>

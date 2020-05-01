@@ -4,7 +4,6 @@ import Constants from '../../../utils/constants';
 import FileBrowser from './fileBrowser';
 import InfoContainer from './infoContainer';
 import UploadFile from './uploadFile';
-import ProjectDashboard from './projectDashboard';
 import ProjectDashboardGraphical from './projectDashboardGraphical'
 
 

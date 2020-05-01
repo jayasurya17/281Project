@@ -50,8 +50,6 @@ class Landing extends Component {
         let deviceFarmCosts = this.state.numberOfDevicefarmRuns * 0.6 + this.state.numberOfMinutesinDeviceFarms * 0.1 + this.state.numberOfDevices * 0.15
         let emulatorCosts = this.state.numberOfEmulatorRuns * 0.5
         let subTotal = S3costs + deviceFarmCosts + emulatorCosts + 3 + 5
-        let tax = subTotal * 0.09
-        let total = subTotal + tax
 
         return (
             <div>
