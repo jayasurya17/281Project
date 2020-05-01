@@ -8,7 +8,6 @@ import logo3 from './emulator.jpg'
 import logo4 from './devicefarm.jpg'
 import logo5 from './mtaas.jpg'
 import logo6 from './tax.jpg'
-import ViewBillTable from './viewBillTable'
 import { Card, CardBody, CardHeader, CardText, CardTitle, Container, CardImg } from 'reactstrap';
 
 class Landing extends Component {

@@ -2,17 +2,8 @@ import React, { Component } from 'react';
 import Header from '../../common/header';
 import Footer from '../../common/footer';
 import Navigation from '../../common/navigation';
-import logo1 from './compute.jpg'
-import logo2 from './storage.jpg'
-import logo3 from './emulator.jpg'
-import logo4 from './devicefarm.jpg'
-import logo5 from './mtaas.jpg'
-import logo6 from './tax.jpg'
 import ViewBillTable from './viewBillTable'
-
-
-
-import { Card, CardBody, CardHeader, CardText, CardTitle, Container, CardImg } from 'reactstrap';
+import { Container } from 'reactstrap';
 
 // import GenerateBill from './generateBill';
 

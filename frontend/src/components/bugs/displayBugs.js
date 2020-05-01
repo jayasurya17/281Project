@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Badge, Card,Button, CardBody, CardTitle} from 'reactstrap';
+import { Table, Badge, Card, CardBody, CardTitle} from 'reactstrap';
 import {   withRouter} from 'react-router-dom';
 
 class BugsDisplay extends Component {
@@ -23,7 +23,7 @@ class BugsDisplay extends Component {
     render(){
         return ( 
             <div>
-               { this.props.bugs && this.props.bugs.length!=0 &&
+               { this.props.bugs && this.props.bugs.length!==0 &&
                 <div>
 
             <Table bordered hidden={this.props.bugs==null}>
@@ -69,7 +69,7 @@ class BugsDisplay extends Component {
             </Card>
         </div>
             </div> }
-            { (this.props.bugs==null || this.props.bugs.length==0 ) 
+            { (this.props.bugs===null || this.props.bugs.length===0 ) 
             && <h3 style={{paddingBottom:"40px"}}>No Bugs To Display</h3>}
         </div>
         )
