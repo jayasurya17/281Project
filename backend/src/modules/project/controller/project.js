@@ -405,7 +405,7 @@ exports.getUsage = async (req, res) => {
 				fileCount: projectDetails.fileCount,
 				numberOfRuns: numberOfRuns,
 				numberOfDevices: numberOfDevices,
-				devicefarmRuntime: devicefarmRuntime,
+				devicefarmRuntime: devicefarmRuntime.toFixed(2),
 				numberOfEmulatorRuns: numberOfEmulatorRuns,
 				projectObj: projectDetails
 			})

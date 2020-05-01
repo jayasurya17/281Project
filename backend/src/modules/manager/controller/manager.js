@@ -180,7 +180,7 @@ exports.getUsage = async (req, res) => {
 			numberOfDevices = 0,
 			devicefarmRuntime = 0,
 			numberOfEmulatorRuns = 0
-			
+
 		for (var projectDetails of allProjects) {
 			let params = {
 				arn: projectDetails.ARN
@@ -209,7 +209,7 @@ exports.getUsage = async (req, res) => {
 				fileCount: projectDetails.fileCount,
 				numberOfRuns: numberOfRuns,
 				numberOfDevices: numberOfDevices,
-				devicefarmRuntime: devicefarmRuntime,
+				devicefarmRuntime: devicefarmRuntime.toFixed(2),
 				numberOfEmulatorRuns: numberOfEmulatorRuns,
 				projectObj: projectDetails
 			})
