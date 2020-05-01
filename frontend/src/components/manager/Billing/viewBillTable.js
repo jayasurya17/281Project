@@ -7,24 +7,32 @@ class Landing extends Component {
     constructor() {
         super()
         this.state = {
-            numberOfFiles: null,
-            numberOfDevicefarmRuns: null,
-            numberOfMinutesinDeviceFarms: null,
-            numberOfDevices: null,
-            numberOfEmulatorRuns: null
+
+            projectObj: null,
+            numberOfFiles: 0,
+            numberOfDevicefarmRuns: 0,
+            numberOfMinutesinDeviceFarms: 0,
+            numberOfDevices: 0,
+            numberOfEmulatorRuns: 0,
+            numberOfMinutesonEmulators: 0
+
+           
         }
     }
 
     componentDidMount() {
         axios.get(`${constants.BACKEND_SERVER.URL}/manager/bill/${localStorage.getItem('281UserId')}`)
             .then((response) => {
+                // console.log(response)
                 this.setState({
                     numberOfFiles: response.data.fileCount,
                     numberOfDevicefarmRuns: response.data.numberOfRuns,
                     numberOfDevices: response.data.numberOfDevices,
                     numberOfMinutesinDeviceFarms: response.data.devicefarmRuntime,
-                    numberOfEmulatorRuns: response.data.numberOfEmulatorRuns
-                })
+                    numberOfEmulatorRuns: response.data.numberOfEmulatorRuns,
+                    numberOfMinutesonEmulators: response.data.emulatorRunTime
+                }
+                )
             })
     }
 
@@ -38,7 +46,7 @@ class Landing extends Component {
         // let subTotal = 0
         let S3costs = this.state.numberOfFiles * 0.15 + 0.5
         let deviceFarmCosts = this.state.numberOfDevicefarmRuns * 0.6 + this.state.numberOfMinutesinDeviceFarms * 0.1 + this.state.numberOfDevices * 0.15
-        let emulatorCosts = this.state.numberOfEmulatorRuns * 0.5
+        let emulatorCosts = this.state.numberOfEmulatorRuns * 0.5 + this.state.numberOfMinutesonEmulators * 0.1;
         let subTotal = S3costs + deviceFarmCosts + emulatorCosts + 3 + 5
         let tax = subTotal * 0.09
         let total = subTotal + tax
@@ -75,6 +83,7 @@ class Landing extends Component {
                         <div className="col-md-6 offset-md-2">
                             <h5>Charges for using emulators</h5>
                             <h5 className="font-weight-light">$0.50 * {this.state.numberOfEmulatorRuns} runs</h5>
+                            <h5 className="font-weight-light">$0.10 * {this.state.numberOfMinutesonEmulators} minutes</h5>
                         </div>
                         <div className="col-md-2"><h2>${emulatorCosts.toFixed(2)}</h2></div>
                     </div>

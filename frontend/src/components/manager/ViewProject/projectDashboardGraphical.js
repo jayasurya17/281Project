@@ -36,36 +36,60 @@ class Home extends Component {
     }
 
     render() {
-        console.log(this.state);
-        return (
-            <div className="dashboardGraphical">
-                <div className="pieChart">
-                    <p className='display-4'>Run Details</p>
-                    <svg width={450} height={450}>
-                        <VictoryPie
-                            standalone={false}
-                            animate={{
-                                duration: 2000,
-                                onLoad: { duration: 1000 }
-                            }}
-                            width={400} height={400}
-                            innerRadius={100}
-                            colorScale={["#a7d930", "#e42024", "#507b00", '#282f6c']}
-                            padAngle={({ datum }) => datum.y}
-                            data={[
-                                { x: 1, y: this.state.totalPassed, label: "Passed" },
-                                { x: 2, y: this.state.totalFailed, label: "Failed" },
-                                { x: 3, y: this.state.activeRuns, label: "Active" },
-                                { x: 4, y: this.state.completedRuns, label: "Completed" },
+        let displaygraphs
+        if (this.state.completedRuns > 0 && this.state.averageDeviceFarmRunsPerTester > 0 && this.state.averageEmulatorRunsPerTester > 0) {
+            displaygraphs =
+                <div className="dashboardGraphical">
+
+                    <div className="pieChart" style={{ textAlign: "center" }}>
+                        <p className='display-4'>Run Details</p>
+                        <svg width={450} height={450}>
+                            <VictoryPie
+                                standalone={false}
+                                animate={{
+                                    duration: 2000,
+                                    onLoad: { duration: 1000 }
+                                }}
+                                width={400} height={400}
+                                innerRadius={100}
+                                colorScale={["#a7d930", "#e42024", "#507b00", '#282f6c']}
+                                padAngle={({ datum }) => datum.y}
+                                data={[
+                                    { x: 1, y: this.state.totalPassed, label: "Passed" },
+                                    { x: 2, y: this.state.totalFailed, label: "Failed" },
 
 
-                            ]}
-                        />
-                    </svg>
-                </div>
-                <div className="barChart">
-                    <p className='display-4'>Average Runs</p>
-                    <g width={1000} height={400}>
+
+                                ]}
+                            />
+                        </svg>
+                    </div>
+                    <div className="pieChart" style={{ textAlign: "center" }}>
+                        <p className='display-4'>Run Status</p>
+                        <svg width={450} height={450}>
+                            <VictoryPie
+                                standalone={false}
+                                animate={{
+                                    duration: 2000,
+                                    onLoad: { duration: 1000 }
+                                }}
+                                width={400} height={400}
+                                innerRadius={100}
+                                colorScale={["#507b00", '#282f6c']}
+                                padAngle={({ datum }) => datum.y}
+                                data={[
+
+                                    { x: 1, y: this.state.activeRuns, label: "Active" },
+                                    { x: 2, y: this.state.completedRuns, label: "Completed" },
+
+
+                                ]}
+                            />
+                        </svg>
+                    </div>
+                    <div className="barChart" style={{ textAlign: "center" }}>
+                        <p className='display-4'>Average Runs</p>
+                        {/* <svg width={400} height={400}> */}
                         <VictoryChart
                             theme={VictoryTheme.material}
                             domainPadding={{ x: 15 }}
@@ -78,6 +102,7 @@ class Home extends Component {
                             sortKey="x"
                         >
                             <VictoryBar horizontal
+                                width={400} height={400}
                                 style={{
                                     data: { fill: "#507b00" },
                                     labels: {
@@ -93,10 +118,19 @@ class Home extends Component {
                                 ]}
                             />
                         </VictoryChart>
-                    </g>
+                        {/* </svg> */}
+                    </div>
                 </div>
+        }
+        else {
+            displaygraphs = <p className="display-4">No Runs to show</p>
+        }
+        console.log(this.state);
+        return (
 
-            </div >
+            <div className="outerdiv">
+                {displaygraphs}
+            </div>
         )
     }
 }

@@ -6,6 +6,8 @@ import EmulatorRuns from '../../../models/mongoDB/emulatorRuns'
 import constants from '../../../utils/constants'
 import s3 from '../../../utils/s3Operations';
 import devicefarm from '../../../utils/deviceFarmUtils';
+import { getRounds } from 'bcryptjs'
+import getRuns from '../../appiumRuns/controller/getRuns'
 
 
 /**
@@ -179,21 +181,30 @@ exports.getUsage = async (req, res) => {
 			numberOfRuns = 0,
 			numberOfDevices = 0,
 			devicefarmRuntime = 0,
-			numberOfEmulatorRuns = 0
+			numberOfEmulatorRuns = 0,
+			emulatorRunTime = 0
 
 		for (var projectDetails of allProjects) {
+			console.log(JSON.stringify(projectDetails._id))
+
+			//console.log("req id " + req.params.projectId)
+			let timed = await getRuns.getRunTime(projectDetails._id)
+			timed = timed / 60000
+			emulatorRunTime += timed
+
+
 			let params = {
 				arn: projectDetails.ARN
 			}
 			allRuns = await devicefarm.listRuns(params)
 			numberOfRuns = allRuns.runs.length
-			for(var run of allRuns.runs) {	
+			for (var run of allRuns.runs) {
 				if (run.deviceMinutes) {
 					devicefarmRuntime += run.deviceMinutes.total
 				}
 				runParams = {
 					arn: run.arn
-				}	
+				}
 				allJobs = await devicefarm.listJobs(runParams)
 				numberOfDevices += allJobs.jobs.length
 			}
@@ -201,8 +212,9 @@ exports.getUsage = async (req, res) => {
 				projectId: projectDetails._id
 			})
 			numberOfEmulatorRuns = allEmulatorRuns.length
-		}
 
+		}
+		console.log("manager : " + emulatorRunTime);
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send({
@@ -212,7 +224,11 @@ exports.getUsage = async (req, res) => {
 				devicefarmRuntime: devicefarmRuntime.toFixed(2),
 				numberOfEmulatorRuns: numberOfEmulatorRuns,
 				projectObj: projectDetails,
+
+				emulatorRunTime: emulatorRunTime
+
 				managerObj: await Users.findById(req.params.managerId)
+
 			})
 
 	} catch (error) {

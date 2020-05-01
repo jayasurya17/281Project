@@ -43,8 +43,10 @@ const emulatorRuns = new mongoose.Schema({
     automationName: {
         type: String,
         required: true
+    },
+    runTime: {
+        type: Number,
     }
-
 }, { versionKey: false })
 
 export default mongoose.model('emulatorRuns', emulatorRuns)
