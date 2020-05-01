@@ -225,7 +225,7 @@ exports.getUsage = async (req, res) => {
 				numberOfEmulatorRuns: numberOfEmulatorRuns,
 				projectObj: projectDetails,
 
-				emulatorRunTime: emulatorRunTime
+				emulatorRunTime: emulatorRunTime,
 
 				managerObj: await Users.findById(req.params.managerId)
 

@@ -16,6 +16,9 @@ class Home extends Component {
             devicesInActiveRuns: "",
             averageDeviceFarmRunsPerTester: "",
             averageEmulatorRunsPerTester: "",
+            bugStats: {
+
+            }
         }
     }
 
@@ -32,6 +35,39 @@ class Home extends Component {
                     averageDeviceFarmRunsPerTester: response.data.averageDeviceFarmRunsPerTester,
                     averageEmulatorRunsPerTester: response.data.averageEmulatorRunsPerTester
                 })
+            })
+
+
+        axios.get(`${constants.BACKEND_SERVER.URL}/bugs/getBugStatsByProject/${this.props.projectId}`)
+            .then(response => {
+                this.setState({ bugStats: response.data });
+                console.log(this.state.bugStats);
+                //should print 
+                // {
+                //     "total": 6,
+                //     "open": 5,
+                //     "closed": 1,
+                //     "severity": {
+                //         "high": 2,
+                //         "medium": 3,
+                //         "low": 1
+                //     }
+                // }
+                // HANDLE response here
+            })
+            .catch(err => {
+                console.log(err);
+                let data = {
+                    "total": 0,
+                    "open": 0,
+                    "closed": 0,
+                    "severity": {
+                        "high": 0,
+                        "medium": 0,
+                        "low": 0
+                    }
+                }
+                this.setState({ bugStats: data });
             })
     }
 
