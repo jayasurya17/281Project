@@ -3,6 +3,7 @@
 import mongoose from 'mongoose';
 import Bugs from '../../../models/mongoDB/bugs'
 import Users from '../../../models/mongoDB/users';
+import Projects from '../../../models/mongoDB/projects';
 import constants from '../../../utils/constants';
 import deviceFarmController from '../../deviceFarm/controller/deviceFarm';
 
@@ -32,22 +33,69 @@ exports.createBug = async (req, res) => {
 	}
 }
 
+let getUserProfile = async  (userId) => {
+	try {
+		let details = await Users.findById(
+			mongoose.Types.ObjectId(userId)
+		)
+		return details;
+	} catch (error) {
+		console.log("error",error.message);
+	}
+}
+
+let projectsByManager = async (userId) => {
+	try {
+		let projectIdList = []
+		let promises = [] 
+		let projectDetails = await Projects.find({managerId : userId})
+		projectDetails.forEach(async project => {
+			console.log(project);
+			// projectIdList.push(project._id)
+			promises.push(await projectIdList.push(project._id));
+		})
+		return Promise.all(promises)
+        .then( result => {
+			console.log("here 1",projectIdList)
+            return projectIdList;
+        })
+	} catch (error) {
+		console.log("error",error.message);
+	}
+}
+
+let getBugs = async (projects) => {
+	console.log(projects)
+	try {
+		let bugs = await Bugs.find({
+			projectId : {
+				$in : projects
+			}
+		})
+		return bugs;
+	} catch (error) {
+		console.log(error.message)
+	}
+}
+
 exports.getAllBugs = async (req, res) => {
 	try {
-        let details = await Users.findById(
-			mongoose.Types.ObjectId(req.params.userId)
-		)
-		if (details) {
-			let projects = details.toJSON().acceptedProjects;
-            let bugs = await Bugs.find({
-                projectId : {
-                    $in : projects
-                }
-			})
-            return res
+		let userId = req.params.userId;
+		let user = await getUserProfile(userId)
+		if(user.type=="Manager"){
+			console.log(user)
+			let projects = await projectsByManager(userId)
+			let bugs = await getBugs(projects);
+			return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-            .send(bugs)
-        }
+			.send(bugs)
+		}
+		else {
+			let bugs = await getBugs(user.acceptedProjects);
+			return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(bugs)
+		}
 	} catch (error) {
 		console.log(error.message)
 		return res
