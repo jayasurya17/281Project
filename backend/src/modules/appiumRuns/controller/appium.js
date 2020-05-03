@@ -174,7 +174,7 @@ exports.createTest = async (req, res) => {
 		var d = new Date();
 		let endTime = d.getTime();
 		console.log("End Time " + endTime)
-		let runTime = (endTime - startTime)
+		let runTime = (endTime - startTime).toFixed(2)
 
 
 
