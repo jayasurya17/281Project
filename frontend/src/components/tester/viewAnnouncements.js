@@ -57,7 +57,7 @@ class Landing extends Component {
         var announcementCards = []
         for (var index in this.state.allAnnouncements) {
             var projectObj = this.state.allAnnouncements[index]
-            if (projectObj.announcements.length > 0) {
+            if (projectObj !== null && projectObj.announcements !== null && projectObj.announcements.length > 0) {
                 announcementCards.push(<AnnouncementCard projectObj = { projectObj } />)
             }
         }

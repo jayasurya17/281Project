@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './generateBill.css';
 import axios from 'axios';
 import constants from '../../../utils/constants';
+import logo from './helmet.jpg'
 
 class Landing extends Component {
 
@@ -50,7 +51,7 @@ class Landing extends Component {
                 <div class="container" id="invoice">
                     <div>
                         <div class="class1" > 
-                        <img src="helmet.png" height="240" width="450" alt="..." />
+                        <img src={logo} height="240" width="450" alt="..." />
                         </div>
                         <div class="class2" ><b>
                             <pre align="right">         SJSU           1 Washington Sq</pre>
