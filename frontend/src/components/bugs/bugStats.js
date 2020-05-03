@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { Card, CardTitle } from 'reactstrap';
-import Header from '../common/header';
-import Footer from '../common/footer';
-import Navigation from '../common/navigation';
 import axios from 'axios';
 import Constants from '../../utils/constants';
-import { VictoryPie, VictoryChart, VictoryBar, VictoryTheme } from 'victory'
+import { VictoryPie } from 'victory'
 
 
 class BugStats extends Component {

@@ -50,7 +50,6 @@ import ViewEmulatorRuns from '../components/emulator/ViewTests/viewRuns'
 import LandingPage from "./common/LandingPage/LandingPage";
 import Emulators from "./emulator/Emulators";
 import RunConfirmation from "./emulator/RunConfirmation/RunConfirmation";
-import BarGraph from '../components/common/BarGraph/BarGraph'
 import BugStats from "./bugs/bugStats";
 
 //Create a Main Component
