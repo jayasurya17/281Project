@@ -52,7 +52,7 @@ app.use('/users', usersRouter);
 app.use('/manager', managerRouter);
 app.use('/admin', adminRouter);
 app.use('/project', projectRouter);
-app.use('/bugs',bugRouter);
+app.use('/bugs', bugRouter);
 app.use('/emulators', emulatorRouter);
 app.use('/devicefarm', deviceFarmRouter);
 
