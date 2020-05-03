@@ -74,11 +74,11 @@ class Landing extends Component {
                         <div className="col-md-3">
                             <div className="pb-2">
                                 <p className="class5">Date of issue</p>
-                                <p className="font-weight-bold">04/15/2020</p>
+                                <p className="font-weight-bold">05/03/2020</p>
                             </div>
                             <div className="pt-2">
                                 <p className="class5">Due Date</p>
-                                <p className="font-weight-bold">04/29/2020</p>
+                                <p className="font-weight-bold">05/29/2020</p>
                             </div>
                         </div>
                         <div className="col-md-3">
@@ -174,7 +174,7 @@ class Landing extends Component {
                     </div>
                     <div>
                         <p class="class5"><b>Terms</b></p>
-                        <p>Please pay by 04/29/2020 to avoid penalty</p>
+                        <p>Please pay by 05/29/2020 to avoid penalty</p>
                     </div>
                 </div>
             </body>
