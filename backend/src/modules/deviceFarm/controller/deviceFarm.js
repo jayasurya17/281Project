@@ -3,7 +3,6 @@
 import Projects from '../../../models/mongoDB/projects'
 import Users from '../../../models/mongoDB/users'
 import EmulatorRuns from '../../../models/mongoDB/emulatorRuns'
-import Runs from '../../../models/mongoDB/runs'
 import constants from '../../../utils/constants'
 import devicefarm from '../../../utils/deviceFarmUtils'
 import findProject from '../../../utils/projectUtils'
@@ -30,6 +29,16 @@ exports.createDevicePool = async (req, res) => {
 		}
 		let createdDevicePool = await devicefarm.createDevicePool(params)
 		console.log("createdDevicePool", createdDevicePool)
+
+		await Projects.findByIdAndUpdate(
+			req.body.projectId,
+			{
+				$push: {
+					devicePools: createdDevicePool
+				}
+			}
+		)
+
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(createdDevicePool)
@@ -58,6 +67,13 @@ exports.listDevicePools = async (req, res) => {
 		}
 		let availableDevicePools = await devicefarm.listDevicePools(params)
 		console.log(`availableDevicePools: ${availableDevicePools}`)
+
+		await Projects.findByIdAndUpdate(
+			req.query.projectId,
+			{
+				devicePools: availableDevicePools.devicePools
+			}
+		)
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(availableDevicePools)
@@ -83,6 +99,18 @@ exports.deleteDevicePool = async (req, res) => {
 		}
 		let deletedPool = await devicefarm.deleteDevicePool(params)
 		console.log(`deletedPool: ${deletedPool}`)
+
+		await Projects.findOneAndUpdate(
+			{
+				ARN: req.query.arn
+			},
+			{
+				$pull: {
+					devicePools: deletedPool
+				}
+			}
+		)
+
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(deletedPool)
@@ -160,8 +188,18 @@ exports.scheduleRun = async (req, res) => {
 			userName: userObj.name,
 			ARN: scheduledRun.run.arn
 		}
-		const runObj = new Runs(runParams)
-		await runObj.save()
+
+		await Projects.findOneAndUpdate(
+			{
+				ARN: req.body.projectArn
+			},
+			{
+				$push: {
+					deviceFarmRuns: scheduledRun.run
+				}
+			}
+		)
+		
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(scheduledRun)
@@ -239,7 +277,16 @@ exports.listRuns = async (req, res) => {
 		let allRuns = await devicefarm.listRuns(params),
 			refinedListOfRuns = [],
 			index
+
 		allRuns = allRuns.runs
+		await Projects.findOneAndUpdate(
+			{
+				ARN: req.query.projectArn
+			},
+			{
+				deviceFarmRuns: allRuns
+			}
+		)
 		if (req.query.type == "Tester") {
 			for (index in allRuns) {
 				let userRuns = await Runs.findOne({ ARN: allRuns[index].arn })
@@ -308,6 +355,17 @@ exports.deleteRun = async (req, res) => {
 		}
 		let runObj = await devicefarm.deleteRun(params)
 		console.log("runObj: ", runObj)
+
+		await Projects.findOneAndUpdate(
+			{
+				ARN: req.query.arn
+			},
+			{
+				$pull: {
+					deviceFarmRuns: runObj
+				}
+			}
+		)
 
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
@@ -475,7 +533,7 @@ exports.listArtifacts = async (req, res) => {
 }
 
 
-exports.listArtifactsInternal = async (runArn,type) => {
+exports.listArtifactsInternal = async (runArn, type) => {
 
 	try {
 		const runParams = {
@@ -524,11 +582,11 @@ exports.listArtifactsInternal = async (runArn,type) => {
 					allArtifacts.push(tempObj)
 				}
 			}
-		}	
+		}
 		return {
-				runDetails: runDetails.run,
-				allArtifacts: allArtifacts
-			}
+			runDetails: runDetails.run,
+			allArtifacts: allArtifacts
+		}
 
 	} catch (error) {
 		console.log(error.message)
@@ -583,7 +641,7 @@ exports.dashboardDetails = async (req, res) => {
 			arn: req.query.projectArn
 		}
 		allRuns = await devicefarm.listRuns(params)
-		for(run of allRuns.runs) {		
+		for (run of allRuns.runs) {
 			totalPassed += run.counters.passed
 			totalFailed += run.counters.failed
 			if (run.status !== "COMPLETED") {
@@ -595,7 +653,7 @@ exports.dashboardDetails = async (req, res) => {
 				devicesInActiveRuns += allJobs.jobs.length
 			} else {
 				completedRuns += 1
-			}		
+			}
 		}
 
 		let projectDetails = await Projects.findById(req.query.projectId)

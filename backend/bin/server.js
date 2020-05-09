@@ -19,7 +19,6 @@ const deviceFarmRouter = require('../src/modules/deviceFarm/router/deviceFarm');
 
 // database connections
 require('../src/models/mongoDB/index');
-require('../src/models/sqlDB/index');
 
 const app = express();
 const { port } = config;

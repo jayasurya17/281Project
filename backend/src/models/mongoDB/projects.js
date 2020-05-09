@@ -1,20 +1,22 @@
 `use strict`
 
 import mongoose from 'mongoose'
+import devicePools from './devicePools'
+import deviceFarmRuns from './deviceFarmRuns'
 
 const Project = new mongoose.Schema({
-    managerId: {
+	managerId: {
 		type: mongoose.Types.ObjectId,
 		required: true,
-    },
+	},
 	name: {
 		type: String,
 		maxlength: 50,
 		required: true,
-    },
-    ARN: {
-        type: String
-    },
+	},
+	ARN: {
+		type: String
+	},
 	shortDescription: {
 		type: String,
 		required: true
@@ -43,12 +45,12 @@ const Project = new mongoose.Schema({
 	},
 	technologies: {
 		type: String,
-    },
-    fileCount: {
+	},
+	fileCount: {
 		type: Number,
 		default: 0
 	},
-    bugsReported: {
+	bugsReported: {
 		type: Number,
 		default: 0
 	},
@@ -56,18 +58,20 @@ const Project = new mongoose.Schema({
 		type: Date,
 		default: Date.now,
 	},
-	requestedTesters: [ mongoose.Types.ObjectId ],
-	acceptedTesters: [ mongoose.Types.ObjectId ],
-	rejectedTesters: [ mongoose.Types.ObjectId ],
+	requestedTesters: [mongoose.Types.ObjectId],
+	acceptedTesters: [mongoose.Types.ObjectId],
+	rejectedTesters: [mongoose.Types.ObjectId],
 	announcements: [{
-		text : {
+		text: {
 			type: String
 		},
 		time: {
 			type: Date,
 			default: Date.now,
 		}
-	}]
+	}],
+	devicePools: [devicePools],
+	deviceFarmRuns: [deviceFarmRuns]
 }, { versionKey: false })
 
 export default mongoose.model('projects', Project)
