@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-import fs from 'fs';
+import FileUploads from '../models/mongoDB/files'
 import config from '../../config/index';
 
 AWS.config.update({
@@ -52,9 +52,16 @@ exports.fileupload = async (bucketName, folderName, fileObj) => {
             console.log(`File uploaded successfully. ${data.Location}`);
         })
             .promise()
-            .then(() => {
+            .then(async () => {
                 var createdURL = s3.getSignedUrl('getObject', { Bucket: bucketName, Key: `${folderName}/${String(fileObj.originalname)}` })
                 console.log(`The URL is ${createdURL}`) // Return value of the function
+                
+                var fileUploadObj = new FileUploads({
+                    projectId: bucketName,
+                    fileName: `${folderName}/${String(fileObj.originalname)}`
+                })
+
+                await fileUploadObj.save()
                 resolve(createdURL)
             })
     })
@@ -100,7 +107,6 @@ exports.getAllURLs = (projectId, userIDs) => {
 }
 
 exports.deleteFile = async (bucketName, filename) => {
-
     var params = {
         Bucket: bucketName,
         Delete: { // required
@@ -113,12 +119,22 @@ exports.deleteFile = async (bucketName, filename) => {
     };
     console.log(params)
     return new Promise((resolve, reject) => {
-        s3.deleteObjects(params, function (err, data) {
+        s3.deleteObjects(params, async (err, data) => {
             if (err) {
-                resolve("BUCKER DOES NOT EXIST");
+                resolve("BUCKETDOES NOT EXIST");
             } // an error occurred
             else {
                 console.log(data);           // successful response
+                await FileUploads.findOneAndUpdate(
+                    {
+                        fileName: filename
+                    },
+                    {
+                        $set : {
+                            deleteTime: new Date()
+                        }
+                    }
+                )
                 resolve(data);
             }
         });

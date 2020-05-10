@@ -149,6 +149,7 @@ exports.deleteFile = async (req, res) => {
 				}
 			}
 		)
+		
 		await s3.deleteFile(req.body.projectId, req.body.filename);
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)

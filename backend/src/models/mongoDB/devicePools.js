@@ -14,7 +14,14 @@ const devicePools = new mongoose.Schema({
             value: String
         }
     ],
-    type: String
+    type: String,
+    createTime: {
+        type: Date,
+        default: Date.now
+    },
+    endTime: {
+        type: Date
+    }
 });
 
 export default devicePools;
