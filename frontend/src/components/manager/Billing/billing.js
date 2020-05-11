@@ -58,6 +58,7 @@ class Landing extends Component {
 									<CardText><b>Base cost for each run:</b> 60 Cents </CardText>
 									<CardText><b>Price per minute</b> 10 Cents</CardText>
 									<CardText><b>Price per device</b> 15 Cents</CardText>
+									<CardText><b>Price per minute of pre booking</b> 40 Cents</CardText>
 								</CardBody>
 							</Card>
 							<Card className="card">

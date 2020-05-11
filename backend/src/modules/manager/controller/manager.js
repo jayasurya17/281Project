@@ -3,6 +3,7 @@
 import Projects from '../../../models/mongoDB/projects'
 import Users from '../../../models/mongoDB/users'
 import EmulatorRuns from '../../../models/mongoDB/emulatorRuns'
+import PreBookedPools from '../../../models/mongoDB/preBookedPools'
 import constants from '../../../utils/constants'
 import s3 from '../../../utils/s3Operations';
 import devicefarm from '../../../utils/deviceFarmUtils';
@@ -186,9 +187,7 @@ exports.getUsage = async (req, res) => {
 			emulatorRunTime = 0
 
 		for (var projectDetails of allProjects) {
-			console.log(JSON.stringify(projectDetails._id))
 
-			//console.log("req id " + req.params.projectId)
 			let timed = await getRuns.getRunTime(projectDetails._id)
 			timed = timed / 60000
 			emulatorRunTime += timed
@@ -215,6 +214,25 @@ exports.getUsage = async (req, res) => {
 			numberOfEmulatorRuns = allEmulatorRuns.length
 
 		}
+		
+		let preBookedTime = 0,
+			allPools = await PreBookedPools.find(),
+			poolObj,
+			startTime,
+			endTime,
+			difference
+
+		for (poolObj of allPools) {
+			startTime = poolObj.createTime
+			if (poolObj.deleteTime) {
+				endTime = poolObj.deleteTime
+			} else {
+				endTime = Date.now()
+			}
+			difference = (endTime - startTime) / (1000 * 60)
+			preBookedTime += difference
+		}
+
 		console.log("manager : " + emulatorRunTime);
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
@@ -225,9 +243,8 @@ exports.getUsage = async (req, res) => {
 				devicefarmRuntime: devicefarmRuntime.toFixed(2),
 				numberOfEmulatorRuns: numberOfEmulatorRuns,
 				projectObj: projectDetails,
-
+				preBookedTime: preBookedTime.toFixed(2),
 				emulatorRunTime: emulatorRunTime,
-
 				managerObj: await Users.findById(req.params.managerId)
 
 			})

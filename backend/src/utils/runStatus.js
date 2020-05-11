@@ -16,13 +16,8 @@ cron.schedule("0 */1 * * * *", async () => {
         let runStatus
         for (var pool of allDevicePools) {
 
-            console.log(pool.runArn)
-            // console.log(pool.projectId)
-            // let projectObj = await Projects.findById(pool.projectId)
-            // console.log(projectObj)
-            // break
+            // Get current run details
             if (pool.runArn) {
-                // Get current run details
                 runStatus = await DeviceFarmUtils.getRun({
                     arn: pool.runArn
                 })
@@ -87,9 +82,9 @@ cron.schedule("0 */1 * * * *", async () => {
                         type: "APPIUM_JAVA_TESTNG"
                     }
                 }
-                console.log("Params for scheduling run", params)
+
                 let scheduledRun = await DeviceFarmUtils.scheduleRun(params)
-                console.log(`scheduledRun: ${scheduledRun}`)
+                console.log("preBookedRun:", scheduledRun)
 
                 await PreBookedPools.findByIdAndUpdate(
                     pool._id,
