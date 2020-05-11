@@ -2,6 +2,7 @@
 
 import Projects from '../../../models/mongoDB/projects'
 import Users from '../../../models/mongoDB/users'
+import Runs from '../../../models/mongoDB/runs'
 import EmulatorRuns from '../../../models/mongoDB/emulatorRuns'
 import PreBookedPools from '../../../models/mongoDB/preBookedPools'
 import constants from '../../../utils/constants'
@@ -197,8 +198,15 @@ exports.getUsage = async (req, res) => {
 				arn: projectDetails.ARN
 			}
 			allRuns = await devicefarm.listRuns(params)
-			numberOfRuns = allRuns.runs.length
+			
 			for (var run of allRuns.runs) {
+				let runObj = await Runs.findOne({ ARN: run.arn })
+				
+				if (!runObj) {
+					continue
+				}
+				numberOfRuns += 1
+				console.log(numberOfRuns, runObj)
 				if (run.deviceMinutes) {
 					devicefarmRuntime += run.deviceMinutes.total
 				}

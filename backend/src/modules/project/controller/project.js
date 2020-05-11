@@ -2,6 +2,8 @@
 
 import EmulatorRuns from '../../../models/mongoDB/emulatorRuns'
 import Users from '../../../models/mongoDB/users'
+import Runs from '../../../models/mongoDB/runs'
+import PreBookedPools from '../../../models/mongoDB/preBookedPools'
 import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants'
 import devicefarm from '../../../utils/deviceFarmUtils'
@@ -385,8 +387,14 @@ exports.getUsage = async (req, res) => {
 			arn: projectDetails.ARN
 		}
 		allRuns = await devicefarm.listRuns(params)
-		numberOfRuns = allRuns.runs.length
+
 		for (var run of allRuns.runs) {
+			let runObj = await Runs.findOne({ ARN: run.arn })
+
+			if (!runObj) {
+				continue
+			}
+			numberOfRuns += 1
 			if (run.deviceMinutes) {
 				devicefarmRuntime += run.deviceMinutes.total
 			}
@@ -403,6 +411,26 @@ exports.getUsage = async (req, res) => {
 		let timed = await emulator.getRunTime(req.params.projectId)
 		timed = timed / 60000
 		// console.log("project e time : " + JSON.stringify(timed))
+
+		let preBookedTime = 0,
+			allPools = await PreBookedPools.find({
+				projectId: req.params.projectId
+			}),
+			poolObj,
+			startTime,
+			endTime,
+			difference
+
+		for (poolObj of allPools) {
+			startTime = poolObj.createTime
+			if (poolObj.deleteTime) {
+				endTime = poolObj.deleteTime
+			} else {
+				endTime = Date.now()
+			}
+			difference = (endTime - startTime) / (1000 * 60)
+			preBookedTime += difference
+		}
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send({
@@ -412,7 +440,8 @@ exports.getUsage = async (req, res) => {
 				devicefarmRuntime: devicefarmRuntime.toFixed(2),
 				numberOfEmulatorRuns: numberOfEmulatorRuns,
 				projectObj: projectDetails,
-				emulatorRuntime: timed
+				emulatorRuntime: timed,
+				preBookedTime: preBookedTime.toFixed(2)
 			})
 
 	} catch (error) {
