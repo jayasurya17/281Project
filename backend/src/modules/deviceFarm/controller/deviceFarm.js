@@ -34,7 +34,7 @@ exports.createDevicePool = async (req, res) => {
 			req.body.projectId,
 			{
 				$push: {
-					devicePools: createdDevicePool
+					devicePools: createdDevicePool.devicePool
 				}
 			}
 		)
@@ -68,12 +68,6 @@ exports.listDevicePools = async (req, res) => {
 		let availableDevicePools = await devicefarm.listDevicePools(params)
 		console.log(`availableDevicePools: ${availableDevicePools}`)
 
-		await Projects.findByIdAndUpdate(
-			req.query.projectId,
-			{
-				devicePools: availableDevicePools.devicePools
-			}
-		)
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(availableDevicePools)
@@ -102,18 +96,19 @@ exports.deleteDevicePool = async (req, res) => {
 
 		await Projects.findOneAndUpdate(
 			{
-				ARN: req.query.arn
+				"devicePools.arn": req.query.arn
 			},
 			{
-				$pull: {
-					devicePools: deletedPool
+				$set: {
+					"devicePools.$.deleteTime": new Date()
 				}
 			}
 		)
 
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
-			.send(deletedPool)
+			// .send(deletedPool)
+			.send(null)
 
 	} catch (error) {
 		console.log(error.message)

@@ -19,7 +19,7 @@ const devicePools = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    endTime: {
+    deleteTime: {
         type: Date
     }
 });
