@@ -20,6 +20,9 @@ const deviceFarmRouter = require('../src/modules/deviceFarm/router/deviceFarm');
 // database connections
 require('../src/models/mongoDB/index');
 
+// Check run status
+require('../src/utils/runStatus');
+
 const app = express();
 const { port } = config;
 const { frontendUrl } = config;

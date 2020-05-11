@@ -2,6 +2,8 @@
 
 import Projects from '../../../models/mongoDB/projects'
 import Users from '../../../models/mongoDB/users'
+import Runs from '../../../models/mongoDB/runs'
+import PreBookedPools from '../../../models/mongoDB/preBookedPools'
 import EmulatorRuns from '../../../models/mongoDB/emulatorRuns'
 import constants from '../../../utils/constants'
 import devicefarm from '../../../utils/deviceFarmUtils'
@@ -42,6 +44,54 @@ exports.createDevicePool = async (req, res) => {
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send(createdDevicePool)
+
+	} catch (error) {
+		console.log(error.message)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+/**
+ * Create user and save data in database.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.preBookDevicePool = async (req, res) => {
+
+	try {
+		let result = await findProject.findProject(req.body.projectId)
+		let params = {
+			name: req.body.name,
+			description: req.body.description,
+			projectArn: result.ARN,
+			rules: [{
+				"attribute": "ARN",
+				"operator": "IN",
+				"value": req.body.deviceARNs
+			}]
+		}
+		let createdDevicePool = await devicefarm.createDevicePool(params)
+		console.log("preBookedDevicePool", createdDevicePool)
+
+		await Projects.findByIdAndUpdate(
+			req.body.projectId,
+			{
+				$push: {
+					devicePools: createdDevicePool.devicePool
+				}
+			}
+		)
+		let prebookedPool = createdDevicePool.devicePool
+		prebookedPool.projectId = req.body.projectId
+
+		let preBookedPoolObj = new PreBookedPools(prebookedPool)
+		preBookedPoolObj = await preBookedPoolObj.save()
+
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send(preBookedPoolObj)
 
 	} catch (error) {
 		console.log(error.message)
@@ -105,6 +155,18 @@ exports.deleteDevicePool = async (req, res) => {
 			}
 		)
 
+		await PreBookedPools.findOneAndUpdate(
+			{
+				arn: req.query.arn
+			},
+			{
+				$set: {
+					deleteTime: new Date(),
+					isDeleted: true
+				}
+			}
+		)
+
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			// .send(deletedPool)
@@ -150,9 +212,9 @@ exports.scheduleRun = async (req, res) => {
 		let result1 = await devicefarm.getUpload(getAppUploadParams)
 		let result2 = await devicefarm.getUpload(getTestUploadParams)
 		while (result1.upload.status !== "SUCCEEDED" || result2.upload.status !== "SUCCEEDED") {
-			if (result1.upload.status !== "FAILED" || result2.upload.status !== "FAILED") {
+			if (result1.upload.status === "FAILED" || result2.upload.status === "FAILED") {
 				return res
-					.status(constants.STATUS_CODE.BAD_REQUEST)
+					.status(constants.STATUS_CODE.BAD_REQUEST_ERROR_STATUS)
 					.send("Upload of files failed")
 			}
 			console.log(result1.upload.status, result2.upload.status)
@@ -183,6 +245,9 @@ exports.scheduleRun = async (req, res) => {
 			userName: userObj.name,
 			ARN: scheduledRun.run.arn
 		}
+
+		const runObj = new Runs(runParams)
+		await runObj.save()
 
 		await Projects.findOneAndUpdate(
 			{
@@ -285,15 +350,17 @@ exports.listRuns = async (req, res) => {
 		if (req.query.type == "Tester") {
 			for (index in allRuns) {
 				let userRuns = await Runs.findOne({ ARN: allRuns[index].arn })
-				if (userRuns.userId == req.query.userId) {
+				if (userRuns && userRuns.userId == req.query.userId) {
 					refinedListOfRuns.push(allRuns[index])
 				}
 			}
 		} else {
 			for (index in allRuns) {
 				let userRuns = await Runs.findOne({ ARN: allRuns[index].arn })
-				allRuns[index]['userName'] = userRuns.userName
-				refinedListOfRuns.push(allRuns[index])
+				if (userRuns) {
+					allRuns[index]['userName'] = userRuns.userName
+					refinedListOfRuns.push(allRuns[index])
+				}
 			}
 		}
 		// refinedListOfRuns = allRuns

@@ -3,6 +3,7 @@
 import AWS from 'aws-sdk';
 import Request from 'request';
 import config from '../../config/index';
+import fs from 'fs';
 
 AWS.config.update({
     secretAccessKey: config.awsKeysJayasurya.AWS_SECRET_ACCESS,
@@ -323,4 +324,37 @@ exports.getDevicePool = (params) => {
             }
         });
     })    
+}
+
+exports.createPreBookedUpload = (params, file, fileName) => {
+    return new Promise( async(resolve, reject) => {
+        
+		let createUploadObj = {
+			name: fileName,
+			projectArn: params.projectArn,
+			type: params.type
+		}
+		let createdUploadObj = await createUploadOnDeviceFarm(createUploadObj)
+		console.log("createdUploadObj:", createdUploadObj)
+
+		let options = {
+            method: 'PUT',
+            url: createdUploadObj.upload.url,
+            headers: {},
+            body: fs.readFileSync(file)
+		};
+
+		await new Promise(function(resolve,reject){
+            Request(options, function (error, response, body) {
+                if (error) {
+                    console.error("uploading test package zip failed with error: ", error);
+                    // res.status(400).json("uploading test package zip failed with error: ", error)
+                    reject(error);
+                }
+                resolve(body);
+            });
+        });
+		
+		resolve (createdUploadObj)
+    })
 }

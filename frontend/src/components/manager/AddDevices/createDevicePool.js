@@ -95,6 +95,44 @@ class Landing extends Component {
             })
     }
 
+
+    preBookDevicePool = () => {
+        if ("".localeCompare(this.state.name) === 0 ||
+            "".localeCompare(this.state.name) === 0 ||
+            isNaN(parseInt(this.state.deviceCount, 10)) ||
+            parseInt(this.state.deviceCount, 10) < 1) {
+            return
+        }
+        let arns = []
+        for (var index in this.state.selectedDevices) {
+            arns.push(this.state.selectedDevices[index].value)
+        }
+        const reqBody = {
+            projectId: this.props.projectId,
+            name: this.state.name,
+            description: this.state.description,
+            deviceARNs: JSON.stringify(arns),
+            maxDevices: parseInt(this.state.deviceCount, 10)
+        }
+        axios.post(`${Constants.BACKEND_SERVER.URL}/devicefarm/prebookDevicepool`, reqBody)
+            .then(() => {
+                this.setState({
+                    name: "",
+                    description: "",
+                    deviceCount: 10,
+                    selectedDevices: [],
+                    successMsg: "Created successfully",
+                    errMsg: ""
+                })
+            })
+            .catch(() => {
+                this.setState({
+                    successMsg: "",
+                    errMsg: "Failed"
+                })
+            })
+    }
+
     render() {
 
         let allDevices = [],
@@ -132,7 +170,7 @@ class Landing extends Component {
                         <button onClick={this.createDevicePool} className="btn btn-primary w-100">Create on-demand pool</button>
                     </div>
                     <div className="col-md-6">
-                        <button onClick={this.createDevicePool} className="btn btn-primary w-100">Pre-book device pool</button>
+                        <button onClick={this.preBookDevicePool} className="btn btn-primary w-100">Pre-book device pool</button>
                     </div>
                 </div>
             </div>

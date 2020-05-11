@@ -3,6 +3,7 @@
 import mongoose from 'mongoose'
 import devicePools from './devicePools'
 import deviceFarmRuns from './deviceFarmRuns'
+import preBookedPools from './preBookedPools'
 
 const Project = new mongoose.Schema({
 	managerId: {
