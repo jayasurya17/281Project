@@ -74,14 +74,7 @@ const runSchema = new mongoose.Schema({
     counters: counterSchema,
     totalJobs: Number,
     deviceMinutes: deviceMinutesSchema,
-    jobs: [jobSchema],
-    startTime: {
-        type: Date,
-        default: Date.now
-    },
-    endTime: {
-        type: Date
-    }
+    jobs: [jobSchema]
 });
 
 export default runSchema;
