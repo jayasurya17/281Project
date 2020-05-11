@@ -97,7 +97,7 @@ class Landing extends Component {
 
     scheduleRun = () => {
         this.setState({
-            warningMsg: "Files are being uploaded. Do not refresh! You will be redirected automatically",
+            warningMsg: "Files are being uploaded. You will be redirected automatically",
             successMsg: "",
             errMsg: "",
             redirectVar: []

@@ -8,6 +8,8 @@ import EmulatorRuns from '../../../models/mongoDB/emulatorRuns'
 import constants from '../../../utils/constants'
 import devicefarm from '../../../utils/deviceFarmUtils'
 import findProject from '../../../utils/projectUtils'
+import stopActiveRuns from '../../../utils/stopActiveRuns'
+
 const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 
 /**
@@ -188,6 +190,9 @@ exports.deleteDevicePool = async (req, res) => {
 exports.scheduleRun = async (req, res) => {
 
 	try {
+
+		await stopActiveRuns.stopActiveRuns(req.body.projectArn, req.body.devicePoolArn)
+
 		let uploadParams
 
 		uploadParams = {
@@ -236,9 +241,9 @@ exports.scheduleRun = async (req, res) => {
 				type: req.body.testTypeName
 			}
 		}
-		console.log("Params for scheduling run", params)
+		// console.log("Params for scheduling run", params)
 		let scheduledRun = await devicefarm.scheduleRun(params)
-		console.log(`scheduledRun: ${scheduledRun}`)
+		// console.log(`scheduledRun: ${scheduledRun}`)
 		const userObj = await Users.findById(req.body.userId)
 		const runParams = {
 			userId: req.body.userId,
@@ -257,6 +262,16 @@ exports.scheduleRun = async (req, res) => {
 				$push: {
 					deviceFarmRuns: scheduledRun.run
 				}
+			}
+		)
+
+		await PreBookedPools.findOneAndUpdate(
+			{
+				arn: req.body.devicePoolArn
+			},
+			{
+				isTestRunActive: true,
+				testRunARN: scheduledRun.run.arn
 			}
 		)
 		

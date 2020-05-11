@@ -42,7 +42,7 @@ class Landing extends Component {
         }
 
         let S3costs = this.state.numberOfFiles * 0.15 + 0.5
-        let deviceFarmCosts = this.state.numberOfDevicefarmRuns * 0.6 + this.state.numberOfMinutesinDeviceFarms * 0.1 + this.state.numberOfDevices * 0.15 + this.state.preBookedTime * 0.4
+        let deviceFarmCosts = this.state.numberOfDevicefarmRuns * 0.6 + this.state.numberOfMinutesinDeviceFarms * 0.1 + this.state.numberOfDevices * 0.15 + this.state.preBookedTime * 0.2
         let emulatorCosts = this.state.numberOfEmulatorRuns * 0.5
         let subTotal = S3costs + deviceFarmCosts + emulatorCosts + 3 + 5
         let tax = subTotal * 0.09
@@ -122,7 +122,7 @@ class Landing extends Component {
                                 <h5 className="font-weight-light">Base cost for each run: $0.60 ({this.state.numberOfDevicefarmRuns} runs)</h5>
                                 <h5 className="font-weight-light">$0.10 * {this.state.numberOfMinutesinDeviceFarms} minutes of runtime</h5>
                                 <h5 className="font-weight-light">$0.15 * {this.state.numberOfDevices} devices</h5>
-                                <h5 className="font-weight-light">$0.40 * {this.state.preBookedTime} minutes of pre booked devices</h5>
+                                <h5 className="font-weight-light">$0.20 * {this.state.preBookedTime} minutes of pre booked devices</h5>
                             </div>
                             <div className="col-md-2"><h2>${deviceFarmCosts.toFixed(2)}</h2></div>
                         </div>

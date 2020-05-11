@@ -16,6 +16,22 @@ cron.schedule("0 */1 * * * *", async () => {
         let runStatus
         for (var pool of allDevicePools) {
 
+            if (pool.isTestRunActive === true) {
+                runStatus = await DeviceFarmUtils.getRun({
+                    arn: pool.testRunARN
+                })
+                if (runStatus.run.status !== "COMPLETED") {
+                    continue
+                } else {
+                    await PreBookedPools.findByIdAndUpdate(
+                        pool._id,
+                        {
+                            isTestRunActive: false
+                        }
+                    )
+                }
+            }
+
             // Get current run details
             if (pool.runArn) {
                 runStatus = await DeviceFarmUtils.getRun({

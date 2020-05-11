@@ -31,7 +31,12 @@ const preBookedPools = new mongoose.Schema({
     uploadComplete: {
         type: Boolean,
         default: false
-    }
+    },
+    isTestRunActive: {
+        type: Boolean,
+        default: false       
+    },
+    testRunARN: String
 });
 
 export default mongoose.model('preBookedPools', preBookedPools)
