@@ -8,7 +8,7 @@ const logout = require('./LogOut')
 
 
 exports.RunGenyMotion = async (req) => {
-
+    console.log(req)
     //await login.setCredentails('duvvurisrihari@gmail.com', 'password123');
     let x = await createEmulator.createEmulator(req);
     console.log(x);

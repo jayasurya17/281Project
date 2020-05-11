@@ -37,7 +37,7 @@ var s3 = new AWS.S3()
  */
 exports.fileUpload = async (req, res) => {
 	try {
-		console.log(req.data);
+		// console.log(req.data);
 
 		const storage = multer.diskStorage({
 			destination(req, file, cb) {
@@ -128,21 +128,22 @@ exports.createTest = async (req, res) => {
 		5564: true,
 	}
 	try {
-		var d = new Date();
-		var startTime = d.getTime();
+		var runStart = new Date();
+		var startTime = runStart.getTime();
 		console.log("Start time" + startTime)
 		let runobj = {
 			...req.body.capabilities,
 			userId: req.body.userId,
 			userName: req.body.userName,
 			projectId: req.body.projectId,
-			runTime: 0
+			runTime: 0,
+			runStart: runStart
 		}
 
 		let newRun = new emulatorRuns(runobj);
 		let createdRun = await newRun.save();
 
-		console.log(createdRun._id);
+		console.log("Run ID" + createdRun._id);
 		let availablePortNumber = 5554;
 		let portFlag = false;
 		while (!portFlag) {
@@ -170,16 +171,20 @@ exports.createTest = async (req, res) => {
 			runId: createdRun._id
 		}
 
-		await s3upload.fileUpload(uploadObj);
-		var d = new Date();
-		let endTime = d.getTime();
+		// await s3upload.fileUpload(uploadObj);
+		var runEnd = new Date();
+		let endTime = runEnd.getTime();
 		console.log("End Time " + endTime)
-		let runTime = (endTime - startTime).toFixed(2)
+		let runTime = ((endTime - startTime) / (1000 * 60 * 60)).toFixed(2)
 
 
 
 		console.log("Run Time " + runTime)
-		await emulatorRuns.findOneAndUpdate({ _id: createdRun._id }, { runTime: runTime });
+		await emulatorRuns.findOneAndUpdate({ _id: createdRun._id },
+			{
+				runTime: runTime,
+				runEnd: runEnd
+			});
 
 		return res.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS).send(createdRun._id);
 	} catch (error) {

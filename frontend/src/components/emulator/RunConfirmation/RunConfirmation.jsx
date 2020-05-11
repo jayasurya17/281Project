@@ -16,7 +16,7 @@ class RunConfirmation extends Component {
 							<h5 className="text-center font-weight-bolder">Run Completed</h5>
 							<div className="mt-3">
 								<div className="form-group">
-									<label>Please make of note of the Run ID:</label>
+									<label>Running Test in Background. Check back in some time.</label>
 								</div>
 								<div className="form-group">
 									<label >{localStorage.getItem('emulatorRunID')}</label>

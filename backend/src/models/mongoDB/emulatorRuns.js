@@ -46,7 +46,14 @@ const emulatorRuns = new mongoose.Schema({
     },
     runTime: {
         type: Number,
-    }
+    },
+    runStart: {
+        type: Date,
+        required: true
+    },
+    runEnd: {
+        type: Date,
+    },
 }, { versionKey: false })
 
 export default mongoose.model('emulatorRuns', emulatorRuns)
