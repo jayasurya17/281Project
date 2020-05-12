@@ -34,8 +34,8 @@ class ManagerRow extends Component {
             ]
         }
         return (
-            <div>
-                <div className="m-3 p-3 shadow row">
+            <div className="m-3 p-3 shadow">
+                <div className="row">
                     <div className="col-md-8">
                         <h3>Name: <span className="font-weight-lighter">{this.props.managerObj.name}</span></h3>
                         <h3>Email: <span className="font-weight-lighter">{this.props.managerObj.email}</span></h3>
