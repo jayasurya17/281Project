@@ -17,8 +17,8 @@ class Header extends Component {
         } else if (localStorage.getItem('281UserType') === "Manager") {
             dashboardlinker = '/manager/dashboard'
             display = [
-                <div class="col-md-2 pt-4" style={{ display: 'flex', width: '400px', justifyContent: 'space-around' }}>
-                    <p class="text-break">Hello, {localStorage.getItem('281Username')}</p>
+                <div class="col-md-2 pt-4" style={{ display: 'flex', width: '500px', justifyContent: 'space-evely' }}>
+                    <p style={{ width: '200px' }}>Hello, {localStorage.getItem('281Username')}</p>
                     <a href="/manager/update-account">
                         <button class="btn btn-outline-dark">Profile</button>
                     </a>
@@ -55,8 +55,8 @@ class Header extends Component {
             <div style={{ background: '#f8f9fb' }}>
                 <div class="row">
                     <div class="col-md-10">
-                        <a href={dashboardlinker} class=" headerLogo text-dark text-decoration-none" style={{ display: 'flex' }}>
-                            <img src={logo} style={{ height: '90px' }} alt="logo"/>
+                        <a href={dashboardlinker} class=" headerLogo text-dark text-decoration-none" style={{ display: 'flex', width: "500px" }}>
+                            <img src={logo} style={{ height: '90px' }} alt="logo" />
                             <h1 class="display-4 text-break ">Mobile TaaS</h1>
                         </a>
                     </div>

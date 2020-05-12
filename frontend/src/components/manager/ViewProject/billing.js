@@ -13,7 +13,7 @@ class Landing extends Component {
         this.state = {
             projectObj: null,
 
-            numberOfFiles: 0    ,
+            numberOfFiles: 0,
             numberOfDevicefarmRuns: 0,
             numberOfMinutesinDeviceFarms: 0,
             numberOfDevices: 0,
@@ -54,7 +54,7 @@ class Landing extends Component {
         // let subTotal = 0
         let S3costs = this.state.numberOfFiles * 0.15 + 0.5
         let deviceFarmCosts = this.state.numberOfDevicefarmRuns * 0.6 + this.state.numberOfMinutesinDeviceFarms * 0.1 + this.state.numberOfDevices * 0.15 + this.state.preBookedTime * 0.2
-        let emulatorCosts = this.state.numberOfEmulatorRuns * 0.5 + this.state.numberOfMinutesinEmulators * 0.1;
+        let emulatorCosts = this.state.numberOfEmulatorRuns * 0.5 + this.state.numberOfMinutesinEmulators * 0.15;
         let subTotal = S3costs + deviceFarmCosts + emulatorCosts + 3 + 5
 
         return (
