@@ -10,6 +10,7 @@ router.get('/projects', adminController.getAllProjects)
 router.get('/managers', adminController.getAllManagers)
 router.get('/testers', adminController.getAllTesters)
 router.post('/block/tester', adminController.blockTester)
+router.get('/getUsage', adminController.getUsage)
 
 
 module.exports = router

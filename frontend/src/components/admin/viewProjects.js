@@ -6,7 +6,33 @@ import axios from 'axios';
 import constants from '../../utils/constants';
 
 class ProjectRow extends Component {
+
+    constructor() {
+        super()
+        this.state = {
+            isActive: true
+        }
+    }
+
+    deleteProject = () => {
+        this.setState({
+            isActive: false
+        })
+    }
+
     render() {
+        let deleteProject = [
+            <div className="col-md-2 offset-md-8">
+                <button className="btn btn-danger" onClick={this.deleteProject}>Delete this project</button>
+            </div>
+        ]
+        if (this.state.isActive === false) {
+            deleteProject = [
+                <div className="col-md-4 offset-md-8">
+                    <h3 className="font-weight-light text-danger">Project has been deleted</h3>
+                </div>
+            ]
+        }
         return (
             <div className="m-3 p-3 shadow">
                 <div className="row">
@@ -24,6 +50,9 @@ class ProjectRow extends Component {
                         <h3 className="font-weight-light text-info">Bugs reported: <span className="font-weight-bold">{this.props.projectObj.bugsReported}</span></h3>
                         <h3 className="font-weight-light text-primary">Number of files: <span className="font-weight-bold">{this.props.projectObj.fileCount}</span></h3>
                     </div>
+                </div>
+                <div className="row">
+                    {deleteProject}
                 </div>
             </div>
         )
@@ -46,6 +75,10 @@ class Home extends Component {
                     allProjects: response.data
                 })
             })
+    }
+
+    removeIndex = () => {
+
     }
 
     render() {

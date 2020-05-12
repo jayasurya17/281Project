@@ -241,7 +241,6 @@ exports.getUsage = async (req, res) => {
 			preBookedTime += difference
 		}
 
-		console.log("manager : " + emulatorRunTime);
 		return res
 			.status(constants.STATUS_CODE.SUCCESS_STATUS)
 			.send({
@@ -252,7 +251,7 @@ exports.getUsage = async (req, res) => {
 				numberOfEmulatorRuns: numberOfEmulatorRuns,
 				projectObj: projectDetails,
 				preBookedTime: preBookedTime.toFixed(2),
-				emulatorRunTime: emulatorRunTime,
+				emulatorRunTime: emulatorRunTime.toFixed(2),
 				managerObj: await Users.findById(req.params.managerId)
 
 			})

@@ -2,6 +2,11 @@
 import Users from '../../../models/mongoDB/users';
 import Projects from '../../../models/mongoDB/projects'
 import constants from '../../../utils/constants';
+import getRuns from '../../appiumRuns/controller/getRuns'
+import Runs from '../../../models/mongoDB/runs'
+import EmulatorRuns from '../../../models/mongoDB/emulatorRuns'
+import PreBookedPools from '../../../models/mongoDB/preBookedPools'
+import devicefarm from '../../../utils/deviceFarmUtils';
 
 /**
  * Create user and save data in database.
@@ -169,6 +174,111 @@ exports.blockTester = async (req, res) => {
             .send("SUCCESS")
 	} catch (error) {
 		console.log(`Error while logging in user ${error}`)
+		return res
+			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
+			.send(error.message)
+	}
+}
+
+
+/**
+ * Returns list of all projects created by the manager.
+ * @param  {Object} req request object
+ * @param  {Object} res response object
+ */
+exports.getUsage = async (req, res) => {
+
+	try {
+
+		let allTesters = await Users.find({
+			type: "Tester"
+		})
+
+		let allManagers = await Users.find({
+			type: "Manager"
+		})
+
+		let allProjects = await Projects.find()
+		let allRuns,
+			runParams,
+			allJobs,
+			numberOfRuns = 0,
+			numberOfDevices = 0,
+			devicefarmRuntime = 0,
+			numberOfEmulatorRuns = 0,
+			emulatorRunTime = 0
+
+		for (var projectDetails of allProjects) {
+
+			let timed = await getRuns.getRunTime(projectDetails._id)
+			timed = timed / 60000
+			emulatorRunTime += timed
+
+
+			let params = {
+				arn: projectDetails.ARN
+			}
+			allRuns = await devicefarm.listRuns(params)
+			
+			for (var run of allRuns.runs) {
+				let runObj = await Runs.findOne({ ARN: run.arn })
+				
+				if (!runObj) {
+					continue
+				}
+				numberOfRuns += 1
+				console.log(numberOfRuns, runObj)
+				if (run.deviceMinutes) {
+					devicefarmRuntime += run.deviceMinutes.total
+				}
+				runParams = {
+					arn: run.arn
+				}
+				allJobs = await devicefarm.listJobs(runParams)
+				numberOfDevices += allJobs.jobs.length
+			}
+			let allEmulatorRuns = await EmulatorRuns.find({
+				projectId: projectDetails._id
+			})
+			numberOfEmulatorRuns = allEmulatorRuns.length
+
+		}
+		
+		let preBookedTime = 0,
+			allPools = await PreBookedPools.find(),
+			poolObj,
+			startTime,
+			endTime,
+			difference
+
+		for (poolObj of allPools) {
+			startTime = poolObj.createTime
+			if (poolObj.deleteTime) {
+				endTime = poolObj.deleteTime
+			} else {
+				endTime = Date.now()
+			}
+			difference = (endTime - startTime) / (1000 * 60)
+			preBookedTime += difference
+		}
+
+		return res
+			.status(constants.STATUS_CODE.SUCCESS_STATUS)
+			.send({
+				numberOfTesters: allTesters.length,
+				numberOfManagers: allManagers.length,
+				numberOfProjects: allProjects.length,
+				fileCount: projectDetails.fileCount,
+				numberOfRuns: numberOfRuns,
+				numberOfDevices: numberOfDevices,
+				devicefarmRuntime: devicefarmRuntime.toFixed(2),
+				numberOfEmulatorRuns: numberOfEmulatorRuns,
+				projectObj: projectDetails,
+				preBookedTime: preBookedTime.toFixed(2),
+				emulatorRunTime: emulatorRunTime.toFixed(2)
+			})
+
+	} catch (error) {
 		return res
 			.status(constants.STATUS_CODE.INTERNAL_SERVER_ERROR_STATUS)
 			.send(error.message)
