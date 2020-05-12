@@ -37,7 +37,7 @@ class BugsDashboard extends Component {
                     <Header />
                     <Navigation />
                     <div style={{ display: "flex", flexDirection: "column", paddingTop: "50px" }}>
-                        <BugStats />
+                        {/*<BugStats />*/}
                         <DisplayBugs bugs={this.state.bugs} />
                         <Footer />
                     </div>
