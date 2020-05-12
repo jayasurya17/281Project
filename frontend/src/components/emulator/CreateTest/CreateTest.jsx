@@ -16,6 +16,8 @@ class CreateTest extends Component {
 		automationName: "",
 		selectedFile: null,
 		projectId: "",
+		script: "",
+		testScript: null
 	};
 
 	handleChange = e => {
@@ -34,11 +36,44 @@ class CreateTest extends Component {
 		}
 	};
 
+	onScriptChange = event => {
+		//  event.preventDefault();
+
+		// Update the state
+		this.setState({ testScript: event.target.files[0] });
+		if (this.state.testScript) {
+			this.setState({ script: this.state.testScript.name });
+		}
+	};
+
+
 	onFileUpload = e => {
 		e.preventDefault();
 		//  this.setState({ projectId: this.props.match.params.projectId })
 		let formData = new FormData();
 		formData.append("file", this.state.selectedFile);
+		formData.append('projectId', this.props.projectId)
+		formData.append('userId', localStorage.getItem('281UserId'))
+
+		axios
+			.post(
+				`${Constants.BACKEND_SERVER.URL}/emulators/fileUpload`,
+				formData
+			)
+			.then(response => {
+				if (response.status === 201) {
+					window.alert("File Uploaded Successfully");
+				} else {
+					console.log(response);
+				}
+			});
+	};
+
+	onScriptUpload = e => {
+		e.preventDefault();
+		//  this.setState({ projectId: this.props.match.params.projectId })
+		let formData = new FormData();
+		formData.append("file", this.state.testScript);
 		formData.append('projectId', this.props.projectId)
 		formData.append('userId', localStorage.getItem('281UserId'))
 
@@ -65,7 +100,8 @@ class CreateTest extends Component {
 			app: this.state.selectedFile.name,
 			appPackage: this.state.appPackage,
 			appActivity: this.state.appActivity,
-			automationName: this.state.automationName
+			automationName: this.state.automationName,
+			testScriptName: this.state.testScript.name
 		};
 		const reqobj = {
 			capabilities: capabilities,
@@ -80,11 +116,16 @@ class CreateTest extends Component {
 				`${Constants.BACKEND_SERVER.URL}/emulators/createtest`,
 				reqobj
 			)
-			.then(response => {
-				console.log(response);
-				localStorage.setItem('emulatorRunID', response.data)
-				this.props.history.push(`/tester/project/run/viewTestRun/${reqobj.projectId}`)
-			});
+		// .then(response => {
+		// 	console.log(response);
+		// 	localStorage.setItem('emulatorRunID', response.data)
+		// 	window.alert("Running Test in Background. Check back in some time.")
+		// 	this.props.history.push(`/tester/project/view/${reqobj.projectId}`)
+		// });
+
+		window.alert("Running Test in Background. Check back in some time.")
+		this.props.history.push(`/tester/project/view/${reqobj.projectId}`)
+
 	};
 
 	// File content to be displayed after
@@ -99,6 +140,29 @@ class CreateTest extends Component {
 					<p>
 						Last Modified:{" "}
 						{this.state.selectedFile.lastModifiedDate.toDateString()}
+					</p>
+				</div>
+			);
+		} else {
+			return (
+				<div>
+					<br />
+					<p>Choose before Pressing the Upload button</p>
+				</div>
+			);
+		}
+	};
+
+	ScriptData = () => {
+		if (this.state.testScript) {
+			return (
+				<div>
+					<p>File Details:</p>
+					<p>File Name: {this.state.testScript.name}</p>
+					<p>File Type: {this.state.testScript.type}</p>
+					<p>
+						Last Modified:{" "}
+						{this.state.testScript.lastModifiedDate.toDateString()}
 					</p>
 				</div>
 			);
@@ -264,6 +328,10 @@ class CreateTest extends Component {
               <input type="file" onChange={this.onFileChange} />
 								{this.fileData()}
 								<button onClick={this.onFileUpload}>Upload!</button>
+			  Test Script:
+              <input type="file" onChange={this.onScriptChange} />
+								{this.ScriptData()}
+								<button onClick={this.onScriptUpload}>Upload!</button>
               App Package:{" "}
 								<input
 									type="text"

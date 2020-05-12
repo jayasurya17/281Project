@@ -14,6 +14,8 @@ const BannerCard = (props) => {
 			<div>AppPackage: {props.props.appPackage}</div>
 			<div>AppActivity: {props.props.appActivity}</div>
 			<div>Automation Name: {props.props.automationName}</div>
+			<div>Run Started at: {props.props.runStart}</div>
+			<div>Run Ended at: {props.props.runEnd}</div>
 			<div>Run Time: {props.props.runTime}</div>
 		</div>
 

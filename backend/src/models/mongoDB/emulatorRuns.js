@@ -1,6 +1,7 @@
 `use strict`
 
 import mongoose from 'mongoose'
+// const mongoose=require('mongoose')
 
 const emulatorRuns = new mongoose.Schema({
     projectId: {
@@ -44,9 +45,20 @@ const emulatorRuns = new mongoose.Schema({
         type: String,
         required: true
     },
+    testScriptName: {
+        type: String,
+        required: true
+    },
     runTime: {
         type: Number,
-    }
+    },
+    runStart: {
+        type: Date,
+        required: true
+    },
+    runEnd: {
+        type: Date,
+    },
 }, { versionKey: false })
 
 export default mongoose.model('emulatorRuns', emulatorRuns)
