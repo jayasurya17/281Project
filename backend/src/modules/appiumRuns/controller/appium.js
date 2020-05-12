@@ -128,15 +128,16 @@ exports.createTest = async (req, res) => {
 		5564: true,
 	}
 	try {
-		var d = new Date();
-		var startTime = d.getTime();
+		var runStart = new Date();
+		var startTime = runStart.getTime();
 		console.log("Start time" + startTime)
 		let runobj = {
 			...req.body.capabilities,
 			userId: req.body.userId,
 			userName: req.body.userName,
 			projectId: req.body.projectId,
-			runTime: 0
+			runTime: 0,
+			runStart: runStart
 		}
 
 		let newRun = new emulatorRuns(runobj);
@@ -171,10 +172,10 @@ exports.createTest = async (req, res) => {
 		}
 
 		await s3upload.fileUpload(uploadObj);
-		var d = new Date();
-		let endTime = d.getTime();
+		var runEnd = new Date();
+		let endTime = runEnd.getTime();
 		console.log("End Time " + endTime)
-		let runTime = (endTime - startTime).toFixed(2)
+		let runTime = ((endTime - startTime) / (1000 * 60 * 60)).toFixed(2)
 
 
 
