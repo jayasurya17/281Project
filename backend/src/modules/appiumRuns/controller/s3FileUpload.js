@@ -82,7 +82,7 @@ exports.fileUpload = async (req, res) => {
                 })
                     .promise()
                     .then(() => {
-                        var createdURL = s3.getSignedUrl('getObject', { Bucket: req.projectId, Key: `${folderName}/${String(fileObj.originalname)}` })
+                        var createdURL = s3.getSignedUrl('getObject', { Bucket: req.projectId, Key: `${req.userId}/${String(fileObj.originalname)}` })
                         console.log(`The URL is ${createdURL}`) // Return value of the function
                         resolve(createdURL)
                     })
