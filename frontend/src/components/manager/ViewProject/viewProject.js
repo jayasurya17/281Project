@@ -5,6 +5,7 @@ import FileBrowser from './fileBrowser';
 import InfoContainer from './infoContainer';
 import UploadFile from './uploadFile';
 import ProjectDashboardGraphical from './projectDashboardGraphical'
+import {  withRouter} from 'react-router-dom';
 
 
 class Landing extends Component {
@@ -75,6 +76,11 @@ class Landing extends Component {
             })
     }
 
+    goToBugsByProject = (e) =>{
+        e.preventDefault();
+        this.props.history.push(`/${localStorage.getItem('281UserType').toLowerCase()}/bugs/project/`+this.props.projectId);
+    }
+
     render() {
         if (this.state.arn === "") {
             return (
@@ -140,6 +146,9 @@ class Landing extends Component {
                         <p className="display-4">Manage project</p>
                         <UploadFile projectId={this.props.projectId} />
                         <div className="row mt-2 mb-2">
+                            <button className="btn btn-danger w-100" onClick={this.goToBugsByProject}>Report Bugs</button>
+                        </div>
+                        <div className="row mt-2 mb-2">
                             <a href={`/manager/project/devices/${this.props.projectId}`} className="w-100">
                                 <button className="btn btn-primary w-100">Add device pool for this project</button>
                             </a>
@@ -170,4 +179,4 @@ class Landing extends Component {
     }
 }
 //export Landing Component
-export default Landing;
+export default withRouter(Landing);

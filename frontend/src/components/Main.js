@@ -123,9 +123,6 @@ class Main extends Component {
 
 				<Route path="/tester/createTest/emulator" component={CreateTest} />
 
-				<Route path="/manager/bargraph" component={BugStats} />
-
-
 
 
 			</div>

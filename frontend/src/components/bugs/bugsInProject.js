@@ -6,6 +6,7 @@ import DisplayBugs from './displayBugs';
 import axios from 'axios';
 import Constants from '../../utils/constants';
 import {Button} from 'reactstrap';
+import BugStats from './bugStats';
 
 class BugsInProject extends Component {
 
@@ -45,6 +46,9 @@ class BugsInProject extends Component {
                 <Button style={{height:"50px"}}outline onClick={this.goToCreateBug} color="primary">Create New Bug</Button>{' '}
             </div>
                     <div style={{display : "flex",flexDirection :"column",paddingTop:"50px"}}>
+                       { this.state.bugs && this.state.bugs.length!=0 && 
+                           <BugStats projectId = {this.props.match.params.projectId}/>
+                       }
                         <DisplayBugs bugs = {this.state.bugs} />
                         <Footer  />
 
