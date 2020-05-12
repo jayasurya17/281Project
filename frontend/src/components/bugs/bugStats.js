@@ -9,7 +9,6 @@ class BugStats extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            projectId: "5e8fabd02d11df46cc4c69a5",
             bugStats: {
 
             }
@@ -17,7 +16,7 @@ class BugStats extends Component {
     }
 
     componentDidMount() {
-        axios.get(`${Constants.BACKEND_SERVER.URL}/bugs/getBugStatsByProject/${this.state.projectId}`)
+        axios.get(`${Constants.BACKEND_SERVER.URL}/bugs/getBugStatsByProject/${this.props.projectId}`)
             .then(response => {
                 this.setState({ bugStats: response.data });
                 console.log(this.state.bugStats);
