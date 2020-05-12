@@ -27,7 +27,7 @@ exports.getRuns = async (req, res) => {
 exports.getRunTime = async (req) => {
 
 	try {
-		console.log("Req body--- " + JSON.stringify(req))
+		//console.log("Req body--- " + JSON.stringify(req))
 		let runtime = 0
 		// emulatorRuns.aggregate({
 		//     $group: {
@@ -40,12 +40,15 @@ exports.getRunTime = async (req) => {
 		//     console.log("error " + JSON.stringify(err))
 		// });
 		let index
+
 		let rundocs = await emulatorRuns.find({ projectId: req }, (err, res) => {
+
 			//console.log(JSON.stringify(res) + " " + JSON.stringify(err))
+
 			for (index in res) {
+				//console.log(index)
 				if (res[index].runTime !== undefined) {
-					//console.log(parseInt(res[index].runTime))
-					runtime += parseInt(res[index].runTime);
+					runtime = runtime + (res[index].runTime);
 				}
 			}
 			//console.log(runtime);

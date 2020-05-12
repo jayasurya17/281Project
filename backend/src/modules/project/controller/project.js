@@ -1,6 +1,6 @@
 'use strict'
 
-import EmulatorRuns from '../../../models/mongoDB/emulatorRuns'
+import emulatorRuns from '../../../models/mongoDB/emulatorRuns'
 import Users from '../../../models/mongoDB/users'
 import Runs from '../../../models/mongoDB/runs'
 import PreBookedPools from '../../../models/mongoDB/preBookedPools'
@@ -404,13 +404,16 @@ exports.getUsage = async (req, res) => {
 			allJobs = await devicefarm.listJobs(runParams)
 			numberOfDevices += allJobs.jobs.length
 		}
-		let allEmulatorRuns = await EmulatorRuns.find({
-			projectId: req.query.projectId
+		console.log("emu q" + JSON.stringify(req.params))
+		let allEmulatorRuns = await emulatorRuns.find({
+			projectId: req.params.projectId
+		}, (err, res) => {
+			console.log(err + " " + res.length)
 		})
 		numberOfEmulatorRuns = allEmulatorRuns.length
 		let timed = await emulator.getRunTime(req.params.projectId)
-		timed = timed / 60000
-		// console.log("project e time : " + JSON.stringify(timed))
+		//timed = timed / 60000
+		console.log("project e time : " + JSON.stringify(timed))
 
 		let preBookedTime = 0,
 			allPools = await PreBookedPools.find({

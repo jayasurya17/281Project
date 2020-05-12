@@ -91,8 +91,8 @@ class Home extends Component {
                                 colorScale={["#a7d930", "#e42024", "#507b00", '#282f6c']}
                                 padAngle={({ datum }) => datum.y}
                                 data={[
-                                    { x: 1, y: this.state.totalPassed, label: "Passed" },
-                                    { x: 2, y: this.state.totalFailed, label: "Failed" },
+                                    { x: 1, y: this.state.totalPassed, label: `Passed:${this.state.totalPassed}` },
+                                    { x: 2, y: this.state.totalFailed, label: `Failed:${this.state.totalFailed}` },
 
 
 
@@ -116,7 +116,7 @@ class Home extends Component {
                                 data={[
 
                                     { x: 1, y: this.state.activeRuns, label: "Active" },
-                                    { x: 2, y: this.state.completedRuns, label: "Completed" },
+                                    { x: 2, y: this.state.completedRuns + this.state.averageEmulatorRunsPerTester, label: "Completed" },
 
 
                                 ]}
