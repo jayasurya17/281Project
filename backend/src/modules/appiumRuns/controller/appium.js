@@ -180,7 +180,10 @@ exports.createTest = async (req, res) => {
 
 
 		console.log("Run Time " + runTime)
-		await emulatorRuns.findOneAndUpdate({ _id: createdRun._id }, { runTime: runTime });
+		await emulatorRuns.findOneAndUpdate({ _id: createdRun._id }, {
+			runTime: runTime,
+			runEnd: runEnd
+		});
 
 		return res.status(constants.STATUS_CODE.CREATED_SUCCESSFULLY_STATUS).send(createdRun._id);
 	} catch (error) {
