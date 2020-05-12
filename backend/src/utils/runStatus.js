@@ -9,7 +9,8 @@ const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitT
 cron.schedule("0 */1 * * * *", async () => {
 
     try {
-        console.log("Cron job running")
+        var now = Date(Date.now());
+        console.log("Cron job running. Schedule time: ", now.toString())
         let allDevicePools = await PreBookedPools.find({
             isDeleted: false
         })
